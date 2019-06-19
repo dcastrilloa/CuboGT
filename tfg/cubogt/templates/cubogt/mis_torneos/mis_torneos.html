@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{% trans "Mis torneos" %}{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Mis torneos" %}</h1>
+    {% if not mis_torneos_list %}
+        <a href="{% url 'nuevo_torneo' %}"><button class="btn btn-primary">{% trans "Crear torneo" %}</button></a>
+    {% else %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Nombre" %}</th>
+                    <th>{% trans "Fecha" %}</th>
+                    <th>{% trans "Estado" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for torneo in mis_torneos_list %}
+                    <tr>
+                         <a class="torneo" href="{% url 'torneo' id=torneo.id %}">
+                             <td>{{ torneo.nombre }}</td>
+                             <td>{{ torneo.fecha }}</td>
+                             <td>{{ torneo.estado }}</td>
+                         </a>
+                    <tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+
+
+{% endblock content %}

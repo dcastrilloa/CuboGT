@@ -2,3 +2,9 @@
 tfg/\.idea/
 
 tfg/__pycache__/
+
+tfg/cubogt/__pycache__/
+
+tfg/cubogt/controller/__pycache__/
+
+tfg/tfg/__pycache__/
