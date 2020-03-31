@@ -41,6 +41,7 @@ class Fase(models.Model):
 	cambio_de_campo = models.BooleanField()
 	cambio_a_los = models.IntegerField(default=None)
 	# puntuacion = models.ForeignKey('Puntuacion', on_delete=models.CASCADE)
+	esta_terminada = models.BooleanField(default=False)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)

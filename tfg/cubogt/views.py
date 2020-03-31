@@ -30,8 +30,8 @@ def nuevo_torneo(request):
 			else:
 				return redirect('nueva_fase_grupos', id=torneo.id)
 	else:
-		form = PostForm()
-	return render(request, 'blog/post_new.html', {'form': form})
+		form = TorneoForm()
+	return render(request, 'cubogt/nuevo_torneo/nuevo_torneo.html', {'form': form})
 
 
 """

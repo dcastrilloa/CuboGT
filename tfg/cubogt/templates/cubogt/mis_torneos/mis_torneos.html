@@ -1,12 +1,12 @@
-{% extends "base.html" %}
+{% extends "cubogt/base.html" %}
+{% load i18n %}
 
 {% block title %}{% trans "Mis torneos" %}{% endblock %}
 
 {% block content %}
     <h1>{% trans "Mis torneos" %}</h1>
-    {% if not mis_torneos_list %}
-        <a href="{% url 'nuevo_torneo' %}"><button class="btn btn-primary">{% trans "Crear torneo" %}</button></a>
-    {% else %}
+    <a href="{% url 'nuevo_torneo' %}"><button class="btn btn-primary">{% trans "Crear torneo" %}</button></a>
+    {% if mis_torneos_list %}
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -17,13 +17,15 @@
             </thead>
             <tbody>
                 {% for torneo in mis_torneos_list %}
+
                     <tr>
-                         <a class="torneo" href="{% url 'torneo' id=torneo.id %}">
-                             <td>{{ torneo.nombre }}</td>
+
+                             <td><a class="torneo" href="{% url 'login' %}">{{ torneo.nombre }}</a></td>
                              <td>{{ torneo.fecha }}</td>
                              <td>{{ torneo.estado }}</td>
-                         </a>
+
                     <tr>
+
 
                 {% endfor %}
             </tbody>
