@@ -5,8 +5,8 @@ from .controller.constantes import *
 from django.utils import timezone
 
 
-def index (request):
-	return redirect('login')
+def index(request):
+	return redirect('mis_torneos')
 
 
 def mis_torneos(request):

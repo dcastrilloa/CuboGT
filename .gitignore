@@ -10,3 +10,7 @@ tfg/cubogt/controller/__pycache__/
 tfg/tfg/__pycache__/
 
 tfg/cubogt/migrations/__pycache__/
+
+*.pyc
+
+tfg/venv/

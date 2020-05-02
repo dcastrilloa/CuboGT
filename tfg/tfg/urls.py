@@ -15,9 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.i18n import i18n_patterns
+
+# from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('django.contrib.auth.urls')),
-	path('', include('cubogt.urls'))
+	path('admin/', admin.site.urls),
+	path('i18n/', include('django.conf.urls.i18n')),
+	path('', include('django.contrib.auth.urls')),
+	path('', include('registro.urls'))
 ]
+
+urlpatterns += i18n_patterns(
+	path('gt/', include('cubogt.urls')),
+	# path('ap/', include('cuboap.urls'))
+)
