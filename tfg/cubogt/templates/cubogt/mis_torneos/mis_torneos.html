@@ -13,17 +13,18 @@
                     <th>{% trans "Nombre" %}</th>
                     <th>{% trans "Fecha" %}</th>
                     <th>{% trans "Estado" %}</th>
+                    <th>{% trans "Deporte" %}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for torneo in mis_torneos_list %}
 
                     <tr>
-
-                             <td><a class="torneo" href="{% url 'login' %}">{{ torneo.nombre }}</a></td>
-                             <td>{{ torneo.fecha }}</td>
-                             <td>{{ torneo.estado }}</td>
-
+                        <td><a class="torneo" href="{% url 'login' %}">{{ torneo.nombre }}</a></td>
+                        <td>{{ torneo.fecha }}</td>
+                        <td>{{ torneo.get_estado_display }}</td>
+                        <td>{{ torneo.get_deporte_display}}</td>
+                        <td><a href="{% url 'nuevo_torneo' %}"><button class="btn btn-danger">{% trans "Borrar torneo" %}</button></a></td>
                     <tr>
 
 

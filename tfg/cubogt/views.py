@@ -23,32 +23,7 @@ def nuevo_torneo(request):
 			torneo.usuario = request.user
 			torneo.estado = CREACION
 			torneo.save()
-			if torneo.tipo_torneo == 1:
-				return redirect('nueva_liga', id=torneo.id)
-			elif torneo.tipo_torneo == 2:
-				return redirect('nueva_eliminatoria', id=torneo.id)
-			else:
-				return redirect('nueva_fase_grupos', id=torneo.id)
 	else:
 		form = TorneoForm()
 	return render(request, 'cubogt/nuevo_torneo/nuevo_torneo.html', {'form': form})
 
-
-"""
-def nueva_liga (request):
-	if request.method == "POST":
-		form = LigaFoms(request.POST)
-		if form.is_valid():
-			fase = form.save(commit=False)
-			fase.tipo_fase = LIGA
-			fase.save()
-			if torneo.tipo_torneo == 1:
-				return redirect('nueva_liga', id=torneo.id)
-			elif
-				return redirect('nueva_eliminatoria', id=torneo.id)
-			else:
-				return redirect('nueva_fase_grupos', id=torneo.id)
-	else:
-		form = PostForm()
-	return render(request, 'blog/post_new.html', {'form': form})
-"""
