@@ -1,0 +1,18 @@
+{% extends "cubogt/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ torneo.nombre }}{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Información del Torneo" %}</h1>
+    <div>{% trans "Nombre: " %}{{ torneo.nombre }}</div>
+    <div>{% trans "Deporte: " %}{{ torneo.deporte }}</div>
+    <div>{% trans "Fecha: " %}{{ torneo.fecha }}</div>
+    <div>{% trans "Descripcion: " %}{{ torneo.descripcion }}</div>
+    <div>{% trans "Numero de Equipos: " %}{{ torneo.numero_equipos }}</div>
+
+
+
+
+
+{% endblock content %}

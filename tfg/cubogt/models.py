@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
-from cubogt.controller.constantes import *
+from cubogt.static.constantes import *
 
 
 class Torneo(models.Model):

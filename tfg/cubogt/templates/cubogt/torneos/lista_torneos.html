@@ -20,17 +20,18 @@
                 {% for torneo in mis_torneos_list %}
 
                     <tr>
-                        <td><a class="torneo" href="{% url 'login' %}">{{ torneo.nombre }}</a></td>
+                        <td><a class="torneo" href="{% url 'torneo' pk=torneo.id %}">{{ torneo.nombre }}</a></td>
                         <td>{{ torneo.fecha }}</td>
                         <td>{{ torneo.get_estado_display }}</td>
                         <td>{{ torneo.get_deporte_display}}</td>
-                        <td><a href="{% url 'nuevo_torneo' %}"><button class="btn btn-danger">{% trans "Borrar torneo" %}</button></a></td>
                     <tr>
-
 
                 {% endfor %}
             </tbody>
         </table>
+
+
+
     {% endif %}
 
 

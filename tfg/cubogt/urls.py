@@ -1,10 +1,11 @@
 from django.urls import *
-from . import views
+from cubogt import views
 
 urlpatterns = [
 	path('', views.index, name='index'),
-	path('mis_torneos/', views.mis_torneos, name='mis_torneos'),
+	path('mis_torneos/', views.lista_torneo, name='lista_torneo'),
 	path('nuevo_torneo/', views.nuevo_torneo, name='nuevo_torneo'),
+	path('torneo/<int:pk>/', views.torneo2, name='torneo'),
 ]
 # path('nuevo_torneo/<id>/liga/', views.nueva_liga, name='nueva_liga'),
 """

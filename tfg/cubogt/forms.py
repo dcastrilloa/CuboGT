@@ -1,6 +1,6 @@
 from django import forms
 from .models import *
-from .controller.constantes import *
+from cubogt.static.constantes import *
 
 
 class TorneoForm(forms.ModelForm):
