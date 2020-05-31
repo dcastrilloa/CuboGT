@@ -20,7 +20,7 @@
                 {% for torneo in mis_torneos_list %}
 
                     <tr>
-                        <td><a class="torneo" href="{% url 'torneo' pk=torneo.id %}">{{ torneo.nombre }}</a></td>
+                        <td><a class="torneo" href="{% url 'torneo' torneo.id %}">{{ torneo.nombre }}</a></td>
                         <td>{{ torneo.fecha }}</td>
                         <td>{{ torneo.get_estado_display }}</td>
                         <td>{{ torneo.get_deporte_display}}</td>

@@ -1,19 +1,20 @@
-{% extends  disenyo %}
+{% extends "cubogt/navbar.html" %}
 {% load i18n %}
 
 {% block title %}
-    {% if  torneo %}
-        {% trans "Editar torneo" %}
+    {% if form.instance.id %}
+        {% trans "Editar equipo" %}
     {% else %}
-        {% trans "Nuevo Torneo" %}
+        {% trans "Nuevo Equipo" %}
     {% endif %}
 {% endblock %}
 
 {% block content %}
-    {% if  torneo %}
-        <h1>{% trans "Editar Torneo" %}</h1>
+
+    {% if form.instance.id %}
+        <h2>{% trans "Editar equipo" %}</h2>
     {% else %}
-       <h1>{% trans "Nuevo Torneo" %}</h1>
+        <h2>{% trans "Nuevo equipo" %}</h2>
     {% endif %}
 
     <form method="POST" class="post-form">{% csrf_token %}

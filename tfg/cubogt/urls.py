@@ -3,11 +3,19 @@ from cubogt import views
 
 urlpatterns = [
 	path('', views.index, name='index'),
-	path('mis_torneos/', views.lista_torneo, name='lista_torneo'),
-	path('nuevo_torneo/', views.nuevo_torneo, name='nuevo_torneo'),
-	path('torneo/<int:pk>/', views.torneo2, name='torneo'),
+	path('mis_torneos/', views.torneo_lista, name='lista_torneo'),
+	path('nuevo_torneo/', views.torneo_nuevo, name='nuevo_torneo'),
+	path('torneo/<int:torneo_id>/', views.torneo_ver, name='torneo'),
+	path('torneo/<int:torneo_id>/editar', views.torneo_editar, name='torneo_editar'),
+	path('torneo/<int:torneo_id>/borrar', views.torneo_borrar, name='torneo_borrar'),
+
+	path('torneo/<int:torneo_id>/equipos', views.equipo_lista, name='equipo_lista'),
+	path('torneo/<int:torneo_id>/equipo/nuevo', views.equipo_nuevo, name='equipo_nuevo'),
+	path('torneo/<int:torneo_id>/equipo/<int:equipo_id>/editar', views.equipo_editar, name='equipo_editar'),
+	path('torneo/<int:torneo_id>/equipo/<int:equipo_id>/borrar', views.equipo_borrar, name='equipo_borrar'),
+
 ]
-# path('nuevo_torneo/<id>/liga/', views.nueva_liga, name='nueva_liga'),
+
 """
 path('post/<int:pk>/', views.post_detail, name='post_detail'),
 path('post/new/', views.post_new, name='post_new'),

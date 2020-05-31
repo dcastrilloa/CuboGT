@@ -8,7 +8,7 @@ from django.utils import timezone
 def index(request):
 	return redirect('lista_torneo')
 
-
+# TORNEO
 def lista_torneo(request):
 	mis_torneos_list = Torneo.objects.filter(usuario=request.user)
 	return render(request, 'cubogt/torneos/lista_torneos.html', context={'mis_torneos_list': mis_torneos_list})

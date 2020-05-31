@@ -138,7 +138,7 @@ class Partido(models.Model):
 	grupo = models.ForeignKey('Grupo', on_delete=models.CASCADE)
 	equipo_local = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="local_equipo")
 	equipo_visitante = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="visitante_equipo")
-	arbitro = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="arbitro")
+	arbitro = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="arbitro", default=None)
 
 	sets_favor = models.IntegerField(default=0)
 	sets_contra = models.IntegerField(default=0)
