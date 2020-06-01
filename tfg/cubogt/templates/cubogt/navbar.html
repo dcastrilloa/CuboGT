@@ -29,7 +29,7 @@
 	  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
 	  <ul class="navbar-nav px-3">
 	    <li class="nav-item text-nowrap">
-	      <a class="nav-link" href="#">Sign out</a>
+	      <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
 	    </li>
 	  </ul>
 </nav>
@@ -87,7 +87,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'equipo_lista' torneo.id %}">
+            <a class="nav-link" href="{% url 'campo_lista' torneo.id %}">
               <span data-feather="file-text"></span>
               {% trans "Campos" %}
             </a>
@@ -125,8 +125,11 @@
 
 {% else %}
     <p>{% trans "No puedes administrar este torneo, si quieres visualizarlo puedes acceder a:"  %}</p>
-    <p><a href="{% url 'lista_torneo' %}">{% trans "Mis torneos" %} </a></p>
+    <!--TODO ir a CuboAP -->
     <p><a href="{% url 'lista_torneo' %}">{% trans "Ver torneo: " %}{{ torneo.nombre }} </a></p>
+    <p>{% trans "Tambien puedes volver a tus torneos:"  %}</p>
+    <p><a href="{% url 'lista_torneo' %}">{% trans "Mis torneos" %} </a></p>
+
 {% endif %}
 
 </body>

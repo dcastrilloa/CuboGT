@@ -60,7 +60,7 @@ def torneo_editar(request, torneo_id):
 
 
 def torneo_borrar(request, torneo_id):
-	torneo = get_object_or_404(Torneo, pk=torneo_id)
+	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
 	torneo.delete()
 	return redirect('lista_torneo')
 
@@ -73,7 +73,7 @@ def equipo_lista(request, torneo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
 	equipos_list = Equipo.objects.filter(torneo=torneo)
 	context = {'torneo': torneo, 'equipos_list': equipos_list}
-	return render(request, 'cubogt/equipos/equipos_lista.html', context)
+	return render(request, 'cubogt/equipo/equipos_lista.html', context)
 
 
 def equipo_nuevo(request, torneo_id):
@@ -89,12 +89,12 @@ def equipo_nuevo(request, torneo_id):
 	else:
 		form = EquipoForm()
 	context = {'torneo': torneo, 'form': form}
-	return render(request, 'cubogt/equipos/equipo_nuevo.html', context)
+	return render(request, 'cubogt/equipo/equipo_nuevo.html', context)
 
 
 def equipo_editar(request, torneo_id, equipo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	equipo = get_object_or_404(Equipo, pk=equipo_id)
+	equipo = get_object_or_404(Equipo, pk=equipo_id, torneo=torneo)
 	if request.method == "POST":
 		form = EquipoForm(request.POST, instance=equipo)
 		if form.is_valid():
@@ -107,17 +107,68 @@ def equipo_editar(request, torneo_id, equipo_id):
 		form = EquipoForm(instance=equipo)
 
 	context = {'torneo': torneo, 'form': form}
-	return render(request, 'cubogt/equipos/equipo_editar.html', context)
+	return render(request, 'cubogt/equipo/equipo_editar.html', context)
 
 
 def equipo_borrar(request, torneo_id, equipo_id):
-	torneo = get_object_or_404(Torneo, pk=torneo_id)
+	torneo = get_object_or_404(Torneo, pk=torneo_id, usurio=request.user)
 	equipo = torneo.equipos.get(pk=equipo_id)
 
-	#TODO:controlar excepcion al borrar equipo que no es de mi torneo??
 	torneo.equipos.remove(equipo)
 
 	return redirect('equipo_lista', torneo_id=torneo.id)
+
+
+#  -----------------------------------------------------------------
+#    Campos views
+#  -----------------------------------------------------------------
+
+def campo_lista(request, torneo_id):
+	torneo = get_object_or_404(Torneo, pk=torneo_id)
+	campos_list = Campo.objects.filter(torneo=torneo)
+	context = {'torneo': torneo, 'campos_list': campos_list}
+	return render(request, 'cubogt/campo/campo_lista.html', context)
+
+
+def campo_nuevo(request, torneo_id):
+	torneo = get_object_or_404(Torneo, pk=torneo_id)
+	if request.method == "POST":
+		form = CampoForm(request.POST)
+		if form.is_valid():
+			campo = form.save(commit=False)
+			campo.torneo = torneo
+			campo.save()
+
+			return redirect('campo_lista', torneo_id=torneo.id)
+	else:
+		form = CampoForm()
+	context = {'torneo': torneo, 'form': form}
+	return render(request, 'cubogt/campo/campo_nuevo.html', context)
+
+
+def campo_editar(request, torneo_id, campo_id):
+	torneo = get_object_or_404(Torneo, pk=torneo_id)
+	campo = get_object_or_404(Campo, pk=campo_id, torneo=torneo)
+	if request.method == "POST":
+		form = CampoForm(request.POST, instance=campo)
+		if form.is_valid():
+			campo = form.save(commit=False)
+			campo.save()
+			return redirect('campo_lista', torneo_id=torneo.id)
+	else:
+		form = CampoForm(instance=campo)
+
+	context = {'torneo': torneo, 'form': form}
+	return render(request, 'cubogt/campo/campo_editar.html', context)
+
+
+def campo_borrar(request, torneo_id, campo_id):
+	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
+	campo = get_object_or_404(Campo, pk=campo_id, torneo=torneo)
+
+	campo.delete()
+
+	return redirect('campo_lista', torneo_id=torneo.id)
 
 
 

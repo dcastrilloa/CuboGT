@@ -18,6 +18,9 @@ class Torneo(models.Model):
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 
+	class Meta:
+		ordering = ["fecha"]
+
 	def __str__(self):
 		return self.nombre
 
@@ -26,7 +29,7 @@ class Fase(models.Model):
 	torneo = models.ForeignKey('Torneo', on_delete=models.CASCADE)
 	equipos = models.ManyToManyField('Equipo')
 	campos = models.ManyToManyField('Campo')
-	fase_numero = models.IntegerField()
+	# fase_numero = models.IntegerField()
 	nombre = models.CharField(max_length=100, null=True)
 	numero_equipos = models.IntegerField(null=True)
 	numero_grupos = models.IntegerField(default=0)
@@ -43,10 +46,7 @@ class Fase(models.Model):
 	NWD = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		if self.nombre is None:
-			return self.fase_numero
-		else:
-			return self.nombre
+		return self.nombre
 
 
 class Equipo(models.Model):
@@ -57,10 +57,8 @@ class Equipo(models.Model):
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 
-	""" Para cuando este editando equipos quizas quiero que esten ordenados por ID
 	class Meta:
-		ordering = ["id"]
-	"""
+		ordering = ["nombre"]
 
 	def __str__(self):
 		return self.nombre
@@ -78,21 +76,17 @@ class Jugador(models.Model):
 
 class Grupo(models.Model):
 	fase = models.ForeignKey('Fase', on_delete=models.CASCADE)
-	nombre = models.CharField(max_length=50, blank=True)
-	numero_grupo = models.IntegerField()
+	nombre = models.CharField(max_length=50)
 	equipos = models.ManyToManyField('Equipo', through='Clasificacion')
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 
 	class Meta:
-		ordering = ["numero_grupo"]
+		ordering = ["nombre"]
 
 	def __str__(self):
-		if self.nombre is None:
-			return self.numero_grupo
-		else:
-			return self.nombre
+		return self.nombre
 
 
 class Clasificacion(models.Model):
@@ -176,14 +170,10 @@ class Set(models.Model):
 
 class Campo(models.Model):
 	torneo = models.ForeignKey('Torneo', on_delete=models.CASCADE)
-	nombre = models.CharField(max_length=50, blank=True)
-	numero_campo = models.IntegerField()
+	nombre = models.CharField(max_length=50)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		if self.nombre is None:
-			return self.numero_campo
-		else:
-			return self.nombre
+		return self.nombre

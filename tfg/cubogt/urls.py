@@ -14,6 +14,11 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/equipo/<int:equipo_id>/editar', views.equipo_editar, name='equipo_editar'),
 	path('torneo/<int:torneo_id>/equipo/<int:equipo_id>/borrar', views.equipo_borrar, name='equipo_borrar'),
 
+	path('torneo/<int:torneo_id>/campos', views.campo_lista, name='campo_lista'),
+	path('torneo/<int:torneo_id>/campo/nuevo', views.campo_nuevo, name='campo_nuevo'),
+	path('torneo/<int:torneo_id>/campo/<int:campo_id>/editar', views.campo_editar, name='campo_editar'),
+	path('torneo/<int:torneo_id>/campo/<int:campo_id>/borrar', views.campo_borrar, name='campo_borrar'),
+
 ]
 
 """
