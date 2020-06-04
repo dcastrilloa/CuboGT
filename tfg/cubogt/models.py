@@ -4,16 +4,29 @@ from django.contrib.auth.models import User
 from cubogt.static.constantes import *
 
 
+class Deporte(models.Model):
+	nombre = models.CharField(max_length=15, choices=Deporte.choices, default=Deporte.VOLEIBOL)
+	juego = models.BooleanField()
+	set = models.BooleanField()
+	punto = models.BooleanField(default=False)
+
+	class Meta:
+		ordering = ["nombre"]
+
+	def __str__(self):
+		return self.get_nombre_display()
+
+
 class Torneo(models.Model):
+	equipos = models.ManyToManyField('Equipo')
+	deporte = models.ForeignKey('Deporte', on_delete=models.CASCADE)
 	nombre = models.CharField(max_length=100)
 
-	deporte = models.CharField(max_length=15, choices=Deporte.choices, default=Deporte.VOLEIBOL)
 	usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 	estado = models.IntegerField(choices=ESTADO_TORNEO_CHOICES, default=CREACION)
 	fecha = models.DateField()
 	descripcion = models.CharField(max_length=255, blank=True)
-	numero_equipos = models.IntegerField(null=True)
-	equipos = models.ManyToManyField('Equipo')
+	numero_equipos = models.IntegerField(null=True, blank=True)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
@@ -30,16 +43,17 @@ class Fase(models.Model):
 	equipos = models.ManyToManyField('Equipo')
 	campos = models.ManyToManyField('Campo')
 	# fase_numero = models.IntegerField()
-	nombre = models.CharField(max_length=100, null=True)
-	numero_equipos = models.IntegerField(null=True)
-	numero_grupos = models.IntegerField(default=0)
+	nombre = models.CharField(max_length=100)
+	tipo_fase = models.IntegerField(choices=TIPO_FASE)
+	numero_equipos = models.IntegerField(null=True, blank=True)
+	doble_partido = models.BooleanField()
+
 	numero_sets = models.IntegerField(null=True)
 	numero_puntos = models.IntegerField(null=True)
-	puntos_maximos = models.IntegerField(null=True)
-	tipo_fase = models.IntegerField()
-	doble_partid = models.BooleanField()
+	puntos_maximos = models.IntegerField(null=True, blank=True)
 	# cambio_de_campo = models.BooleanField()
 	# cambio_a_los = models.IntegerField(default=None)
+
 	esta_terminada = models.BooleanField(default=False)
 
 	UPD = models.DateTimeField(auto_now=True)
@@ -132,7 +146,7 @@ class Partido(models.Model):
 	grupo = models.ForeignKey('Grupo', on_delete=models.CASCADE)
 	equipo_local = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="local_equipo")
 	equipo_visitante = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="visitante_equipo")
-	arbitro = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="arbitro", default=None)
+	arbitro = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="arbitro", null=True, default=None)
 
 	sets_favor = models.IntegerField(default=0)
 	sets_contra = models.IntegerField(default=0)
@@ -157,12 +171,30 @@ class Set(models.Model):
 	numero_set = models.IntegerField()
 	puntos_local = models.IntegerField(default=0)
 	puntos_visitante = models.IntegerField(default=0)
+	juegos_local = models.IntegerField(default=0)
+	juegos_visitante = models.IntegerField(default=0)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 
 	class Meta:
 		ordering = ["numero_set"]
+
+	def __str__(self):
+		return '(%s - %s)' % (self.puntos_local, self.puntos_visitante)
+
+
+class Juego(models.Model):
+	set = models.ForeignKey('Set', on_delete=models.CASCADE)
+	numero_juego = models.IntegerField()
+	puntos_local = models.IntegerField(default=0)
+	puntos_visitante = models.IntegerField(default=0)
+
+	UPD = models.DateTimeField(auto_now=True)
+	NWD = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ["numero_juego"]
 
 	def __str__(self):
 		return '(%s - %s)' % (self.puntos_local, self.puntos_visitante)

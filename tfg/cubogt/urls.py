@@ -19,6 +19,12 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/campo/<int:campo_id>/editar', views.campo_editar, name='campo_editar'),
 	path('torneo/<int:torneo_id>/campo/<int:campo_id>/borrar', views.campo_borrar, name='campo_borrar'),
 
+	path('torneo/<int:torneo_id>/fase', views.fase_lista, name='fase_lista'),
+	path('torneo/<int:torneo_id>/fase/nueva', views.fase_nueva, name='fase_nueva'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/editar', views.fase_editar, name='fase_editar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/borrar', views.fase_borrar, name='fase_borrar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>', views.fase_ver, name='fase_ver'),
+
 ]
 
 """

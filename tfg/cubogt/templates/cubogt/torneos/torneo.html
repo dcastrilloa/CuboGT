@@ -10,7 +10,7 @@
 
 
     <div>{% trans "Nombre: " %}{{ torneo.nombre }}</div>
-    <div>{% trans "Deporte: " %}{{ torneo.get_deporte_display }}</div>
+    <div>{% trans "Deporte: " %}{{ torneo.deporte.get_nombre_display }}</div>
     <div>{% trans "Fecha: " %}{{ torneo.fecha }}</div>
     <div>{% trans "Descripcion: " %}{{ torneo.descripcion }}</div>
     <div>{% trans "Numero de Equipos: " %}{{ torneo.numero_equipos }}</div>

@@ -1,0 +1,61 @@
+{% extends "cubogt/navbar.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Fases" %}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Fases" %}</h2>
+    <a type="button" class="btn btn-primary" href="{% url 'fase_nueva' torneo.id %}">{% trans "Nueva fase" %}</a>
+    {% if fases_list %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Nombre" %}</th>
+                    <th>{% trans "Nº equipos" %}</th>
+                    <th>{% trans "Tipo de Fase" %}</th>
+                    <th>{% trans "Doble partido" %}</th>
+                    {% if torneo.deporte.set %}
+                        <th>{% trans "Nº Set" %}</th>
+                    {% endif %}
+                    {% if torneo.deporte.punto %}
+                        <th>{% trans "Nº Puntos" %}</th>
+                        <th>{% trans "Puntos Max." %}</th>
+                    {% endif %}
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fase in fases_list %}
+                    <tr>
+                        <td><a href="{% url 'fase_ver' torneo.id fase.id %}">{{ fase.nombre }}</a></td>
+                        <td>{{ fase.numero_equipos }}</td>
+                        <td>{{ fase.get_tipo_fase_display }}</td>
+                        <td>{{ fase.doble_partid }}</td>
+                        {% if torneo.deporte.juego %}
+                            <td>{{ fase.doble_partid }}</td>
+                        {% endif %}
+                        {% if torneo.deporte.set %}
+                            <td>{{ fase.numero_sets }}</td>
+                        {% endif %}
+                        {% if torneo.deporte.punto %}
+                            <td>{{ fase.numero_puntos }}</td>
+                            <td>{{ fase.puntos_maximos }}</td>
+                        {% endif %}
+                        <td>
+                            <a type="button" class="btn btn-outline-primary" href="{% url 'fase_editar' torneo.id fase.id %}">{% trans "Editar" %}</a>
+                            <a type="button" class="btn btn-outline-danger" href="{% url 'fase_borrar' torneo.id fase.id %}">{% trans "Borrar" %}</a>
+                        </td>
+                    <tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    {% endif %}
+
+
+
+{% endblock content %}

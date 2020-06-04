@@ -1,0 +1,33 @@
+{% extends "cubogt/navbar.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% if form.instance.id %}
+        {% trans "Editar fase" %}
+    {% else %}
+        {% trans "Nueva fase" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {% if form.instance.id %}
+        <h2>{% trans "Editar fase" %}</h2>
+    {% else %}
+        <h2>{% trans "Nueva fase" %}</h2>
+    {% endif %}
+
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        {% if torneo.deporte.set %}
+            {{ form_set.as_p }}
+        {% endif %}
+        {% if torneo.deporte.punto %}
+            {{ form_punto.as_p }}
+        {% endif %}
+        <button type="submit" class=" save btn btn-primary">{% trans "Guardar" %}</button>
+    </form>
+
+
+
+{% endblock content %}

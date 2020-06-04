@@ -23,7 +23,7 @@
                         <td><a class="torneo" href="{% url 'torneo' torneo.id %}">{{ torneo.nombre }}</a></td>
                         <td>{{ torneo.fecha }}</td>
                         <td>{{ torneo.get_estado_display }}</td>
-                        <td>{{ torneo.get_deporte_display}}</td>
+                        <td>{{ torneo.deporte.get_nombre_display}}</td>
                     <tr>
 
                 {% endfor %}
