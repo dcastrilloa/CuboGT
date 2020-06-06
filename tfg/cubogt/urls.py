@@ -24,6 +24,21 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/editar', views.fase_editar, name='fase_editar'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/borrar', views.fase_borrar, name='fase_borrar'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>', views.fase_ver, name='fase_ver'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos', views.fase_equipo_lista, name='fase_equipo_lista'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/editar_equipos', views.fase_equipo_editar, name='fase_equipo_editar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/añadir_todos', views.fase_equipo_agregar_todo, name='fase_equipo_agregar_todo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/borrar_todos', views.fase_equipo_borrar_todo, name='fase_equipo_borrar_todo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/borrar/<int:equipo_id>', views.fase_equipo_borrar, name='fase_equipo_borrar'),
+
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo', views.grupo_lista, name='grupo_lista'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/nuevo', views.grupo_nuevo, name='grupo_nuevo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/editar', views.grupo_editar, name='grupo_editar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/borrar', views.grupo_borrar, name='grupo_borrar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/ver_equipos', views.grupo_equipo_lista, name='grupo_equipo_lista'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/editar_equipos', views.grupo_equipo_editar, name='grupo_equipo_editar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/ver_equipos/borrar_todos', views.grupo_equipo_borrar_todo, name='grupo_equipo_borrar_todo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/borrar_equipo/<int:equipo_id>', views.grupo_equipo_borrar, name='grupo_equipo_borrar')
+
 
 ]
 

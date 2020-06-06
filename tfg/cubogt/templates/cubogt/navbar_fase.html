@@ -42,7 +42,13 @@
         </h6>
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'torneo' torneo.id %}">
+            <a class="nav-link active" href="{% url 'fase_equipo_lista' torneo.id fase.id%}">
+              <span data-feather="home"></span>
+              {% trans "Equipos" %}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'grupo_lista' torneo.id fase.id%}">
               <span data-feather="home"></span>
               {% trans "Grupos" %} <span class="sr-only">(current)</span>
             </a>

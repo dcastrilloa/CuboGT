@@ -7,7 +7,7 @@
     <h2>{% trans "Información de la fase" %}</h2>
         <div>{% trans "Nombre: " %}{{ fase.nombre }}</div>
         <div>{% trans "Nº equipos: " %}{{ fase.numero_equipos }}</div>
-        <div>{% trans "Tipo de Fase: " %}{{ fase.tipo_fase }}</div>
+        <div>{% trans "Tipo de Fase: " %}{{ fase.get_tipo_fase_display }}</div>
         <div>{% trans "Doble partido: " %}{{ fase.doble_partido }}</div>
         {% if torneo.deporte.set %}
             <div>{% trans "Nº Set: " %}{{ fase.numero_sets }}</div>

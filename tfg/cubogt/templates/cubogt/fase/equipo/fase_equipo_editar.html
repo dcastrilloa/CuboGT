@@ -1,0 +1,15 @@
+{% extends "cubogt/navbar_fase.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Editar equipos de la fase" %}
+{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Editar equipos de la fase" %}</h2>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class=" save btn btn-primary">{% trans "Guardar" %}</button>
+    </form>
+
+{% endblock content %}
