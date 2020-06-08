@@ -16,6 +16,7 @@
                 <tr>
                     <th>{% trans "Nombre" %}</th>
                     <th>{% trans "Correo" %}</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,8 +25,10 @@
                     <tr>
                         <td><a class="equipo" href="#">{{ equipo.nombre }}</a></td>
                         <td>{{ equipo.correo }}</td>
-                        <td><a type="button" class="btn btn-outline-primary" href="{% url 'equipo_editar' torneo.id equipo.id %}">{% trans "Editar" %}</a></td>
-                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'equipo_borrar' torneo.id equipo.id %}">{% trans "Borrar" %}</a></td>
+                        <td>
+                            <a type="button" class="btn btn-outline-primary" href="{% url 'equipo_editar' torneo.id equipo.id %}">{% trans "Editar" %}</a>
+                            <a type="button" class="btn btn-outline-danger" href="{% url 'equipo_borrar' torneo.id equipo.id %}">{% trans "Borrar" %}</a>
+                        </td>
                     <tr>
 
                 {% endfor %}

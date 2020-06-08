@@ -7,7 +7,7 @@
     <h2>{% trans "Grupos" %}</h2>
     <a type="button" class="btn btn-primary" href="{% url 'grupo_nuevo' torneo.id fase.id %}">{% trans "Nuevo grupo" %}</a>
     {% if not grupo_list %}
-        <a type="button" class="btn btn-info" href="#">{% trans "Generar grupos automaticamente" %}</a>
+        <a type="button" class="btn btn-info" href="{% url 'grupo_generar' torneo.id fase.id %}">{% trans "Generar grupos automaticamente" %}</a>
     {% else %}
         <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Administrar equipos" %}</a>
     {% endif %}

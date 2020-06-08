@@ -26,7 +26,7 @@ class Torneo(models.Model):
 	estado = models.IntegerField(choices=ESTADO_TORNEO_CHOICES, default=CREACION)
 	fecha = models.DateField()
 	descripcion = models.CharField(max_length=255, blank=True)
-	numero_equipos = models.IntegerField(null=True, blank=True)
+	numero_equipos_max = models.IntegerField(null=True, blank=True)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
@@ -45,7 +45,7 @@ class Fase(models.Model):
 	# fase_numero = models.IntegerField()
 	nombre = models.CharField(max_length=100)
 	tipo_fase = models.IntegerField(choices=TIPO_FASE)
-	numero_equipos = models.IntegerField(null=True, blank=True)
+	numero_equipos_max = models.IntegerField(null=True, blank=True)
 	doble_partido = models.BooleanField()
 
 	numero_sets = models.IntegerField(null=True)
@@ -92,7 +92,6 @@ class Grupo(models.Model):
 	fase = models.ForeignKey('Fase', on_delete=models.CASCADE)
 	nombre = models.CharField(max_length=50)
 	equipos = models.ManyToManyField('Equipo', through='Clasificacion')
-
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 

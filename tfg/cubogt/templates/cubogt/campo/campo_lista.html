@@ -12,15 +12,16 @@
                 <tr>
                     <th>{% trans "Nombre" %}</th>
                     <th></th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for campo in campos_list %}
                     <tr>
                         <td>{{ campo.nombre }}</td>
-                        <td><a type="button" class="btn btn-outline-primary" href="{% url 'campo_editar' torneo.id campo.id %}">{% trans "Editar" %}</a></td>
-                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'campo_borrar' torneo.id campo.id %}">{% trans "Borrar" %}</a></td>
+                        <td>
+                            <a type="button" class="btn btn-outline-primary" href="{% url 'campo_editar' torneo.id campo.id %}">{% trans "Editar" %}</a>
+                            <a type="button" class="btn btn-outline-danger" href="{% url 'campo_borrar' torneo.id campo.id %}">{% trans "Borrar" %}</a>
+                        </td>
                     <tr>
 
                 {% endfor %}

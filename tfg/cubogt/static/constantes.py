@@ -10,33 +10,39 @@ ACTIVO = 1
 TERMINADO = 2
 
 ESTADO_TORNEO_CHOICES = (
-    (CREACION, _("Creación")),
-    (ACTIVO, _("Activo")),
-    (TERMINADO, _("Terminado"))
+	(CREACION, _("Creación")),
+	(ACTIVO, _("Activo")),
+	(TERMINADO, _("Terminado"))
 
 )
 
 
 class Deporte(models.TextChoices):
-    FUTBOL = 'futbol', _("Fútbol")
-    BALONCESTO = 'baloncesto', _("Baloncesto")
-    VOLEIBOL = 'voleibol', _("Voleibol")
-    BALONMANO = 'balonmano', _("Balonmano")
-    WATERPOLO = 'waterpolo', _("Waterpolo")
-    TENIS = 'tenis', _("Tenis")
+	FUTBOL = 'futbol', _("Fútbol")
+	BALONCESTO = 'baloncesto', _("Baloncesto")
+	VOLEIBOL = 'voleibol', _("Voleibol")
+	BALONMANO = 'balonmano', _("Balonmano")
+	WATERPOLO = 'waterpolo', _("Waterpolo")
+	TENIS = 'tenis', _("Tenis")
 
 
 # Fase
 TIPO_FASE = (
-    (1, _("Liga")),
-    (2, _("Eliminatoria"))
+	(1, _("Liga")),
+	(2, _("Eliminatoria"))
 )
-
-
 
 # Tipo de Torneo
 TIPO_TORNEO = (
-    (1, _("Liga")),
-    (2, _("Eliminatoria")),
-    (3, _("Fase de grupos y eliminatorias"))
+	(1, _("Liga")),
+	(2, _("Eliminatoria")),
+	(3, _("Fase de grupos y eliminatorias"))
+)
+
+
+ABECEDARIO = '1'
+NUMEROS = '2'
+GENERAR_GRUPOS_CHOICES = (
+	(ABECEDARIO, _("Abecedario")),
+	(NUMEROS, _("Numeros"))
 )

@@ -1,0 +1,19 @@
+{% extends "cubogt/navbar_fase.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Generar grupos" %}
+{% endblock %}
+
+{% block content %}
+    {% if fase.equipos %}
+        <h3>{% trans "Si quiere generar equipos debe borrar los que tiene creados" %}</h3>
+        <a href="{% url 'grupo_lista' torneo.id fase.id %}">{% trans "Volver" %}</a>
+    {% else %}
+        <h2>{% trans "Generar grupos" %}</h2>
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class=" save btn btn-primary">{% trans "Guardar" %}</button>
+        </form>
+    {% endif %}
+{% endblock content %}
