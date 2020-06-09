@@ -7,10 +7,8 @@ from string import ascii_uppercase
 def borrar_equipo(grupo=Grupo, equipo=Equipo):
 	"""Quita la relacion de un equipo con un grupo"""
 	grupo.equipos.remove(equipo)
-
-
-# clasificacion = get_object_or_404(Clasificacion, grupo=grupo, equipo=equipo)
-# TODO?: ¿Puedo borrar si tengo algo en la clasificacion?
+	# clasificacion = get_object_or_404(Clasificacion, grupo=grupo, equipo=equipo)
+	# TODO?: ¿Puedo borrar si tengo algo en la clasificacion?
 
 
 def borrar_equipo_de_fase(fase=Fase, equipo=Equipo):

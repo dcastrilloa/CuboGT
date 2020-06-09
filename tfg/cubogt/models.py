@@ -140,6 +140,12 @@ class Ascenso(models.Model):
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 
+	def print_posiciones(self):
+		aux = ""
+		for x in range(self.desde_posicion, self.desde_posicion + self.numero_equipos):
+			aux += str(x) + ","
+		return aux[:-1]
+
 
 class Partido(models.Model):
 	grupo = models.ForeignKey('Grupo', on_delete=models.CASCADE)

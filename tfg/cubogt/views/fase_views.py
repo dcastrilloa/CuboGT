@@ -3,7 +3,6 @@ from cubogt.forms import *
 from ..controller import GrupoController
 
 
-
 def fase_lista(request, torneo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
 	fases_list = Fase.objects.filter(torneo=torneo)
@@ -128,7 +127,7 @@ def fase_equipo_borrar_todo(request, torneo_id, fase_id):
 	for grupo in grupos_list:
 		grupo.equipos.clear()
 	fase.equipos.clear()
-	#fase.save()
+	# fase.save()
 
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
 
@@ -140,6 +139,6 @@ def fase_equipo_borrar(request, torneo_id, fase_id, equipo_id):
 
 	GrupoController.borrar_equipo_de_fase(fase, equipo)
 	fase.equipos.remove(equipo)
-	#fase.save()
+	# fase.save()
 
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)

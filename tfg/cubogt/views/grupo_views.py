@@ -81,6 +81,10 @@ def grupo_equipo_lista(request, torneo_id, fase_id):
 	return render(request, 'cubogt/fase/grupo/equipo/grupo_equipos.html', context)
 
 
+def grupo_equipo_lista_especifico(request, torneo_id, fase_id, grupo_id):
+	return grupo_equipo_lista(request, torneo_id, fase_id)
+
+
 def grupo_equipo_editar(request, torneo_id, fase_id, grupo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
 	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)

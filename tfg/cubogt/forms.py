@@ -55,7 +55,7 @@ class FaseEquipoForm(forms.ModelForm):
 		torneo = kwargs.pop('torneo')
 		super(FaseEquipoForm, self).__init__(*args, **kwargs)
 		self.fields['equipos'].queryset = Equipo.objects.filter(torneo=torneo)
-# TODO?: Preguntar si quiero excluir a los equipos que ya están dentro de la fase del torneo
+		# TODO?: Preguntar si quiero excluir a los equipos que ya están dentro de la fase del torneo
 
 
 class GrupoForm(forms.ModelForm):
@@ -80,4 +80,31 @@ class GrupoEquipoForm(forms.ModelForm):
 		grupo_list = Grupo.objects.filter(fase=fase).exclude(id=grupo.id)
 		super(GrupoEquipoForm, self).__init__(*args, **kwargs)
 		self.fields['equipos'].queryset = Equipo.objects.filter(fase=fase).exclude(grupo__in=grupo_list)
-# TODO?: Preguntar si quiero excuir a los equipos que ya estan dentro de un grupo de la fase
+		# TODO?: Preguntar si quiero excuir a los equipos que ya estan dentro de un grupo de la fase
+
+
+class AscensoForm(forms.ModelForm):
+	class Meta:
+		model = Ascenso
+		fields = ['grupo', 'numero_equipos', 'desde_posicion', 'proxima_fase']
+
+	def __init__(self, *args, **kwargs):
+		fase = kwargs.pop('fase')
+		fase_list = Fase.objects.filter(torneo=fase.torneo, esta_terminada=False).exclude(id=fase.id)
+		grupo_list = Grupo.objects.filter(fase=fase)
+		super(AscensoForm, self).__init__(*args, **kwargs)
+		self.fields['proxima_fase'].queryset = fase_list
+		self.fields['grupo'].queryset = grupo_list
+
+
+class AscensoGeneralForm(forms.ModelForm):
+	class Meta:
+		model = Ascenso
+		fields = ['numero_equipos', 'desde_posicion', 'proxima_fase']
+
+	def __init__(self, *args, **kwargs):
+		fase = kwargs.pop('fase')
+		fase_list = Fase.objects.filter(torneo=fase.torneo, esta_terminada=False).exclude(id=fase.id)
+		super(AscensoGeneralForm, self).__init__(*args, **kwargs)
+		self.fields['proxima_fase'].queryset = fase_list
+

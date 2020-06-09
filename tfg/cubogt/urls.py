@@ -38,10 +38,20 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/editar', grupo_views.grupo_editar, name='grupo_editar'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/borrar', grupo_views.grupo_borrar, name='grupo_borrar'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/ver_equipos', grupo_views.grupo_equipo_lista, name='grupo_equipo_lista'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/ver_equipos/#grupo<int:grupo_id>', grupo_views.grupo_equipo_lista_especifico, name='grupo_equipo_lista_especifico'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/ver_equipos/repartir_equipos', grupo_views.grupo_repartir_equipos, name='grupo_repartir_equipos'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/ver_equipos/borrar_todos', grupo_views.grupo_equipo_borrar_todo, name='grupo_equipo_borrar_todo'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/editar_equipos', grupo_views.grupo_equipo_editar, name='grupo_equipo_editar'),
-	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/borrar_equipo/<int:equipo_id>', grupo_views.grupo_equipo_borrar, name='grupo_equipo_borrar')
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/borrar_equipo/<int:equipo_id>', grupo_views.grupo_equipo_borrar, name='grupo_equipo_borrar'),
+
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso', ascenso_views.ascenso_lista, name='ascenso_lista'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/nuevo', ascenso_views.ascenso_nuevo, name='ascenso_nuevo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/nuevo_general', ascenso_views.ascenso_nuevo_general, name='ascenso_nuevo_general'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/borrar_todo', ascenso_views.ascenso_borrar_todo, name='ascenso_borrar_todo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/<int:ascenso_id>/editar', ascenso_views.ascenso_editar, name='ascenso_editar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/<int:ascenso_id>/borrar', ascenso_views.ascenso_borrar, name='ascenso_borrar'),
+
+
 
 
 ]
