@@ -5,10 +5,11 @@
 
 {% block content %}
     <h2>{% trans "Equipos fase: " %}{{ fase.nombre }}</h2>
-    <a type="button" class="btn btn-primary" href="{% url 'fase_equipo_agregar_todo' torneo.id fase.id %}">{% trans "Añadir todos los equipos" %}</a>
-    <a type="button" class="btn btn-secondary" href="{% url 'fase_equipo_editar' torneo.id fase.id %}">{% trans "Editar equipos de la fase" %}</a>
-    <a type="button" class="btn btn-danger" href="{% url 'fase_equipo_borrar_todo' torneo.id fase.id %}">{% trans "Limpiar todos los equipos" %}</a>
-
+    {% if torneo.estado == CREACION %}
+        <a type="button" class="btn btn-primary" href="{% url 'fase_equipo_agregar_todo' torneo.id fase.id %}">{% trans "Añadir todos los equipos" %}</a>
+        <a type="button" class="btn btn-secondary" href="{% url 'fase_equipo_editar' torneo.id fase.id %}">{% trans "Editar equipos de la fase" %}</a>
+        <a type="button" class="btn btn-danger" href="{% url 'fase_equipo_borrar_todo' torneo.id fase.id %}">{% trans "Limpiar todos los equipos" %}</a>
+    {% endif %}
 
     {% if equipo_list %}
         <table class="table table-hover">
@@ -23,7 +24,9 @@
                     <tr>
                         <td>{{ equipo.nombre }}</td>
                         <td>
-                            <a type="button" class="btn btn-outline-danger" href="{% url 'fase_equipo_borrar' torneo.id fase.id equipo.id%}">{% trans "Quitar de la fase" %}</a>
+                            {% if torneo.estado == CREACION %}
+                                <a type="button" class="btn btn-outline-danger" href="{% url 'fase_equipo_borrar' torneo.id fase.id equipo.id%}">{% trans "Quitar de la fase" %}</a>
+                            {% endif %}
                         </td>
                     <tr>
                 {% endfor %}

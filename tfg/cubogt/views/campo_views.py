@@ -42,7 +42,7 @@ def campo_editar(request, torneo_id, campo_id):
 
 
 def campo_borrar(request, torneo_id, campo_id):
-	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
+	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user, estado=CREACION)
 	campo = get_object_or_404(Campo, pk=campo_id, torneo=torneo)
 
 	campo.delete()

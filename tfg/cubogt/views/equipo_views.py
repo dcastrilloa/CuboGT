@@ -44,8 +44,8 @@ def equipo_editar(request, torneo_id, equipo_id):
 
 
 def equipo_borrar(request, torneo_id, equipo_id):
-	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	equipo = torneo.equipos.get(pk=equipo_id)
+	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user, estado=CREACION)
+	equipo = torneo.equipos.get(pk=equipo_id, torneo=torneo)
 
 	torneo.equipos.remove(equipo)
 

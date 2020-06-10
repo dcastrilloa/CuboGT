@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from cubogt.forms import *
+from cubogt.forms import FaseForm, FasePuntoForm, FaseSetForm, FaseEquipoForm
 from ..controller import GrupoController
+from ..models import Torneo, Fase, Equipo
+from ..static.constantes import CREACION
 
 
 def fase_lista(request, torneo_id):
@@ -42,7 +44,7 @@ def fase_nueva(request, torneo_id):
 
 def fase_editar(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	if request.method == "POST":
 		form = FaseForm(request.POST, instance=fase)
 		form_set = FaseSetForm(request.POST, instance=fase)
@@ -71,7 +73,7 @@ def fase_editar(request, torneo_id, fase_id):
 
 def fase_borrar(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 
 	fase.delete()
 
@@ -96,7 +98,7 @@ def fase_equipo_lista(request, torneo_id, fase_id):
 
 def fase_equipo_editar(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	if request.method == "POST":
 		form = FaseEquipoForm(request.POST, instance=fase, torneo=torneo)
 		if form.is_valid():
@@ -113,7 +115,7 @@ def fase_equipo_editar(request, torneo_id, fase_id):
 
 def fase_equipo_agregar_todo(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	fase.equipos.add(*Equipo.objects.filter(torneo=torneo))
 	fase.save()
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
@@ -121,24 +123,27 @@ def fase_equipo_agregar_todo(request, torneo_id, fase_id):
 
 def fase_equipo_borrar_todo(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 
 	grupos_list = fase.grupo_set.all()
 	for grupo in grupos_list:
 		grupo.equipos.clear()
 	fase.equipos.clear()
-	# fase.save()
-
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
 
 
 def fase_equipo_borrar(request, torneo_id, fase_id, equipo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	equipo = get_object_or_404(Equipo, pk=equipo_id, fase=fase)
 
 	GrupoController.borrar_equipo_de_fase(fase, equipo)
 	fase.equipos.remove(equipo)
-	# fase.save()
-
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
+
+
+def fase_iniciar(request, torneo_id):  # TODO
+	torneo = get_object_or_404(Torneo, pk=torneo_id)
+	fases_list = Fase.objects.filter(torneo=torneo)
+	context = {'torneo': torneo, 'fases_list': fases_list}
+	return render(request, 'cubogt/iniciar_fase/fase_lista.html', context)

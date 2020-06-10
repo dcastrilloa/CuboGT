@@ -3,21 +3,32 @@ from django.db import models
 
 # Torneo
 
-# Estado Torneo
+# Estado Torneo y Fase
 
 CREACION = 0
 ACTIVO = 1
 TERMINADO = 2
 
-ESTADO_TORNEO_CHOICES = (
+ESTADO_CHOICES = (
 	(CREACION, _("Creación")),
 	(ACTIVO, _("Activo")),
 	(TERMINADO, _("Terminado"))
 
 )
 
+# Estado Partido
+ESPERA = 0
+JUGANDO = 1
 
-class Deporte(models.TextChoices):
+ESTADO_PARTIDO_CHOICES = (
+	(ESPERA, _("En espera")),
+	(JUGANDO, _("Jugándose")),
+	(TERMINADO, _("Terminado"))
+
+)
+
+
+class DeporteChoices(models.TextChoices):
 	FUTBOL = 'futbol', _("Fútbol")
 	BALONCESTO = 'baloncesto', _("Baloncesto")
 	VOLEIBOL = 'voleibol', _("Voleibol")

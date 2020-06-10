@@ -20,7 +20,9 @@
                         <td>{{ campo.nombre }}</td>
                         <td>
                             <a type="button" class="btn btn-outline-primary" href="{% url 'campo_editar' torneo.id campo.id %}">{% trans "Editar" %}</a>
-                            <a type="button" class="btn btn-outline-danger" href="{% url 'campo_borrar' torneo.id campo.id %}">{% trans "Borrar" %}</a>
+                            {% if torneo.estado == CREACION%}
+                                <a type="button" class="btn btn-outline-danger" href="{% url 'campo_borrar' torneo.id campo.id %}">{% trans "Borrar" %}</a>
+                            {% endif %}
                         </td>
                     <tr>
 

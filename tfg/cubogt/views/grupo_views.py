@@ -14,7 +14,7 @@ def grupo_lista(request, torneo_id, fase_id):
 
 def grupo_nuevo(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	if request.method == "POST":
 		form = GrupoForm(request.POST)
 		if form.is_valid():
@@ -31,7 +31,7 @@ def grupo_nuevo(request, torneo_id, fase_id):
 
 def grupo_generar(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	if request.method == "POST":
 		form = GrupoGenerarForm(request.POST)
 		if form.is_valid():
@@ -48,7 +48,7 @@ def grupo_generar(request, torneo_id, fase_id):
 
 def grupo_editar(request, torneo_id, fase_id, grupo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	grupo = get_object_or_404(Grupo, pk=grupo_id, fase=fase)
 	if request.method == "POST":
 		form = GrupoForm(request.POST, instance=grupo)
@@ -65,7 +65,7 @@ def grupo_editar(request, torneo_id, fase_id, grupo_id):
 
 def grupo_borrar(request, torneo_id, fase_id, grupo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	grupo = get_object_or_404(Grupo, pk=grupo_id, fase=fase)
 	grupo.delete()
 
@@ -87,7 +87,7 @@ def grupo_equipo_lista_especifico(request, torneo_id, fase_id, grupo_id):
 
 def grupo_equipo_editar(request, torneo_id, fase_id, grupo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	grupo = get_object_or_404(Grupo, pk=grupo_id, fase=fase)
 	if request.method == "POST":
 		form = GrupoEquipoForm(request.POST, instance=grupo, fase=fase, grupo=grupo)
@@ -105,7 +105,7 @@ def grupo_equipo_editar(request, torneo_id, fase_id, grupo_id):
 
 def grupo_equipo_borrar_todo(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	grupo_list = fase.grupo_set.all()
 	for grupo in grupo_list:
 		grupo.equipos.clear()
@@ -115,7 +115,7 @@ def grupo_equipo_borrar_todo(request, torneo_id, fase_id):
 
 def grupo_equipo_borrar(request, torneo_id, fase_id, grupo_id, equipo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	grupo = get_object_or_404(Grupo, pk=grupo_id, fase=fase)
 	equipo = get_object_or_404(Equipo, pk=equipo_id, grupo=grupo)
 
@@ -126,7 +126,7 @@ def grupo_equipo_borrar(request, torneo_id, fase_id, grupo_id, equipo_id):
 
 def grupo_repartir_equipos(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 
 	GrupoController.repartir_equipos(fase)
 

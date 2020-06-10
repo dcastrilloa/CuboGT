@@ -40,7 +40,7 @@ def torneo_ver(request, torneo_id):
 
 
 def torneo_editar(request, torneo_id):
-	torneo = get_object_or_404(Torneo, pk=torneo_id)
+	torneo = get_object_or_404(Torneo, pk=torneo_id, estado=CREACION)
 	if request.method == "POST":
 		form = TorneoForm(request.POST, instance=torneo)
 		if form.is_valid():

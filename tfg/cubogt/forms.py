@@ -90,7 +90,7 @@ class AscensoForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		fase = kwargs.pop('fase')
-		fase_list = Fase.objects.filter(torneo=fase.torneo, esta_terminada=False).exclude(id=fase.id)
+		fase_list = Fase.objects.filter(torneo=fase.torneo, estado=CREACION).exclude(id=fase.id)
 		grupo_list = Grupo.objects.filter(fase=fase)
 		super(AscensoForm, self).__init__(*args, **kwargs)
 		self.fields['proxima_fase'].queryset = fase_list
@@ -104,7 +104,7 @@ class AscensoGeneralForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		fase = kwargs.pop('fase')
-		fase_list = Fase.objects.filter(torneo=fase.torneo, esta_terminada=False).exclude(id=fase.id)
+		fase_list = Fase.objects.filter(torneo=fase.torneo, estado=CREACION).exclude(id=fase.id)
 		super(AscensoGeneralForm, self).__init__(*args, **kwargs)
 		self.fields['proxima_fase'].queryset = fase_list
 

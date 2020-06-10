@@ -5,12 +5,15 @@
 
 {% block content %}
     <h2>{% trans "Grupos" %}</h2>
-    <a type="button" class="btn btn-primary" href="{% url 'grupo_nuevo' torneo.id fase.id %}">{% trans "Nuevo grupo" %}</a>
-    {% if not grupo_list %}
-        <a type="button" class="btn btn-info" href="{% url 'grupo_generar' torneo.id fase.id %}">{% trans "Generar grupos automaticamente" %}</a>
-    {% else %}
-        <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Administrar equipos" %}</a>
+    {% if torneo.estado == CREACION %}
+        <a type="button" class="btn btn-primary" href="{% url 'grupo_nuevo' torneo.id fase.id %}">{% trans "Nuevo grupo" %}</a>
+        {% if not grupo_list %}
+            <a type="button" class="btn btn-info" href="{% url 'grupo_generar' torneo.id fase.id %}">{% trans "Generar grupos automaticamente" %}</a>
+        {% else %}
+            <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Administrar equipos" %}</a>
+        {% endif %}
     {% endif %}
+
 
     {% if grupo_list %}
         <table class="table table-hover">
@@ -27,8 +30,10 @@
                         <td><a href="#">{{ grupo.nombre }}</a></td>
                         <td>{{ grupo.equipos.count }}</td>
                         <td>
-                            <a type="button" class="btn btn-outline-primary" href="{% url 'grupo_editar' torneo.id fase.id grupo.id %}">{% trans "Editar" %}</a>
-                            <a type="button" class="btn btn-outline-danger" href="{% url 'grupo_borrar' torneo.id fase.id grupo.id %}">{% trans "Borrar" %}</a>
+                            {% if torneo.estado == CREACION %}
+                                <a type="button" class="btn btn-outline-primary" href="{% url 'grupo_editar' torneo.id fase.id grupo.id %}">{% trans "Editar" %}</a>
+                                <a type="button" class="btn btn-outline-danger" href="{% url 'grupo_borrar' torneo.id fase.id grupo.id %}">{% trans "Borrar" %}</a>
+                            {% endif %}
                         </td>
                     <tr>
 

@@ -2,10 +2,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from cubogt.static.constantes import *
+from django.shortcuts import redirect
 
 
 class Deporte(models.Model):
-	nombre = models.CharField(max_length=15, choices=Deporte.choices, default=Deporte.VOLEIBOL)
+	nombre = models.CharField(max_length=15, choices=DeporteChoices.choices, default=DeporteChoices.VOLEIBOL)
 	juego = models.BooleanField()
 	set = models.BooleanField()
 	punto = models.BooleanField(default=False)
@@ -23,7 +24,7 @@ class Torneo(models.Model):
 	nombre = models.CharField(max_length=100)
 
 	usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-	estado = models.IntegerField(choices=ESTADO_TORNEO_CHOICES, default=CREACION)
+	estado = models.IntegerField(choices=ESTADO_CHOICES, default=CREACION)
 	fecha = models.DateField()
 	descripcion = models.CharField(max_length=255, blank=True)
 	numero_equipos_max = models.IntegerField(null=True, blank=True)
@@ -54,7 +55,7 @@ class Fase(models.Model):
 	# cambio_de_campo = models.BooleanField()
 	# cambio_a_los = models.IntegerField(default=None)
 
-	esta_terminada = models.BooleanField(default=False)
+	estado = models.IntegerField(choices=ESTADO_CHOICES, default=CREACION)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
@@ -140,6 +141,9 @@ class Ascenso(models.Model):
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 
+	class Meta:
+		ordering = ["grupo"]
+
 	def print_posiciones(self):
 		aux = ""
 		for x in range(self.desde_posicion, self.desde_posicion + self.numero_equipos):
@@ -162,7 +166,7 @@ class Partido(models.Model):
 
 	campo = models.ForeignKey('Campo', on_delete=models.CASCADE)
 	jornada = models.IntegerField()
-	esta_terminado = models.BooleanField(default=False)
+	estado = models.IntegerField(choices=ESTADO_PARTIDO_CHOICES, default=ESPERA)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
@@ -208,6 +212,7 @@ class Juego(models.Model):
 class Campo(models.Model):
 	torneo = models.ForeignKey('Torneo', on_delete=models.CASCADE)
 	nombre = models.CharField(max_length=50)
+	libre = models.BooleanField(default=True)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)

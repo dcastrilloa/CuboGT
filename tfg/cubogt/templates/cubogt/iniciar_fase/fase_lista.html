@@ -4,10 +4,9 @@
 {% block title %}{% trans "Fases" %}{% endblock %}
 
 {% block content %}
+    <!--TODO-->
     <h2>{% trans "Fases" %}</h2>
-    {% if torneo.estado == CREACION %}
-        <a type="button" class="btn btn-primary" href="{% url 'fase_nueva' torneo.id %}">{% trans "Nueva fase" %}</a>
-    {% endif %}
+    <a type="button" class="btn btn-primary" href="{% url 'fase_nueva' torneo.id %}">{% trans "Nueva fase" %}</a>
     {% if fases_list %}
         <table class="table table-hover">
             <thead>
@@ -44,10 +43,8 @@
                             <td>{{ fase.puntos_maximos }}</td>
                         {% endif %}
                         <td>
-                            {% if torneo.estado == CREACION %}
-                                <a type="button" class="btn btn-outline-primary" href="{% url 'fase_editar' torneo.id fase.id %}">{% trans "Editar" %}</a>
-                                <a type="button" class="btn btn-outline-danger" href="{% url 'fase_borrar' torneo.id fase.id %}">{% trans "Borrar" %}</a>
-                            {% endif %}
+                            <a type="button" class="btn btn-outline-primary" href="{% url 'fase_editar' torneo.id fase.id %}">{% trans "Editar" %}</a>
+                            <a type="button" class="btn btn-outline-danger" href="{% url 'fase_borrar' torneo.id fase.id %}">{% trans "Borrar" %}</a>
                         </td>
                     <tr>
 
