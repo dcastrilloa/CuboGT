@@ -5,14 +5,14 @@
 
 {% block content %}
     <h2>{% trans "Equipos grupo: " %}{{ grupo.nombre }}</h2>
-    {% if not fase.estado %}
+    {% if fase.estado == CREACION %}
         <a type="button" class="btn btn-primary" href="{% url 'grupo_repartir_equipos' torneo.id fase.id %}">{% trans "Repartir equipos sin asignar" %}</a>
         <a type="button" class="btn btn-danger" href="{% url 'grupo_equipo_borrar_todo' torneo.id fase.id %}">{% trans "Limpiar todos los grupos" %}</a>
     {% endif %}
     {% if grupo_list %}
         {% for grupo in grupo_list %}
             <h3 id="grupo{{ grupo.id }}">{% trans "Grupo " %} {{ grupo.nombre }}</h3>
-            {% if not fase.estado %}
+            {% if fase.estado == CREACION %}
                 <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_editar' torneo.id fase.id grupo.id %}">{% trans "Editar equipos" %}</a>
             {% endif %}
             {% if grupo.equipos.all %}
@@ -29,7 +29,7 @@
                             <tr>
                                 <td>{{ equipo.nombre }}</td>
                                 <td>
-                                    {% if not fase.estado %}
+                                    {% if fase.estado == CREACION %}
                                         <a type="button" class="btn btn-outline-danger" href="{% url 'grupo_equipo_borrar' torneo.id fase.id grupo.id equipo.id %}">{% trans "Quitar del grupo" %}</a>
                                     {% endif %}
                                 </td>

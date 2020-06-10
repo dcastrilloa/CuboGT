@@ -5,12 +5,10 @@
 
 {% block content %}
     <h2>{% trans "Ascenso" %}</h2>
-    {% if torneo.estado == CREACION %}
-        <a type="button" class="btn btn-primary" href="{% url 'ascenso_nuevo' torneo.id fase.id %}">{% trans "Nuevo ascenso de grupo" %}</a>
-        <a type="button" class="btn btn-info" href="{% url 'ascenso_nuevo_general' torneo.id fase.id %}">{% trans "Nuevo ascenso general" %}</a>
-        {% if ascenso_list %}
-            <a type="button" class="btn btn-danger" href="{% url 'ascenso_borrar_todo' torneo.id fase.id %}">{% trans "Borrar todo" %}</a>
-        {% endif %}
+    <a type="button" class="btn btn-primary" href="{% url 'ascenso_nuevo' torneo.id fase.id %}">{% trans "Nuevo ascenso de grupo" %}</a>
+    <a type="button" class="btn btn-info" href="{% url 'ascenso_nuevo_general' torneo.id fase.id %}">{% trans "Nuevo ascenso general" %}</a>
+    {% if ascenso_list %}
+        <a type="button" class="btn btn-danger" href="{% url 'ascenso_borrar_todo' torneo.id fase.id %}">{% trans "Borrar todo" %}</a>
     {% endif %}
 
     {% if ascenso_list %}
@@ -30,7 +28,7 @@
                         <td>{{ ascenso.proxima_fase }}</td>
                         <td>{{ ascenso.print_posiciones }}</td>
                         <td>
-                            {% if torneo.estado == CREACION %}
+                            {% if ascenso.proxima_fase.estado == CREACION %}
                                 <a type="button" class="btn btn-outline-primary" href="{% url 'ascenso_editar' torneo.id fase.id ascenso.id %}">{% trans "Editar" %}</a>
                                 <a type="button" class="btn btn-outline-danger" href="{% url 'ascenso_borrar' torneo.id fase.id ascenso.id %}">{% trans "Borrar" %}</a>
                             {% endif %}

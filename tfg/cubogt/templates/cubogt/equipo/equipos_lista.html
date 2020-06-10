@@ -28,7 +28,7 @@
                         <td>
                             <a type="button" class="btn btn-outline-primary" href="{% url 'equipo_editar' torneo.id equipo.id %}">{% trans "Editar" %}</a>
                             {% if torneo.estado == CREACION %}
-                            <a type="button" class="btn btn-outline-danger" href="{% url 'equipo_borrar' torneo.id equipo.id %}">{% trans "Borrar" %}</a>
+                                <a type="button" class="btn btn-outline-danger" href="{% url 'equipo_borrar' torneo.id equipo.id %}">{% trans "Borrar" %}</a>
                             {% endif %}
                         </td>
                     <tr>
