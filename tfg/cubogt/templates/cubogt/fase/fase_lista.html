@@ -30,10 +30,7 @@
                         <td><a href="{% url 'fase_ver' torneo.id fase.id %}">{{ fase.nombre }}</a></td>
                         <td>{{ fase.numero_equipos_max }}</td>
                         <td>{{ fase.get_tipo_fase_display }}</td>
-                        <td>{{ fase.doble_partid }}</td>
-                        {% if torneo.deporte.juego %}
-                            <td>{{ fase.doble_partid }}</td>
-                        {% endif %}
+                        <td>{{ fase.doble_partido_label }}</td>
                         {% if torneo.deporte.set %}
                             <td>{{ fase.numero_sets }}</td>
                         {% endif %}

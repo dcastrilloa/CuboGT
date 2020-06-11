@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if fase.equipos %}
+    {% if fase.grupo_set.count %}
         <h3>{% trans "Si quiere generar equipos debe borrar los que tiene creados" %}</h3>
         <a href="{% url 'grupo_lista' torneo.id fase.id %}">{% trans "Volver" %}</a>
     {% else %}

@@ -32,6 +32,9 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/borrar_todos', fase_views.fase_equipo_borrar_todo, name='fase_equipo_borrar_todo'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/borrar/<int:equipo_id>', fase_views.fase_equipo_borrar, name='fase_equipo_borrar'),
 
+	path('torneo/<int:torneo_id>/fase_iniciar', fase_views.fase_iniciar_lista, name='fase_iniciar_lista'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/iniciar', fase_views.fase_iniciar, name='fase_iniciar'),
+
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo', grupo_views.grupo_lista, name='grupo_lista'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/nuevo', grupo_views.grupo_nuevo, name='grupo_nuevo'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/generar', grupo_views.grupo_generar, name='grupo_generar'),

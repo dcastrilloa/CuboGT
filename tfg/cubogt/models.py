@@ -63,6 +63,20 @@ class Fase(models.Model):
 	def __str__(self):
 		return self.nombre
 
+	def doble_partido_label(self):
+		if self.doble_partido:
+			return _("Si")
+		else:
+			return _("No")
+
+	def equipos_apuntados_max_label(self):
+		label = str(self.equipos.count()) + "/"
+		if self.numero_equipos_max is not None and self.numero_equipos_max > 0:
+			label += str(self.numero_equipos_max)
+		else:
+			label += _("Indefinido")
+		return label
+
 
 class Equipo(models.Model):
 	nombre = models.CharField(max_length=50)
@@ -144,7 +158,7 @@ class Ascenso(models.Model):
 	class Meta:
 		ordering = ["grupo"]
 
-	def print_posiciones(self):
+	def posiciones_label(self):
 		aux = ""
 		for x in range(self.desde_posicion, self.desde_posicion + self.numero_equipos):
 			aux += str(x) + ","

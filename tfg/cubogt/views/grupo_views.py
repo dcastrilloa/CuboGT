@@ -119,7 +119,7 @@ def grupo_equipo_borrar(request, torneo_id, fase_id, grupo_id, equipo_id):
 	grupo = get_object_or_404(Grupo, pk=grupo_id, fase=fase)
 	equipo = get_object_or_404(Equipo, pk=equipo_id, grupo=grupo)
 
-	GrupoController.borrar_equipo()
+	GrupoController.borrar_equipo(grupo, equipo)
 
 	return redirect('grupo_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
 

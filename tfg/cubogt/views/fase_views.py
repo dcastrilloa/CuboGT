@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from cubogt.forms import FaseForm, FasePuntoForm, FaseSetForm, FaseEquipoForm
-from ..controller import GrupoController
+from ..controller import GrupoController, FaseController
 from ..models import Torneo, Fase, Equipo
 from ..static.constantes import CREACION
 
@@ -142,8 +142,24 @@ def fase_equipo_borrar(request, torneo_id, fase_id, equipo_id):
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
 
 
-def fase_iniciar(request, torneo_id):  # TODO
+def fase_iniciar_lista(request, torneo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fases_list = Fase.objects.filter(torneo=torneo)
+	fases_list = Fase.objects.filter(torneo=torneo, estado=CREACION)
 	context = {'torneo': torneo, 'fases_list': fases_list}
-	return render(request, 'cubogt/iniciar_fase/fase_lista.html', context)
+	return render(request, 'cubogt/iniciar_fase/fase_iniciar_lista.html', context)
+
+
+def fase_iniciar(request, torneo_id, fase_id):
+	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
+
+	msg_error = FaseController.fase_iniciar_comprobaciones(fase)
+	if msg_error:
+		context = {'torneo': torneo, 'fase': fase, 'msg_error_list': msg_error}
+		return render(request, 'cubogt/iniciar_fase/fase_iniciar_error.html', context)
+
+	else:
+		# FaseController.fase_iniciar(fase)
+		print("TODO ESTA CORRECTO")
+		context = {'torneo': torneo, }
+		return render(request, 'cubogt/iniciar_fase/fase_iniciar_lista.html', context)

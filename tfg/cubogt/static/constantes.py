@@ -38,6 +38,9 @@ class DeporteChoices(models.TextChoices):
 
 
 # Fase
+LIGA = 1
+ELIMINATORIA = 2
+
 TIPO_FASE = (
 	(1, _("Liga")),
 	(2, _("Eliminatoria"))
