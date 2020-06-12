@@ -1,20 +1,12 @@
-{% extends  disenyo %}
+{% extends  "cubogt/base/body/navbar_superior.html" %}
 {% load i18n %}
 
 {% block title %}
-    {% if  torneo %}
-        {% trans "Editar torneo" %}
-    {% else %}
-        {% trans "Nuevo Torneo" %}
-    {% endif %}
+    {% trans "Nuevo Torneo" %}
 {% endblock %}
 
-{% block content %}
-    {% if  torneo %}
-        <h1>{% trans "Editar Torneo" %}</h1>
-    {% else %}
-       <h1>{% trans "Nuevo Torneo" %}</h1>
-    {% endif %}
+{% block content_inferior %}
+    <h1>{% trans "Nuevo Torneo" %}</h1>
 
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
@@ -23,4 +15,4 @@
 
 
 
-{% endblock content %}
+{% endblock content_inferior %}

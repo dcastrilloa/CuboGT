@@ -1,0 +1,55 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar.html" %}
+{% load i18n %}
+
+{% block nav_lateral %}
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'torneo' torneo.id %}">
+                <span data-feather="home"></span>
+                {% trans "Información" %} <span class="sr-only">(current)</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'fase_iniciar_lista' torneo.id %}">
+                <span data-feather="users"></span>
+                {% trans "Iniciar Fase" %}
+            </a>
+        </li>
+        {% if fase_activa_terminada_list %}
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>{% trans "Fases iniciadas:" %}</span>
+            </h6>
+            {% for fase in fase_activa_terminada_list %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span data-feather="users"></span>
+                        {{ fase.nombre }} - {{ fase.get_estado_display }}
+                    </a>
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+        <span>{% trans "Administración" %}</span>
+    </h6>
+    <ul class="nav flex-column mb-2">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'equipo_lista' torneo.id %}">
+                <span data-feather="file-text"></span>
+                {% trans "Equipos" %}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'campo_lista' torneo.id %}">
+                <span data-feather="file-text"></span>
+                {% trans "Campos" %}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'fase_lista' torneo.id %}">
+                <span data-feather="file-text"></span>
+                {% trans "Fases" %}
+            </a>
+        </li>
+    </ul>
+{% endblock nav_lateral %}

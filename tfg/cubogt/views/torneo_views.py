@@ -7,10 +7,6 @@ from cubogt.static.constantes import *
 from django.utils import timezone
 
 
-def index(request):
-	return redirect('lista_torneo')
-
-
 # TORNEO
 def torneo_lista(request):
 	mis_torneos_list = Torneo.objects.filter(usuario=request.user)
@@ -30,8 +26,7 @@ def torneo_nuevo(request):
 	else:
 		form = TorneoForm()
 
-	disenyo = "cubogt/base.html"
-	context = {'form': form, 'disenyo': disenyo}
+	context = {'form': form}
 	return render(request, 'cubogt/torneos/nuevo_torneo.html', context)
 
 
@@ -55,11 +50,9 @@ def torneo_editar(request, torneo_id):
 	else:
 		form = TorneoForm(instance=torneo)
 
-	disenyo = "cubogt/navbar.html"
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
-	context = {'torneo': torneo, 'form': form, 'disenyo': disenyo,
-			   'fase_activa_terminada_list': fase_activa_terminada_list}
-	return render(request, 'cubogt/torneos/nuevo_torneo.html', context)
+	context = {'torneo': torneo, 'form': form, 'fase_activa_terminada_list': fase_activa_terminada_list}
+	return render(request, 'cubogt/torneos/torneo_editar.html', context)
 
 
 def torneo_borrar(request, torneo_id):

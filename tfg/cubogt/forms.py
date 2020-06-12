@@ -86,7 +86,7 @@ class GrupoEquipoForm(forms.ModelForm):
 class AscensoForm(forms.ModelForm):
 	class Meta:
 		model = Ascenso
-		fields = ['grupo', 'numero_equipos', 'desde_posicion', 'proxima_fase']
+		fields = ['grupo', 'desde_posicion', 'numero_equipos', 'proxima_fase']
 
 	def __init__(self, *args, **kwargs):
 		fase = kwargs.pop('fase')
@@ -100,7 +100,7 @@ class AscensoForm(forms.ModelForm):
 class AscensoGeneralForm(forms.ModelForm):
 	class Meta:
 		model = Ascenso
-		fields = ['numero_equipos', 'desde_posicion', 'proxima_fase']
+		fields = ['desde_posicion', 'numero_equipos', 'proxima_fase']
 
 	def __init__(self, *args, **kwargs):
 		fase = kwargs.pop('fase')

@@ -1,0 +1,40 @@
+{% extends "cubogt/base/base.html" %}
+{% load i18n %}
+
+{% block body %}
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        {% if torneo %}
+            <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{% url 'torneo' torneo.id %}">CuboGT</a>
+        {% else %}
+            <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{% url 'lista_torneo' %}">CuboGT</a>
+        {% endif %}
+
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
+                data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+
+        {% if torneo %}
+            <ul class="navbar-nav px-3">
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="{% url 'lista_torneo' %}">{% trans "Mis Torneos" %}</a>
+                </li>
+            </ul>
+        {% endif %}
+
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{% url 'logout' %}">{% trans "Cerrar Sesion" %}</a>
+            </li>
+        </ul>
+    </nav>
+
+    {% block content_inferior %}
+    {% endblock content_inferior %}
+
+    <footer>
+
+    </footer>
+{% endblock body %}

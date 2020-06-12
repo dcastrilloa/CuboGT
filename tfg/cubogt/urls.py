@@ -4,7 +4,7 @@ from cubogt.views import *
 
 
 urlpatterns = [
-	path('', torneo_views.index, name='index'),
+	path('', torneo_views.torneo_lista, name='index'),
 	path('mis_torneos/', torneo_views.torneo_lista, name='lista_torneo'),
 	path('nuevo_torneo/', torneo_views.torneo_nuevo, name='nuevo_torneo'),
 	path('torneo/<int:torneo_id>/', torneo_views.torneo_ver, name='torneo'),

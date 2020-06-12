@@ -1,39 +1,33 @@
-{% extends "cubogt/base.html" %}
+{% extends "cubogt/base/body/navbar_superior.html" %}
 {% load i18n %}
 
 {% block title %}{% trans "Mis torneos" %}{% endblock %}
 
-{% block content %}
+{% block content_inferior %}
     <h1>{% trans "Mis torneos" %}</h1>
-    <a href="{% url 'nuevo_torneo' %}"><button class="btn btn-primary">{% trans "Crear torneo" %}</button></a>
+    <a href="{% url 'nuevo_torneo' %}">
+        <button class="btn btn-primary">{% trans "Crear torneo" %}</button>
+    </a>
     {% if mis_torneos_list %}
         <table class="table table-hover">
             <thead>
-                <tr>
-                    <th>{% trans "Nombre" %}</th>
-                    <th>{% trans "Fecha" %}</th>
-                    <th>{% trans "Estado" %}</th>
-                    <th>{% trans "Deporte" %}</th>
-                </tr>
+            <tr>
+                <th>{% trans "Nombre" %}</th>
+                <th>{% trans "Fecha" %}</th>
+                <th>{% trans "Estado" %}</th>
+                <th>{% trans "Deporte" %}</th>
+            </tr>
             </thead>
             <tbody>
-                {% for torneo in mis_torneos_list %}
-
-                    <tr>
-                        <td><a class="torneo" href="{% url 'torneo' torneo.id %}">{{ torneo.nombre }}</a></td>
-                        <td>{{ torneo.fecha }}</td>
-                        <td>{{ torneo.get_estado_display }}</td>
-                        <td>{{ torneo.deporte.get_nombre_display}}</td>
-                    <tr>
-
-                {% endfor %}
+            {% for torneo in mis_torneos_list %}
+                <tr>
+                    <td><a class="torneo" href="{% url 'torneo' torneo.id %}">{{ torneo.nombre }}</a></td>
+                    <td>{{ torneo.fecha }}</td>
+                    <td>{{ torneo.get_estado_display }}</td>
+                    <td>{{ torneo.deporte.get_nombre_display }}</td>
+                <tr>
+            {% endfor %}
             </tbody>
         </table>
-
-
-
     {% endif %}
-
-
-
-{% endblock content %}
+{% endblock content_inferior %}

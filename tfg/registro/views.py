@@ -3,4 +3,7 @@ from django.shortcuts import redirect
 
 # Create your views here.
 def index(request):
-	return redirect('login')
+	if request.user.is_authenticated:
+		return redirect('lista_torneo')
+	else:
+		return redirect('login')
