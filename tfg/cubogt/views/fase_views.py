@@ -8,7 +8,9 @@ from ..static.constantes import CREACION
 def fase_lista(request, torneo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
 	fases_list = Fase.objects.filter(torneo=torneo)
-	context = {'torneo': torneo, 'fases_list': fases_list}
+
+	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
+	context = {'torneo': torneo,'fase_activa_terminada_list': fase_activa_terminada_list, 'fases_list': fases_list}
 	return render(request, 'cubogt/fase/fase_lista.html', context)
 
 
@@ -38,7 +40,10 @@ def fase_nueva(request, torneo_id):
 		form = FaseForm()
 		form_set = FaseSetForm()
 		form_punto = FasePuntoForm()
-	context = {'torneo': torneo, 'form': form, 'form_set': form_set, 'form_punto': form_punto}
+
+	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
+	context = {'torneo': torneo,'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form,
+			   'form_set': form_set, 'form_punto': form_punto}
 	return render(request, 'cubogt/fase/fase_nueva.html', context)
 
 
@@ -67,7 +72,10 @@ def fase_editar(request, torneo_id, fase_id):
 		form = FaseForm(instance=fase)
 		form_set = FaseSetForm(instance=fase)
 		form_punto = FasePuntoForm(instance=fase)
-	context = {'torneo': torneo, 'form': form, 'form_set': form_set, 'form_punto': form_punto}
+
+	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
+	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form,
+			   'form_set': form_set, 'form_punto': form_punto}
 	return render(request, 'cubogt/fase/fase_editar.html', context)
 
 
@@ -159,7 +167,6 @@ def fase_iniciar(request, torneo_id, fase_id):
 		return render(request, 'cubogt/iniciar_fase/fase_iniciar_error.html', context)
 
 	else:
-		# FaseController.fase_iniciar(fase)
-		print("TODO ESTA CORRECTO")
+		FaseController.fase_iniciar(fase)
 		context = {'torneo': torneo, }
 		return render(request, 'cubogt/iniciar_fase/fase_iniciar_lista.html', context)

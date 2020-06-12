@@ -1,11 +1,13 @@
-{% extends "cubogt/navbar.html" %}
+{% extends "cubogt/navbar_torneo.html" %}
 {% load i18n %}
 
 {% block title %}{{ torneo.nombre }}{% endblock %}
 
 {% block content %}
     <h1>{% trans "Información del Torneo" %}</h1>
-    <a type="button" class="btn btn-primary" href="{% url 'torneo_editar' torneo.id %}">{% trans "Editar torneo" %}</a>
+    {% if torneo.estado == CREACION %}
+        <a type="button" class="btn btn-primary" href="{% url 'torneo_editar' torneo.id %}">{% trans "Editar torneo" %}</a>
+    {% endif %}
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#torneoBorrar">{% trans "Borrar torneo" %}</button>
 
 
@@ -16,6 +18,7 @@
     <div>{% trans "Numero de Equipos: " %}{{ torneo.numero_equipos_max }}</div>
     <p><div>{% trans "****ID****: " %}{{ torneo.id }}</div></p>
 
+    <!-- MODAL -->
     <div class="modal fade" id="torneoBorrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">

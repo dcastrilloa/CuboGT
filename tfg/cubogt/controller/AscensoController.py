@@ -50,3 +50,9 @@ def ascenso_borrar_todo(fase=Fase):
 	ascenso_list = Ascenso.objects.filter(grupo__in=grupo_list)
 	for ascenso in ascenso_list:
 		ascenso.delete()
+
+def realizar_ascenso():
+	# TODO, llamar cuando creo un ascenso en una fase terminada COMPROBAR ERRORES,
+	#  o cuando termino el ultimo partido de una fase
+	#  o dando al boron de actualizar equipos en Fase/Equipos
+	pass

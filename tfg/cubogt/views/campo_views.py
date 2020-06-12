@@ -1,11 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
+
+from cubogt.controller import FaseController
 from cubogt.forms import *
 
 
 def campo_lista(request, torneo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
 	campos_list = Campo.objects.filter(torneo=torneo_id)
-	context = {'torneo': torneo, 'campos_list': campos_list}
+
+	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
+	context = {'torneo': torneo,'fase_activa_terminada_list': fase_activa_terminada_list, 'campos_list': campos_list}
 	return render(request, 'cubogt/campo/campo_lista.html', context)
 
 
@@ -21,7 +25,9 @@ def campo_nuevo(request, torneo_id):
 			return redirect('campo_lista', torneo_id=torneo.id)
 	else:
 		form = CampoForm()
-	context = {'torneo': torneo, 'form': form}
+
+	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
+	context = {'torneo': torneo,'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form}
 	return render(request, 'cubogt/campo/campo_nuevo.html', context)
 
 
@@ -37,7 +43,8 @@ def campo_editar(request, torneo_id, campo_id):
 	else:
 		form = CampoForm(instance=campo)
 
-	context = {'torneo': torneo, 'form': form}
+	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
+	context = {'torneo': torneo,'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form}
 	return render(request, 'cubogt/campo/campo_editar.html', context)
 
 

@@ -43,7 +43,7 @@ class Fase(models.Model):
 	torneo = models.ForeignKey('Torneo', on_delete=models.CASCADE)
 	equipos = models.ManyToManyField('Equipo')
 	campos = models.ManyToManyField('Campo')
-	# fase_numero = models.IntegerField()
+	numero_activacion = models.IntegerField(null=True, default=None)
 	nombre = models.CharField(max_length=100)
 	tipo_fase = models.IntegerField(choices=TIPO_FASE)
 	numero_equipos_max = models.IntegerField(null=True, blank=True)
@@ -59,6 +59,9 @@ class Fase(models.Model):
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ["numero_activacion", "nombre"]
 
 	def __str__(self):
 		return self.nombre
@@ -178,12 +181,15 @@ class Partido(models.Model):
 	puntos_favor = models.IntegerField(default=0)
 	puntos_contra = models.IntegerField(default=0)
 
-	campo = models.ForeignKey('Campo', on_delete=models.CASCADE)
+	campo = models.ForeignKey('Campo', on_delete=models.CASCADE, null=True)
 	jornada = models.IntegerField()
 	estado = models.IntegerField(choices=ESTADO_PARTIDO_CHOICES, default=ESPERA)
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ["jornada", "grupo"]
 
 	def __str__(self):
 		return '%s - %s' % (self.equipo_local, self.equipo_visitante)
@@ -192,8 +198,8 @@ class Partido(models.Model):
 class Set(models.Model):
 	partido = models.ForeignKey('Partido', on_delete=models.CASCADE)
 	numero_set = models.IntegerField()
-	puntos_local = models.IntegerField(default=0)
-	puntos_visitante = models.IntegerField(default=0)
+	puntos_local = models.IntegerField(default=0)	#Voleivol, Pinpong, Batminton...
+	puntos_visitante = models.IntegerField(default=0) #Voleivol, Pinpong, Batminton...
 	juegos_local = models.IntegerField(default=0)
 	juegos_visitante = models.IntegerField(default=0)
 
@@ -202,6 +208,9 @@ class Set(models.Model):
 
 	class Meta:
 		ordering = ["numero_set"]
+
+	def __init__(self):
+		self.numero_set = Set.objects.filter(partido=self.partido).count()+1
 
 	def __str__(self):
 		return '(%s - %s)' % (self.puntos_local, self.puntos_visitante)
@@ -218,6 +227,9 @@ class Juego(models.Model):
 
 	class Meta:
 		ordering = ["numero_juego"]
+
+	def __init__(self):
+		self.numero_juego = Juego.objects.filter(set=self.set).count()+1
 
 	def __str__(self):
 		return '(%s - %s)' % (self.puntos_local, self.puntos_visitante)

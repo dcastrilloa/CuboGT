@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
+
+from cubogt.controller import FaseController
 from cubogt.models import Torneo
 from cubogt.forms import *
 from cubogt.static.constantes import *
@@ -34,8 +36,10 @@ def torneo_nuevo(request):
 
 
 def torneo_ver(request, torneo_id):
-	torneo_aux = get_object_or_404(Torneo, pk=torneo_id)
-	context = {'torneo': torneo_aux}
+	torneo = get_object_or_404(Torneo, pk=torneo_id)
+
+	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
+	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list}
 	return render(request, 'cubogt/torneos/torneo.html', context)
 
 
@@ -52,7 +56,9 @@ def torneo_editar(request, torneo_id):
 		form = TorneoForm(instance=torneo)
 
 	disenyo = "cubogt/navbar.html"
-	context = {'torneo': torneo, 'form': form, 'disenyo': disenyo}
+	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
+	context = {'torneo': torneo, 'form': form, 'disenyo': disenyo,
+			   'fase_activa_terminada_list': fase_activa_terminada_list}
 	return render(request, 'cubogt/torneos/nuevo_torneo.html', context)
 
 

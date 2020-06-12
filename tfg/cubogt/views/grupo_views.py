@@ -48,7 +48,7 @@ def grupo_generar(request, torneo_id, fase_id):
 
 def grupo_editar(request, torneo_id, fase_id, grupo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
 	grupo = get_object_or_404(Grupo, pk=grupo_id, fase=fase)
 	if request.method == "POST":
 		form = GrupoForm(request.POST, instance=grupo)

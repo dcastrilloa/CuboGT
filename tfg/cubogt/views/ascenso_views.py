@@ -7,7 +7,7 @@ from ..models import Torneo, Fase, Ascenso, Grupo
 
 def ascenso_lista(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
 	ascenso_list = Ascenso.objects.filter(grupo__fase=fase)
 
 	context = {'torneo': torneo, 'fase': fase, 'ascenso_list': ascenso_list}

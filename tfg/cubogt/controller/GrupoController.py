@@ -18,8 +18,7 @@ def comprobar_grupos(fase):
 		msg_error.append(_("No hay grupos creados dentro de la fase.\n"))
 	else:
 		for grupo in grupos_list:
-			print(grupo.equipos)
-			if not grupo.equipos.all():
+			if not grupo.equipos.count():
 				msg_error.append(_("El grupo %(grupo)s no tiene ningún equipo asignado.\n") % {'grupo': grupo.nombre})
 	return msg_error
 

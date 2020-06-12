@@ -12,6 +12,8 @@
         {% else %}
             <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Administrar equipos" %}</a>
         {% endif %}
+    {% else %}
+        <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Ver equipos por grupo" %}</a>
     {% endif %}
 
 
