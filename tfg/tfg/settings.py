@@ -49,6 +49,7 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'middleware.LoginRequiredMiddleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'tfg.urls'
@@ -129,4 +130,20 @@ STATIC_URL = '/static/'
 # Location of static files
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 
-LOGIN_REDIRECT_URL = '/gt/mis_torneos/'
+LOGIN_URL = '/login/'
+#LOGIN_REDIRECT_URL = '/gt/mis_torneos/'
+# Midelware
+LOGIN_REQUIRED_URLS = (
+	r'/gt/(.*)$',
+)
+
+LOGIN_EXEMPT_URLS = (
+	'/login/',
+	'logout/',
+	'password_change/',
+	'password_change/done/',
+	'password_reset/',
+	'password_reset/done/',
+	'reset/<uidb64>/<token>/',
+	'reset/done/',
+)

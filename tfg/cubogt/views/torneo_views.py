@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from cubogt.controller import FaseController
@@ -8,6 +9,7 @@ from django.utils import timezone
 
 
 # TORNEO
+@login_required(login_url='login')  # TODO ALL
 def torneo_lista(request):
 	mis_torneos_list = Torneo.objects.filter(usuario=request.user)
 	return render(request, 'cubogt/torneos/lista_torneos.html', context={'mis_torneos_list': mis_torneos_list})
