@@ -68,7 +68,7 @@
                         <td>{{ partido.jornada }}</td>
                         <td>
                             <a type="button" class="btn btn-outline-primary" href="#">{% trans "Finalizar" %}</a>
-                            {% if campo_list.count %} <!-- Si no tengo campos no puedo forzar -->
+                            {% if campo_list %} <!-- Si no tengo campos no puedo forzar -->
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">

@@ -39,11 +39,11 @@ def get_campos_para_forzar(fase):
 			.filter(Q(partido__equipo_local=partido_espera.equipo_visitante) |
 					Q(partido__equipo_visitante=partido_espera.equipo_visitante), partido__estado=JUGANDO)
 		if campo_aux_local and campo_aux_visitante:
-			campo_list.append([])
+			campo_list.append(None)
 		elif campo_aux_local:
-			campo_list.append([campo_aux_local])
+			campo_list.append(campo_aux_local)
 		elif campo_aux_visitante:
-			campo_list.append([campo_aux_visitante])
+			campo_list.append(campo_aux_visitante)
 		else:
 			campo_list.append(campos_fase)
 
