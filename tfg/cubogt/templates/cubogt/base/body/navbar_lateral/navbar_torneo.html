@@ -20,12 +20,22 @@
                 <span>{% trans "Fases iniciadas:" %}</span>
             </h6>
             {% for fase in fase_activa_terminada_list %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="users"></span>
-                        {{ fase.nombre }} - {{ fase.get_estado_display }}
-                    </a>
-                </li>
+                  <div class="btn-group dropright">
+                        {% if fase_aux.estado == ACTIVO %}
+                            <div class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% else %}<!--Estado TERMINADO-->
+                            <div class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% endif %}
+                            {{ fase.nombre }} - {{ fase.get_estado_display }}
+                            </div>
+                        <div class="dropdown-menu">
+                            <a class="nav-link" href="{% url 'partido_enjuego' torneo.id fase.id %}">{% trans "Patidos en juego" %}</a>
+                            <a class="nav-link" href="#">{% trans "Clasificación" %}</a>
+                            <a class="nav-link" href="#">{% trans "Calendario" %}</a>
+                            <a class="nav-link" href="{% url 'campo_fase_lista' torneo.id fase.id %}">{% trans "Campos" %}</a>
+                        </div>
+                    </div>
+
             {% endfor %}
         {% endif %}
     </ul>

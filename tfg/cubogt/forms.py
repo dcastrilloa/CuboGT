@@ -24,14 +24,15 @@ class CampoForm(forms.ModelForm):
 		fields = ('nombre',)
 
 
+class CampoGenerarForm(forms.Form):
+	numero_campos = forms.IntegerField(label=_("Número de campos"), min_value=1, max_value=26)
+	tipo_nombre = forms.ChoiceField(label=_("Nomenclatura"), choices=GENERAR_CAMPOS_CHOICES)
+
+
 class FaseForm(forms.ModelForm):
 	class Meta:
 		model = Fase
 		fields = ('nombre', 'tipo_fase', 'numero_equipos_max', 'doble_partido')
-
-
-# def __init__(self, *args, **kwargs):
-# TODO: unificar FaseSetForm FasePuntoForm self.fields['numero_sets'].disabled
 
 
 class FaseSetForm(forms.ModelForm):
@@ -55,7 +56,19 @@ class FaseEquipoForm(forms.ModelForm):
 		torneo = kwargs.pop('torneo')
 		super(FaseEquipoForm, self).__init__(*args, **kwargs)
 		self.fields['equipos'].queryset = Equipo.objects.filter(torneo=torneo)
-		# TODO?: Preguntar si quiero excluir a los equipos que ya están dentro de la fase del torneo
+
+
+class FaseCampoForm(forms.ModelForm):
+	class Meta:
+		model = Fase
+		fields = ('campos',)
+
+	def __init__(self, *args, **kwargs):
+		torneo = kwargs.pop('torneo')
+		fase = kwargs.pop('fase')
+		otras_fases_activas = Fase.objects.filter(torneo=torneo, estado=ACTIVO).exclude(id=fase.id)
+		super(FaseCampoForm, self).__init__(*args, **kwargs)
+		self.fields['campos'].queryset = Campo.objects.filter(torneo=torneo).exclude(fase__in=otras_fases_activas)
 
 
 class GrupoForm(forms.ModelForm):
@@ -65,7 +78,7 @@ class GrupoForm(forms.ModelForm):
 
 
 class GrupoGenerarForm(forms.Form):
-	numero_grupos = forms.IntegerField(label=_("Número de grupos"), min_value=1)
+	numero_grupos = forms.IntegerField(label=_("Número de grupos"), min_value=1, max_value=26)
 	tipo_nombre = forms.ChoiceField(label=_("Nomenclatura"), choices=GENERAR_GRUPOS_CHOICES)
 
 
@@ -80,7 +93,6 @@ class GrupoEquipoForm(forms.ModelForm):
 		grupo_list = Grupo.objects.filter(fase=fase).exclude(id=grupo.id)
 		super(GrupoEquipoForm, self).__init__(*args, **kwargs)
 		self.fields['equipos'].queryset = Equipo.objects.filter(fase=fase).exclude(grupo__in=grupo_list)
-		# TODO?: Preguntar si quiero excuir a los equipos que ya estan dentro de un grupo de la fase
 
 
 class AscensoForm(forms.ModelForm):

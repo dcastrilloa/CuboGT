@@ -11,13 +11,14 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/editar', torneo_views.torneo_editar, name='torneo_editar'),
 	path('torneo/<int:torneo_id>/borrar', torneo_views.torneo_borrar, name='torneo_borrar'),
 
-	path('torneo/<int:torneo_id>/equipos', equipo_views.equipo_lista, name='equipo_lista'),
+	path('torneo/<int:torneo_id>/equipo', equipo_views.equipo_lista, name='equipo_lista'),
 	path('torneo/<int:torneo_id>/equipo/nuevo', equipo_views.equipo_nuevo, name='equipo_nuevo'),
 	path('torneo/<int:torneo_id>/equipo/<int:equipo_id>/editar', equipo_views.equipo_editar, name='equipo_editar'),
 	path('torneo/<int:torneo_id>/equipo/<int:equipo_id>/borrar', equipo_views.equipo_borrar, name='equipo_borrar'),
 
-	path('torneo/<int:torneo_id>/campos', campo_views.campo_lista, name='campo_lista'),
+	path('torneo/<int:torneo_id>/campo', campo_views.campo_lista, name='campo_lista'),
 	path('torneo/<int:torneo_id>/campo/nuevo', campo_views.campo_nuevo, name='campo_nuevo'),
+	path('torneo/<int:torneo_id>/campo/generar', campo_views.campo_generar, name='campo_generar'),
 	path('torneo/<int:torneo_id>/campo/<int:campo_id>/editar', campo_views.campo_editar, name='campo_editar'),
 	path('torneo/<int:torneo_id>/campo/<int:campo_id>/borrar', campo_views.campo_borrar, name='campo_borrar'),
 
@@ -54,6 +55,14 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/<int:ascenso_id>/editar', ascenso_views.ascenso_editar, name='ascenso_editar'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/<int:ascenso_id>/borrar', ascenso_views.ascenso_borrar, name='ascenso_borrar'),
 
+	#FASE INICIADA
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partido', partido_views.partido_enjuego, name='partido_enjuego'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partido/<int:partido_id>/posponer', partido_views.partido_posponer, name='partido_posponer'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partido/<int:partido_id>/forzar_campo/<int:campo_id>', partido_views.partido_forzar, name='partido_forzar'),
+
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/campo', campo_views.campo_fase_lista, name='campo_fase_lista'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/campo/editar', campo_views.campo_fase_editar, name='campo_fase_editar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/campo/<int:campo_id>/borrar', campo_views.campo_fase_borrar, name='campo_fase_borrar'),
 
 
 

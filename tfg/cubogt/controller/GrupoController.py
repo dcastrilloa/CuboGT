@@ -24,31 +24,21 @@ def comprobar_grupos(fase):
 
 
 def comprobar_grupos_equipos(fase):
-	# TODO hay que arreglar el mensage de error para que se vea bonito en vez de
-	#  <QuerySet [<Equipo: Equipo 1>, <Equipo: Equipo 2>]>
 	msg_error = []
 	grupo_list = Grupo.objects.filter(fase=fase)
 	equipo_singrupo_list = Equipo.objects.filter(fase=fase).exclude(grupo__in=grupo_list)
+	nombre_equipo_list = ""
+	for equipo in equipo_singrupo_list:
+		nombre_equipo_list += equipo.nombre + ", "
 
 	if equipo_singrupo_list:
-		msg_error.append(_("Los siguientes equipos están sin asignar a un grupo: %(equipo_list)s\n") % {'equipo_list': equipo_singrupo_list})
+		msg_error.append(_("Los siguientes equipos están sin asignar a un grupo: %(equipo_list)s\n") % {'equipo_list': nombre_equipo_list[:-2]})
 	return msg_error
 
 
 def borrar_equipo(grupo, equipo):
 	"""Quita la relación de un equipo con un grupo"""
 	grupo.equipos.remove(equipo)
-
-
-# clasificacion = get_object_or_404(Clasificacion, grupo=grupo, equipo=equipo)
-# TODO?: ¿Puedo borrar si tengo algo en la clasificacion?
-
-
-def borrar_equipo_de_fase(fase, equipo):
-	"""Busca un grupo de la fase y borra la relacion con el equipo"""
-	grupo = Grupo.objects.filter(fase=fase, equipos=equipo)
-	if grupo:
-		borrar_equipo(grupo, equipo)
 
 
 def repartir_equipos(fase=Fase):

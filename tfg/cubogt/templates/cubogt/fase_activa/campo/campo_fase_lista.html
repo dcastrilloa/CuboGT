@@ -5,10 +5,10 @@
 
 {% block content %}
     <h2>{% trans "Campos" %}</h2>
-    <a type="button" class="btn btn-primary" href="{% url 'campo_nuevo' torneo.id %}">{% trans "Nuevo campo" %}</a>
-    {% if not campos_list %}
-        <a type="button" class="btn btn-info" href="{% url 'campo_generar' torneo.id %}">{% trans "Crear nuevos campos" %}</a>
-    {% else %}
+    {% if fase.estado == ACTIVO %}
+        <a type="button" class="btn btn-primary" href="{% url 'campo_fase_editar' torneo.id fase.id %}">{% trans "Administrar campos" %}</a>
+    {% endif %}
+    {% if campos_list %}
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -22,8 +22,8 @@
                         <td>{{ campo.nombre }}</td>
                         <td>
                             <a type="button" class="btn btn-outline-primary" href="{% url 'campo_editar' torneo.id campo.id %}">{% trans "Editar" %}</a>
-                            {% if torneo.estado == CREACION%}
-                                <a type="button" class="btn btn-outline-danger" href="{% url 'campo_borrar' torneo.id campo.id %}">{% trans "Borrar" %}</a>
+                            {% if fase.estado == ACTIVO %}
+                                <a type="button" class="btn btn-outline-danger" href="{% url 'campo_fase_borrar' torneo.id fase.id campo.id %}">{% trans "Borrar de la fase" %}</a>
                             {% endif %}
                         </td>
                     <tr>

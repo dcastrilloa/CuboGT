@@ -9,7 +9,7 @@ def grupo_lista(request, torneo_id, fase_id):
 	grupo_list = Grupo.objects.filter(fase=fase)
 
 	context = {'torneo': torneo, 'fase': fase, 'grupo_list': grupo_list}
-	return render(request, 'cubogt/fase/grupo/grupo_lista.html', context)
+	return render(request, 'cubogt/fase_creacion/grupo/grupo_lista.html', context)
 
 
 def grupo_nuevo(request, torneo_id, fase_id):
@@ -26,7 +26,7 @@ def grupo_nuevo(request, torneo_id, fase_id):
 		form = GrupoForm()
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
-	return render(request, 'cubogt/fase/grupo/grupo_nuevo.html', context)
+	return render(request, 'cubogt/fase_creacion/grupo/grupo_nuevo.html', context)
 
 
 def grupo_generar(request, torneo_id, fase_id):
@@ -43,7 +43,7 @@ def grupo_generar(request, torneo_id, fase_id):
 		form = GrupoGenerarForm()
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
-	return render(request, 'cubogt/fase/grupo/grupo_generar.html', context)
+	return render(request, 'cubogt/fase_creacion/grupo/grupo_generar.html', context)
 
 
 def grupo_editar(request, torneo_id, fase_id, grupo_id):
@@ -60,7 +60,7 @@ def grupo_editar(request, torneo_id, fase_id, grupo_id):
 		form = GrupoForm(instance=grupo)
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
-	return render(request, 'cubogt/fase/grupo/grupo_editar.html', context)
+	return render(request, 'cubogt/fase_creacion/grupo/grupo_editar.html', context)
 
 
 def grupo_borrar(request, torneo_id, fase_id, grupo_id):
@@ -78,7 +78,7 @@ def grupo_equipo_lista(request, torneo_id, fase_id):
 	grupo_list = Grupo.objects.filter(fase=fase)
 
 	context = {'torneo': torneo, 'fase': fase, 'grupo_list': grupo_list}
-	return render(request, 'cubogt/fase/grupo/equipo/grupo_equipos.html', context)
+	return render(request, 'cubogt/fase_creacion/grupo/equipo/grupo_equipos.html', context)
 
 
 def grupo_equipo_lista_especifico(request, torneo_id, fase_id, grupo_id):
@@ -100,7 +100,7 @@ def grupo_equipo_editar(request, torneo_id, fase_id, grupo_id):
 		form = GrupoEquipoForm(instance=grupo, fase=fase, grupo=grupo)
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
-	return render(request, 'cubogt/fase/grupo/equipo/grupo_equipo_editar.html', context)
+	return render(request, 'cubogt/fase_creacion/grupo/equipo/grupo_equipo_editar.html', context)
 
 
 def grupo_equipo_borrar_todo(request, torneo_id, fase_id):

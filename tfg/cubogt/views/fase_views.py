@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
 from cubogt.forms import FaseForm, FasePuntoForm, FaseSetForm, FaseEquipoForm
 from ..controller import GrupoController, FaseController
 from ..models import Torneo, Fase, Equipo
-from ..static.constantes import CREACION
+from ..static.constantes import CREACION, TERMINADO
 
 
 def fase_lista(request, torneo_id):
@@ -10,8 +11,8 @@ def fase_lista(request, torneo_id):
 	fases_list = Fase.objects.filter(torneo=torneo)
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
-	context = {'torneo': torneo,'fase_activa_terminada_list': fase_activa_terminada_list, 'fases_list': fases_list}
-	return render(request, 'cubogt/fase/fase_lista.html', context)
+	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'fases_list': fases_list}
+	return render(request, 'cubogt/fase_creacion/fase_lista.html', context)
 
 
 def fase_nueva(request, torneo_id):
@@ -21,7 +22,6 @@ def fase_nueva(request, torneo_id):
 		form_set = FaseSetForm(request.POST)
 		form_punto = FasePuntoForm(request.POST)
 		if form.is_valid():
-			# TODO: simplificar en el Form
 			fase = form.save(commit=False)
 			if torneo.deporte.set:
 				if form_set.is_valid():
@@ -42,9 +42,9 @@ def fase_nueva(request, torneo_id):
 		form_punto = FasePuntoForm()
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
-	context = {'torneo': torneo,'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form,
+	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form,
 			   'form_set': form_set, 'form_punto': form_punto}
-	return render(request, 'cubogt/fase/fase_nueva.html', context)
+	return render(request, 'cubogt/fase_creacion/fase_nueva.html', context)
 
 
 def fase_editar(request, torneo_id, fase_id):
@@ -76,12 +76,12 @@ def fase_editar(request, torneo_id, fase_id):
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
 	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form,
 			   'form_set': form_set, 'form_punto': form_punto}
-	return render(request, 'cubogt/fase/fase_editar.html', context)
+	return render(request, 'cubogt/fase_creacion/fase_editar.html', context)
 
 
 def fase_borrar(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
+	fase = get_object_or_404(Fase, ~Q(estado=TERMINADO), pk=fase_id, torneo=torneo)
 
 	fase.delete()
 
@@ -92,7 +92,7 @@ def fase_ver(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
 	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
 	context = {'torneo': torneo, 'fase': fase}
-	return render(request, 'cubogt/fase/fase_ver.html', context)
+	return render(request, 'cubogt/fase_creacion/fase_ver.html', context)
 
 
 def fase_equipo_lista(request, torneo_id, fase_id):
@@ -101,7 +101,7 @@ def fase_equipo_lista(request, torneo_id, fase_id):
 	equipo_list = fase.equipos.all()
 
 	context = {'torneo': torneo, 'fase': fase, 'equipo_list': equipo_list}
-	return render(request, 'cubogt/fase/equipo/fase_equipo.html', context)
+	return render(request, 'cubogt/fase_creacion/equipo/fase_equipo.html', context)
 
 
 def fase_equipo_editar(request, torneo_id, fase_id):
@@ -118,7 +118,7 @@ def fase_equipo_editar(request, torneo_id, fase_id):
 		form = FaseEquipoForm(instance=fase, torneo=torneo)
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
-	return render(request, 'cubogt/fase/equipo/fase_equipo_editar.html', context)
+	return render(request, 'cubogt/fase_creacion/equipo/fase_equipo_editar.html', context)
 
 
 def fase_equipo_agregar_todo(request, torneo_id, fase_id):
@@ -144,8 +144,8 @@ def fase_equipo_borrar(request, torneo_id, fase_id, equipo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
 	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	equipo = get_object_or_404(Equipo, pk=equipo_id, fase=fase)
-
-	GrupoController.borrar_equipo_de_fase(fase, equipo)
+	#Borro primero el equipo del grupo si lo tuviera y luego lo borro de la fase
+	FaseController.borrar_equipo_de_fase(fase, equipo)
 	fase.equipos.remove(equipo)
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
 
@@ -155,7 +155,7 @@ def fase_iniciar_lista(request, torneo_id):
 	fases_list = Fase.objects.filter(torneo=torneo, estado=CREACION)
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
-	context = {'torneo': torneo,'fase_activa_terminada_list': fase_activa_terminada_list, 'fases_list': fases_list}
+	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'fases_list': fases_list}
 	return render(request, 'cubogt/iniciar_fase/fase_iniciar_lista.html', context)
 
 
@@ -170,5 +170,4 @@ def fase_iniciar(request, torneo_id, fase_id):
 
 	else:
 		FaseController.fase_iniciar(fase)
-		context = {'torneo': torneo, }
-		return render(request, 'cubogt/iniciar_fase/fase_iniciar_lista.html', context)
+		return redirect('partido_enjuego', torneo_id=torneo_id, fase_id=fase_id)

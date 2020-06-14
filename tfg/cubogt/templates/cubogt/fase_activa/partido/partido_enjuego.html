@@ -1,0 +1,93 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Partidos en juego: " %}{{ fase }}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Partidos en juego: " %}{{ fase }}</h2>
+
+    {% if partido_list %}
+        <a type="button" class="btn btn-primary" href="{% url 'partido_enjuego' torneo.id fase.id %}">{% trans "Actualizar" %}</a>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Nombre" %}</th>
+                    <th>{% trans "Campo" %}</th>
+                    <th>{% trans "Grupo" %}</th>
+                    <th>{% trans "Jornada" %}</th>
+                    <th>{% trans "Resultado" %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for partido in partido_list %}
+                    <tr>
+                        <td><a class="partido" href="#">{{ partido }}</a></td>
+                        <td>{{ partido.campo }}</td>
+                        <td>{{ partido.grupo }}</td>
+                        <td>{{ partido.jornada }}</td>
+                        <td>{{ partido.resultado }}</td>
+                        <td>
+                            <a type="button" class="btn btn-outline-primary" href="#">{% trans "Finalizar" %}</a>
+                            {% if partido_campo_proximos_list %}
+                                <a type="button" class="btn btn-outline-warning" href="{% url 'partido_posponer' torneo.id fase.id partido.id %}">{% trans "Posponer" %}</a>
+                            {% endif %}
+
+                        </td>
+                    <tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif partido_campo_proximos_list %}
+        <div>
+            <p>{% trans "Tiene que añadir algun campo a la fase para poder iniciar los partidos." %}
+                <a href="{% url 'campo_fase_lista' torneo.id fase.id %}">{% trans "Administrar Campos" %}</a>
+            </p>
+        </div>
+    {% else %}
+        <div><p>{% trans "La fase ha terminado no hay mas partidos por jugar" %}</p></div>
+    {% endif %}
+
+
+    {% if partido_campo_proximos_list %}
+        <h2>{% trans "Proximos partidos: " %}</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Nombre" %}</th>
+                    <th>{% trans "Grupo" %}</th>
+                    <th>{% trans "Jornada" %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for partido,campo_list in partido_campo_proximos_list  %}
+                    <tr>
+                        <td><a class="partido" href="#">{{ partido }}</a></td>
+                        <td>{{ partido.grupo }}</td>
+                        <td>{{ partido.jornada }}</td>
+                        <td>
+                            <a type="button" class="btn btn-outline-primary" href="#">{% trans "Finalizar" %}</a>
+                            {% if campo_list.count %} <!-- Si no tengo campos no puedo forzar -->
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            {% trans "Forzar siguiente" %}
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        {% for campo in campo_list %}
+                                            <a href="{% url "partido_forzar" torneo.id fase.id partido.id campo.id %}">
+                                                <button class="dropdown-item" type="button">{{ campo.nombre }}</button>
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                    <tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+{% endblock content %}

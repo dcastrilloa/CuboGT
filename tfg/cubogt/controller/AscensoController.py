@@ -51,6 +51,7 @@ def ascenso_borrar_todo(fase=Fase):
 	for ascenso in ascenso_list:
 		ascenso.delete()
 
+
 def realizar_ascenso():
 	# TODO, llamar cuando creo un ascenso en una fase terminada COMPROBAR ERRORES,
 	#  o cuando termino el ultimo partido de una fase

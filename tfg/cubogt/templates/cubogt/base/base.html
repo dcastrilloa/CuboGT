@@ -26,6 +26,8 @@
 </head>
 
 <body>
-    {% block body %}{% endblock %}
+    {% with CREACION=0 ACTIVO=1 TERMINADO=2 %}
+        {% block body %}{% endblock %}
+    {% endwith %}
 </body>
 </html>

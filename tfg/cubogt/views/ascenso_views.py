@@ -11,7 +11,7 @@ def ascenso_lista(request, torneo_id, fase_id):
 	ascenso_list = Ascenso.objects.filter(grupo__fase=fase)
 
 	context = {'torneo': torneo, 'fase': fase, 'ascenso_list': ascenso_list}
-	return render(request, 'cubogt/fase/ascenso/ascenso_lista.html', context)
+	return render(request, 'cubogt/fase_creacion/ascenso/ascenso_lista.html', context)
 
 
 def ascenso_nuevo(request, torneo_id, fase_id):
@@ -27,7 +27,7 @@ def ascenso_nuevo(request, torneo_id, fase_id):
 		form = AscensoForm(fase=fase)
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
-	return render(request, 'cubogt/fase/ascenso/ascenso_nuevo.html', context)
+	return render(request, 'cubogt/fase_creacion/ascenso/ascenso_nuevo.html', context)
 
 
 def ascenso_nuevo_general(request, torneo_id, fase_id):
@@ -42,7 +42,7 @@ def ascenso_nuevo_general(request, torneo_id, fase_id):
 		form = AscensoGeneralForm(fase=fase)
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
-	return render(request, 'cubogt/fase/ascenso/ascenso_nuevo.html', context)
+	return render(request, 'cubogt/fase_creacion/ascenso/ascenso_nuevo.html', context)
 
 
 def ascenso_editar(request, torneo_id, fase_id, ascenso_id):
@@ -60,7 +60,7 @@ def ascenso_editar(request, torneo_id, fase_id, ascenso_id):
 		form = AscensoForm(instance=ascenso, fase=fase)
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
-	return render(request, 'cubogt/fase/ascenso/ascenso_editar.html', context)
+	return render(request, 'cubogt/fase_creacion/ascenso/ascenso_editar.html', context)
 
 
 def ascenso_borrar(request, torneo_id, fase_id, ascenso_id):

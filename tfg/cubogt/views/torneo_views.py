@@ -9,7 +9,6 @@ from django.utils import timezone
 
 
 # TORNEO
-@login_required(login_url='login')  # TODO ALL
 def torneo_lista(request):
 	mis_torneos_list = Torneo.objects.filter(usuario=request.user)
 	return render(request, 'cubogt/torneos/lista_torneos.html', context={'mis_torneos_list': mis_torneos_list})

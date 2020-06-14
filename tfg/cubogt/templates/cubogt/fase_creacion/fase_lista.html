@@ -28,7 +28,7 @@
                 {% for fase in fases_list %}
                     <tr>
                         <td><a href="{% url 'fase_ver' torneo.id fase.id %}">{{ fase.nombre }}</a></td>
-                        <td>{{ fase.numero_equipos_max }}</td>
+                        <td>{{ fase.equipos_apuntados_max_label }}</td>
                         <td>{{ fase.get_tipo_fase_display }}</td>
                         <td>{{ fase.doble_partido_label }}</td>
                         {% if torneo.deporte.set %}
@@ -41,6 +41,8 @@
                         <td>
                             {% if fase.estado == CREACION %}
                                 <a type="button" class="btn btn-outline-primary" href="{% url 'fase_editar' torneo.id fase.id %}">{% trans "Editar" %}</a>
+                            {% endif %}
+                            {% if fase.estado != TERMINADO %}
                                 <a type="button" class="btn btn-outline-danger" href="{% url 'fase_borrar' torneo.id fase.id %}">{% trans "Borrar" %}</a>
                             {% endif %}
                         </td>
@@ -49,11 +51,5 @@
                 {% endfor %}
             </tbody>
         </table>
-
-
-
     {% endif %}
-
-
-
 {% endblock content %}

@@ -77,7 +77,7 @@ class Fase(models.Model):
 		if self.numero_equipos_max is not None and self.numero_equipos_max > 0:
 			label += str(self.numero_equipos_max)
 		else:
-			label += _("Indefinido")
+			label = _("%(n_equipos)sIndefinido" % {'n_equipos': label} )
 		return label
 
 
@@ -193,6 +193,10 @@ class Partido(models.Model):
 
 	def __str__(self):
 		return '%s - %s' % (self.equipo_local, self.equipo_visitante)
+
+	def set_estado_espera(self):
+		self.estado = ESPERA
+		self.save()
 
 
 class Set(models.Model):
