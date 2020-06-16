@@ -77,7 +77,7 @@ class Fase(models.Model):
 		if self.numero_equipos_max is not None and self.numero_equipos_max > 0:
 			label += str(self.numero_equipos_max)
 		else:
-			label = _("%(n_equipos)sIndefinido" % {'n_equipos': label} )
+			label = _("%(n_equipos)sIndefinido" % {'n_equipos': label})
 		return label
 
 
@@ -146,7 +146,8 @@ class Clasificacion(models.Model):
 
 	def get_puntuacion(self):
 		ganado = 3
-		return self.partidos_ganados * ganado
+		empatado = 1
+		return self.partidos_ganados * ganado+self.partidos_empatados*empatado
 
 
 class Ascenso(models.Model):
@@ -167,19 +168,22 @@ class Ascenso(models.Model):
 			aux += str(x) + ","
 		return aux[:-1]
 
+	def posiciones_array(self):
+		posiciones = []
+		for x in range(self.desde_posicion, self.desde_posicion + self.numero_equipos):
+			posiciones.append(x)
+		return posiciones
+
 
 class Partido(models.Model):
 	grupo = models.ForeignKey('Grupo', on_delete=models.CASCADE)
 	equipo_local = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="local_equipo")
 	equipo_visitante = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="visitante_equipo")
 	arbitro = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="arbitro", null=True, default=None)
+	ganador = models.ForeignKey('Equipo', on_delete=models.CASCADE, related_name="ganador", null=True, default=None)
 
-	sets_favor = models.IntegerField(default=0)
-	sets_contra = models.IntegerField(default=0)
-	juegos_favor = models.IntegerField(default=0)
-	juegos_contra = models.IntegerField(default=0)
-	puntos_favor = models.IntegerField(default=0)
-	puntos_contra = models.IntegerField(default=0)
+	resultado_local = models.IntegerField(default=0)  # Fulbol, baloncesto, waterpolo...
+	resultado_visitante = models.IntegerField(default=0)  # Fulbol, baloncesto, waterpolo...
 
 	campo = models.ForeignKey('Campo', on_delete=models.CASCADE, null=True)
 	jornada = models.IntegerField()
@@ -194,18 +198,38 @@ class Partido(models.Model):
 	def __str__(self):
 		return '%s - %s' % (self.equipo_local, self.equipo_visitante)
 
-	def set_estado_espera(self):
-		self.estado = ESPERA
-		self.save()
+	def get_numero_sets_local(self):
+		return Set.objects.filter(partido=self, ganador=self.equipo_local).count()
+
+	def get_numero_sets_visitante(self):
+		return Set.objects.filter(partido=self, ganador=self.equipo_visitante).count()
+
+	def get_resultado_label(self):
+		if self.grupo.fase.torneo.deporte.set:
+			sets_local = self.get_numero_sets_local()
+			sets_visitante = self.get_numero_sets_visitante()
+			label = '%d - %d' % (sets_local, sets_visitante)
+		else:
+			label = '%d - %d' % (self.resultado_local, self.resultado_visitante)
+		return label
+
+	def get_arbitro_label(self):
+		if self.arbitro:
+			label = self.arbitro.nombre
+		else:
+			label = _("Organización")
+		return label
 
 
 class Set(models.Model):
 	partido = models.ForeignKey('Partido', on_delete=models.CASCADE)
 	numero_set = models.IntegerField()
-	puntos_local = models.IntegerField(default=0)	#Voleivol, Pinpong, Batminton...
-	puntos_visitante = models.IntegerField(default=0) #Voleivol, Pinpong, Batminton...
-	juegos_local = models.IntegerField(default=0)
-	juegos_visitante = models.IntegerField(default=0)
+	ganador = models.ForeignKey('Equipo', on_delete=models.CASCADE, null=True, default=None)
+
+	puntos_local = models.IntegerField(default=0)  # Voleibol, Pinpong, Batminton...
+	puntos_visitante = models.IntegerField(default=0)  # Voleibol, Pinpong, Batminton...
+	juegos_local = models.IntegerField(default=0)  # Solo los uso si lo meto a mano
+	juegos_visitante = models.IntegerField(default=0)  # Solo los uso si lo meto a mano
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
@@ -213,16 +237,16 @@ class Set(models.Model):
 	class Meta:
 		ordering = ["numero_set"]
 
-	def __init__(self):
-		self.numero_set = Set.objects.filter(partido=self.partido).count()+1
-
 	def __str__(self):
-		return '(%s - %s)' % (self.puntos_local, self.puntos_visitante)
+		label = _("Set %(numero_set)d") % {'numero_set': self.numero_set}
+		return label
 
 
 class Juego(models.Model):
 	set = models.ForeignKey('Set', on_delete=models.CASCADE)
 	numero_juego = models.IntegerField()
+	ganador = models.ForeignKey('Equipo', on_delete=models.CASCADE, null=True, default=None)
+
 	puntos_local = models.IntegerField(default=0)
 	puntos_visitante = models.IntegerField(default=0)
 
@@ -232,17 +256,18 @@ class Juego(models.Model):
 	class Meta:
 		ordering = ["numero_juego"]
 
-	def __init__(self):
-		self.numero_juego = Juego.objects.filter(set=self.set).count()+1
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.numero_juego = Juego.objects.filter(set=self.set).count() + 1
 
 	def __str__(self):
-		return '(%s - %s)' % (self.puntos_local, self.puntos_visitante)
+		return _("Juego %(numero_juego)d") % {'numero_juego': self.numero_juego}
 
 
 class Campo(models.Model):
 	torneo = models.ForeignKey('Torneo', on_delete=models.CASCADE)
 	nombre = models.CharField(max_length=50)
-	libre = models.BooleanField(default=True)
+	libre = models.BooleanField(default=True)  # No la uso
 
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)

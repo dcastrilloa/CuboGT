@@ -15,7 +15,12 @@
                     <th>{% trans "Campo" %}</th>
                     <th>{% trans "Grupo" %}</th>
                     <th>{% trans "Jornada" %}</th>
-                    <th>{% trans "Resultado" %}</th>
+                    {% if torneo.deporte.set %}
+                        <th>{% trans "Sets" %}</th>
+                    {% else %}
+                        <th>{% trans "Resultado" %}</th>
+                    {% endif %}
+
                     <th></th>
                 </tr>
             </thead>
@@ -26,9 +31,9 @@
                         <td>{{ partido.campo }}</td>
                         <td>{{ partido.grupo }}</td>
                         <td>{{ partido.jornada }}</td>
-                        <td>{{ partido.resultado }}</td>
+                        <td>{{ partido.get_resultado_label }}</td>
                         <td>
-                            <a type="button" class="btn btn-outline-primary" href="#">{% trans "Finalizar" %}</a>
+                            <a type="button" class="btn btn-outline-primary" href="{% url 'partido_ver' torneo.id fase.id partido.grupo.id partido.id %}">{% trans "Ver partido" %}</a>
                             {% if partido_campo_proximos_list %}
                                 <a type="button" class="btn btn-outline-warning" href="{% url 'partido_posponer' torneo.id fase.id partido.id %}">{% trans "Posponer" %}</a>
                             {% endif %}
@@ -67,7 +72,7 @@
                         <td>{{ partido.grupo }}</td>
                         <td>{{ partido.jornada }}</td>
                         <td>
-                            <a type="button" class="btn btn-outline-primary" href="#">{% trans "Finalizar" %}</a>
+                            <a type="button" class="btn btn-outline-primary" href="{% url 'partido_ver' torneo.id fase.id partido.grupo.id partido.id %}">{% trans "Ver partido" %}</a>
                             {% if campo_list %} <!-- Si no tengo campos no puedo forzar -->
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown"

@@ -24,12 +24,14 @@
                 {% trans "Ascensos" %}
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="users"></span>
-                {% trans "Calendario" %}
-            </a>
-        </li>
+        {% if fase.estado == CREACION %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'fase_iniciar' torneo.id fase.id %}">
+                    <span data-feather="users"></span>
+                    {% trans "Iniciar fase" %}
+                </a>
+            </li>
+        {% endif %}
     </ul>
 
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">

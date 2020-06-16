@@ -5,3 +5,4 @@ from . import grupo_views
 from . import torneo_views
 from . import ascenso_views
 from . import partido_views
+from . import clasificacion_views

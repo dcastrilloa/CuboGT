@@ -1,0 +1,80 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Partido: " %}{{ partido }}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Partido: " %}{{ partido }}</h2>
+    <div>
+        <div>{% trans "Grupo: " %}{{ partido.grupo }}</div>
+        <div>{% trans "Arbitro: " %}{{ partido.get_arbitro_label }}</div>
+        {% if torneo.deporte.set %}
+            {% if set_list.count < fase.numero_sets  %}
+                <a type="button" class="btn btn-primary" href="{% url 'partido_set_nuevo' torneo.id fase.id grupo.id partido.id %}">{% trans "Añadir set" %}</a>
+            {% endif %}
+        {% else %}
+            <a type="button" class="btn btn-primary" href="{% url 'partido_editar_resultado' torneo.id fase.id grupo.id partido.id %}">{% trans "Editar resultado" %}</a>
+        {% endif %}
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">{% trans "Nombre" %}</th>
+            {% if torneo.deporte.set %}
+                {% for set in set_list %}
+                    <th scope="col">{{ set }}
+                        <a href="{% url 'partido_set_editar' torneo.id fase.id grupo.id partido.id set.id %}"><i class="far fa-edit"></i></a>
+                        {% if set.numero_set == set_list.count %}
+                            <a href="{% url 'partido_set_borrar' torneo.id fase.id grupo.id partido.id set.id %}"><i class="far fa-trash-alt"></i></a>
+                        {% endif %}
+                    </th>
+                {% endfor %}
+            {% else %}
+                <th scope="col">{% trans "Resultado" %}</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">{% trans "Local" %}</th>
+            <td>{{ partido.equipo_local }}</td>
+            {% if torneo.deporte.set %}
+                {% for set in set_list %}
+                    {% if torneo.deporte.juego %}
+                        <td>{{ set.juegos_local }}</td>
+                    {% else %}
+                        <td>{{ set.puntos_local }}</td>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <td>{{ partido.resultado_local }}</td>
+            {% endif %}
+        <tr>
+        <tr>
+            <th scope="row">{% trans "Visitante" %}</th>
+            <td>{{ partido.equipo_visitante }}</td>
+            {% if torneo.deporte.set %}
+                {% for set in set_list %}
+                    {% if torneo.deporte.juego %}
+                        <td>{{ set.juegos_visitante }}</td>
+                    {% else %}
+                        <td>{{ set.puntos_visitante }}</td>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <td>{{ partido.resultado_visitante }}</td>
+            {% endif %}
+        <tr>
+        </tbody>
+    </table>
+    <div>
+        <a type="button" class="btn btn-outline-secondary" href="{% url 'partido_enjuego' torneo.id fase.id %}">{% trans "Volver partidos" %}</a>
+        <a type="button" class="btn btn-outline-secondary" href="{% url 'partido_calendario_grupo' torneo.id fase.id grupo.id partido.id %}">{% trans "Volver calendario" %}</a>
+        {% if partido.estado != TERMINADO %}
+            <a type="button" class="btn btn-danger" href="{% url 'partido_terminar' torneo.id fase.id grupo.id partido.id %}">{% trans "Terminar partido" %}</a>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

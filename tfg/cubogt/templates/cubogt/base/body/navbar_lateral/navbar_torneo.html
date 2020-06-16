@@ -30,8 +30,8 @@
                             </div>
                         <div class="dropdown-menu">
                             <a class="nav-link" href="{% url 'partido_enjuego' torneo.id fase.id %}">{% trans "Patidos en juego" %}</a>
-                            <a class="nav-link" href="#">{% trans "Clasificación" %}</a>
-                            <a class="nav-link" href="#">{% trans "Calendario" %}</a>
+                            <a class="nav-link" href="{% url 'clasificacion_ver' torneo.id fase.id %}">{% trans "Clasificación" %}</a>
+                            <a class="nav-link" href="{% url 'partido_calendario' torneo.id fase.id %}">{% trans "Calendario" %}</a>
                             <a class="nav-link" href="{% url 'campo_fase_lista' torneo.id fase.id %}">{% trans "Campos" %}</a>
                         </div>
                     </div>

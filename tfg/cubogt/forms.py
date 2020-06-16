@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 class TorneoForm(forms.ModelForm):
 	class Meta:
 		model = Torneo
-		fields = ('deporte', 'nombre', 'fecha', 'descripcion', 'numero_equipos_max')
+		fields = ['deporte', 'nombre', 'fecha', 'descripcion', 'numero_equipos_max']
 
 	fecha = forms.DateInput()
 
@@ -15,13 +15,13 @@ class TorneoForm(forms.ModelForm):
 class EquipoForm(forms.ModelForm):
 	class Meta:
 		model = Equipo
-		fields = ('nombre', 'correo')
+		fields = ['nombre', 'correo']
 
 
 class CampoForm(forms.ModelForm):
 	class Meta:
 		model = Campo
-		fields = ('nombre',)
+		fields = ['nombre']
 
 
 class CampoGenerarForm(forms.Form):
@@ -32,25 +32,25 @@ class CampoGenerarForm(forms.Form):
 class FaseForm(forms.ModelForm):
 	class Meta:
 		model = Fase
-		fields = ('nombre', 'tipo_fase', 'numero_equipos_max', 'doble_partido')
+		fields = ['nombre', 'tipo_fase', 'numero_equipos_max', 'doble_partido']
 
 
 class FaseSetForm(forms.ModelForm):
 	class Meta:
 		model = Fase
-		fields = ('numero_sets',)
+		fields = ['numero_sets']
 
 
 class FasePuntoForm(forms.ModelForm):
 	class Meta:
 		model = Fase
-		fields = ('numero_puntos', 'puntos_maximos')
+		fields = ['numero_puntos', 'puntos_maximos']
 
 
 class FaseEquipoForm(forms.ModelForm):
 	class Meta:
 		model = Fase
-		fields = ('equipos',)
+		fields = ['equipos']
 
 	def __init__(self, *args, **kwargs):
 		torneo = kwargs.pop('torneo')
@@ -61,7 +61,7 @@ class FaseEquipoForm(forms.ModelForm):
 class FaseCampoForm(forms.ModelForm):
 	class Meta:
 		model = Fase
-		fields = ('campos',)
+		fields = ['campos']
 
 	def __init__(self, *args, **kwargs):
 		torneo = kwargs.pop('torneo')
@@ -74,7 +74,7 @@ class FaseCampoForm(forms.ModelForm):
 class GrupoForm(forms.ModelForm):
 	class Meta:
 		model = Grupo
-		fields = ('nombre',)
+		fields = ['nombre']
 
 
 class GrupoGenerarForm(forms.Form):
@@ -85,7 +85,7 @@ class GrupoGenerarForm(forms.Form):
 class GrupoEquipoForm(forms.ModelForm):
 	class Meta:
 		model = Grupo
-		fields = ('equipos',)
+		fields = ['equipos']
 
 	def __init__(self, *args, **kwargs):
 		fase = kwargs.pop('fase')
@@ -120,3 +120,41 @@ class AscensoGeneralForm(forms.ModelForm):
 		super(AscensoGeneralForm, self).__init__(*args, **kwargs)
 		self.fields['proxima_fase'].queryset = fase_list
 
+
+class PartidoResultadoForm(forms.ModelForm):
+	class Meta:
+		model = Partido
+		fields = ['resultado_local', 'resultado_visitante']
+
+	def __init__(self, *args, **kwargs):
+		super(PartidoResultadoForm, self).__init__(*args, **kwargs)
+		self.fields['resultado_local'].widget.attrs['min'] = 0
+		self.fields['resultado_visitante'].widget.attrs['min'] = 0
+
+
+class SetJuegosForm(forms.ModelForm):
+	class Meta:
+		model = Set
+		fields = ['juegos_local', 'juegos_visitante']
+
+	def __init__(self, *args, **kwargs):
+		super(SetJuegosForm, self).__init__(*args, **kwargs)
+		self.fields['juegos_visitante'].widget.attrs['min'] = 0
+		self.fields['juegos_local'].widget.attrs['min'] = 0
+		self.fields['juegos_visitante'].widget.attrs['max'] = 7
+		self.fields['juegos_local'].widget.attrs['max'] = 7
+
+
+class SetPuntosForm(forms.ModelForm):
+	class Meta:
+		model = Set
+		fields = ['puntos_local', 'puntos_visitante']
+
+	def __init__(self, *args, **kwargs):
+		fase = kwargs.pop('fase')
+		super(SetPuntosForm, self).__init__(*args, **kwargs)
+		self.fields['puntos_local'].widget.attrs['min'] = 0
+		self.fields['puntos_visitante'].widget.attrs['min'] = 0
+		if fase.puntos_maximos:
+			self.fields['puntos_local'].widget.attrs['max'] = fase.puntos_maximos
+			self.fields['puntos_visitante'].widget.attrs['max'] = fase.puntos_maximos

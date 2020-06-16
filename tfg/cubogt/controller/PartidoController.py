@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from cubogt.forms import FaseForm, FasePuntoForm, FaseSetForm, FaseEquipoForm
-from . import CampoController
+from . import CampoController, ClasificacionController, FaseController
 from ..controller import GrupoController
 from ..models import Torneo, Fase, Equipo, Partido, Campo, Grupo
 from ..static.constantes import LIGA, ELIMINATORIA, JUGANDO, ESPERA, TERMINADO
@@ -66,10 +66,19 @@ def crear_partido_lista(grupo, calendario_list, doble_partido):
 										   jornada=jornada)
 
 
-def iniciar_partido(partido, campo):
-	partido.campo = campo
-	partido.estado = JUGANDO
-	partido.save()
+def get_partidos_grupo_list(grupo):
+	partidos = Partido.objects.filter(grupo=grupo)
+	return partidos
+
+
+def get_partidos_jornadas_grupo(grupo):
+	jornadas_list = []
+	jornadas = calcular_rondas(grupo.fase, grupo)
+	for n_jornada in range(1, jornadas + 1):
+		partidos_jornada_list = Partido.objects.filter(grupo=grupo, jornada=n_jornada)
+		aux = [n_jornada, partidos_jornada_list]
+		jornadas_list.append(aux)
+	return jornadas_list
 
 
 def get_partidos_jugando_list(fase):
@@ -106,37 +115,78 @@ def get_partidos_con_campos_para_forzar(fase):
 	partidos_espera_list = get_partidos_espera_list(fase)
 	campos_para_forzar_list = CampoController.get_campos_para_forzar(fase)
 	partido_campo = []
-	for x in range(0,len(partidos_espera_list)):
+	for x in range(0, len(partidos_espera_list)):
 		aux = [partidos_espera_list[x], campos_para_forzar_list[x]]
 		partido_campo.append(aux)
 	return partido_campo
 
 
-def get_partido_jugando_list(fase):
-	partido_jugando_list = Partido.objects.filter(grupo__fase=fase, estado=JUGANDO)
-	return partido_jugando_list
-
-
-def set_partido_posponer(partido):
+def set_partido_espera(partido):
 	partido.estado = ESPERA
+	partido.arbitro = None
+	partido.campo = None
 	partido.save()
 
 
+def set_partido_jugar(partido, campo, arbitro=None):
+	partido.estado = JUGANDO
+	partido.campo = campo
+	partido.arbitro = arbitro
+	partido.save()
+
+
+def set_partido_terminar(partido):
+	partido.estado = TERMINADO
+	partido.ganador = get_equipo_ganador(partido)
+	partido.save()
+
+
+def get_equipo_ganador(partido):
+	ganador = None
+	if partido.estado == TERMINADO:
+		deporte = partido.grupo.fase.torneo.deporte
+		if deporte.set:
+			resultado_local = partido.get_numero_sets_local()
+			resultado_visitante = partido.get_numero_sets_visitante()
+		else:
+			resultado_local = partido.resultado_local
+			resultado_visitante = partido.resultado_visitante
+		# Compruebo resultados
+		if resultado_local > resultado_visitante:
+			ganador = partido.equipo_local
+		elif resultado_local < resultado_visitante:
+			ganador = partido.equipo_visitante
+
+	return ganador
+
+
 def partido_posponer(fase, partido):
-	set_partido_posponer(partido)
+	arbitro = partido.arbitro
 	campo = partido.campo
+	set_partido_espera(partido)
 	campo_list = CampoController.get_campo_fase_list(fase)
 	if campo in campo_list:
 		partidos_espera_list = get_partidos_espera_equipos_no_jugando_list(fase).exclude(pk=partido.id)
 		if partidos_espera_list:
 			partido_siguiente = partidos_espera_list.first()
-			iniciar_partido(partido_siguiente, campo)
-		else: # No se puede posponer el partido
-			iniciar_partido(partido, campo)
+			set_partido_jugar(partido_siguiente, campo, arbitro)
+		else:  # No se puede posponer el partido
+			set_partido_jugar(partido, campo, arbitro)
 
 
 def partido_forzar(fase, partido, campo):
 	partido_reemplazar = Partido.objects.get(grupo__fase=fase, campo=campo, estado=JUGANDO)
-	set_partido_posponer(partido_reemplazar)
+	arbitro = partido_reemplazar.arbitro
+	set_partido_espera(partido_reemplazar)
+	set_partido_jugar(partido, campo, arbitro)
 
-	iniciar_partido(partido, campo)
+
+def partido_terminar(partido):
+	# Cambiar estado
+	set_partido_terminar(partido)
+	#  Actualizar clasificacion
+	ClasificacionController.actualizar_clasificacion(partido)
+	# Iniciar siguiente partido
+	arbitro = get_equipo_ganador(partido)
+	fase = partido.grupo.fase
+	FaseController.iniciar_siguiente_partido(fase, arbitro)

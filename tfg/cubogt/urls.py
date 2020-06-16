@@ -56,9 +56,24 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/<int:ascenso_id>/borrar', ascenso_views.ascenso_borrar, name='ascenso_borrar'),
 
 	#FASE INICIADA
-	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partido', partido_views.partido_enjuego, name='partido_enjuego'),
-	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partido/<int:partido_id>/posponer', partido_views.partido_posponer, name='partido_posponer'),
-	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partido/<int:partido_id>/forzar_campo/<int:campo_id>', partido_views.partido_forzar, name='partido_forzar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partidos_enjuego', partido_views.partido_enjuego, name='partido_enjuego'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partidos_enjuego/<int:partido_id>/posponer', partido_views.partido_posponer, name='partido_posponer'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partidos_enjuego/<int:partido_id>/forzar_campo/<int:campo_id>', partido_views.partido_forzar, name='partido_forzar'),
+
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/clasificacion', clasificacion_views.clasificacion_ver, name='clasificacion_ver'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/clasificacion/grupo/<int:grupo_id>', clasificacion_views.clasificacion_ver, name='clasificacion_ver'),
+
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/calendario', partido_views.partido_calendario, name='partido_calendario'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/calendario/grupo/<int:grupo_id>', partido_views.partido_calendario_grupo, name='partido_calendario_grupo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/calendario/grupo/<int:grupo_id>#partido<int:partido_id>', partido_views.partido_calendario_grupo_especifico, name='partido_calendario_grupo'),
+
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/partido/<int:partido_id>', partido_views.partido_ver, name='partido_ver'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/partido/<int:partido_id>/editar_resultado', partido_views.partido_editar_resultado, name='partido_editar_resultado'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/partido/<int:partido_id>/terminar', partido_views.partido_terminar, name='partido_terminar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/partido/<int:partido_id>/set/nuevo', partido_views.partido_set_nuevo, name='partido_set_nuevo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/partido/<int:partido_id>/set/<int:set_id>/editar', partido_views.partido_set_editar, name='partido_set_editar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/grupo/<int:grupo_id>/partido/<int:partido_id>/set/<int:set_id>/borrar', partido_views.partido_set_borrar, name='partido_set_borrar'),
+
 
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/campo', campo_views.campo_fase_lista, name='campo_fase_lista'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/campo/editar', campo_views.campo_fase_editar, name='campo_fase_editar'),

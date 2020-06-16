@@ -1,0 +1,86 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Clasificación: " %}{{ fase }}{% endblock %}
+
+{% block content %}
+    {% if grupo_list.count > 1 %}
+        <ul class="nav nav-tabs">
+            {% for grupo_aux in grupo_list %}
+                {% if grupo == grupo_aux %}
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                           href="{% url 'clasificacion_ver' torneo.id fase.id grupo_aux.id %}">{{ grupo_aux }}</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{% url 'clasificacion_ver' torneo.id fase.id grupo_aux.id %}">{{ grupo_aux }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>{% trans "Clasificación: " %}{{ grupo }}</h2>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{% trans "#" %}</th>
+            <th>{% trans "Nombre" %}</th>
+            <th>{% trans "PJ" %}</th>
+            <th>{% trans "P.Gan" %}</th>
+            <th>{% trans "P.Per" %}</th>
+            <th>{% trans "P.Emp" %}</th>
+            {% if torneo.deporte.set %}
+                <th>{% trans "Set F" %}</th>
+                <th>{% trans "Set C" %}</th>
+                {% if torneo.deporte.set %}
+                    <th>{% trans "Juegos F" %}</th>
+                    <th>{% trans "Juegos C" %}</th>
+                {% else %}
+                    <th>{% trans "Punt F" %}</th>
+                    <th>{% trans "Punt C" %}</th>
+                {% endif %}
+
+            {% else %}
+                <th>{% trans "Tantos F" %}</th>
+                <th>{% trans "Tantos C" %}</th>
+            {% endif %}
+            <th>{% trans "Puntuación" %}</th>
+            <th>{% trans "Acenso" %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for posicion,clasificacion,ascenso in posicion_clasificacion_ascenso_list %}
+            <tr>
+                <td>{{ posicion }}</td>
+                <td>{{ clasificacion.equipo }}</td>
+                <td>{{ clasificacion.partidos_jugados }}</td>
+                <td>{{ clasificacion.partidos_ganados }}</td>
+                <td>{{ clasificacion.partidos_perdidos }}</td>
+                <td>{{ clasificacion.partidos_empatados }}</td>
+                {% if torneo.deporte.set %}
+                    <td>{{ clasificacion.sets_favor }}</td>
+                    <td>{{ clasificacion.sets_contra }}</td>
+                    {% if torneo.deporte.juego %}
+                        <td>{{ clasificacion.juegos_favor }}</td>
+                        <td>{{ clasificacion.juegos_contra }}</td>
+                    {% else %}
+                        <td>{{ clasificacion.puntos_favor }}</td>
+                        <td>{{ clasificacion.puntos_contra }}</td>
+                    {% endif %}
+                {% else %}
+                    <td>{{ clasificacion.puntos_favor }}</td>
+                    <td>{{ clasificacion.puntos_contra }}</td>
+                {% endif %}
+                <td>{{ clasificacion.get_puntuacion }}</td>
+                <td>{{ ascenso.fase }}</td>
+            <tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock content %}

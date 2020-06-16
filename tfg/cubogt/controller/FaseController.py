@@ -24,6 +24,7 @@ def fase_terminar(fase):
 	# comprobar si el torneo esta TERMINADO
 	torneo = fase.torneo
 	TorneoController.terminar_torneo(torneo)
+	# Todo llamar a ascenso
 
 
 def fase_iniciar_comprobaciones(fase):
@@ -45,7 +46,7 @@ def get_fases_activas_terminadas(torneo):
 	return fases_activas_terminadas
 
 
-def iniciar_siguiente_partido(fase):
+def iniciar_siguiente_partido(fase, arbitro=None):
 	partido_sin_terminar = PartidoController.get_partidos_no_terminados_list(fase)
 	partido_jugable_list = PartidoController.get_partidos_espera_equipos_no_jugando_list(fase)
 	campo_libre_list = CampoController.get_campo_libre_list(fase)
@@ -54,7 +55,7 @@ def iniciar_siguiente_partido(fase):
 	elif partido_jugable_list and campo_libre_list:
 		partido = partido_jugable_list.first()
 		campo = campo_libre_list.first()
-		PartidoController.iniciar_partido(partido, campo)
+		PartidoController.set_partido_jugar(partido, campo, arbitro)
 		iniciar_siguiente_partido(fase)
 
 
