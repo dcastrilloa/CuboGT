@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from cubogt.controller import GrupoController, FaseController, ClasificacionController
-from cubogt.models import Torneo, Fase, Grupo, Clasificacion, Ascenso
+from django.shortcuts import render, get_object_or_404
+
+from cubogt.controller import FaseController, ClasificacionController
+from cubogt.models import Torneo, Fase, Grupo
 
 
 def clasificacion_ver(request, torneo_id, fase_id, grupo_id=None):

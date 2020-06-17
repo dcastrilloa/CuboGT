@@ -6,6 +6,7 @@
 {% block content %}
     <h2>{% trans "Equipos fase: " %}{{ fase.nombre }}</h2>
     {% if fase.estado == CREACION %}
+        <!--TODO If con el boton para añadir los ascensos-->
         <a type="button" class="btn btn-primary" href="{% url 'fase_equipo_agregar_todo' torneo.id fase.id %}">{% trans "Añadir todos los equipos" %}</a>
         <a type="button" class="btn btn-secondary" href="{% url 'fase_equipo_editar' torneo.id fase.id %}">{% trans "Editar equipos de la fase" %}</a>
         <a type="button" class="btn btn-danger" href="{% url 'fase_equipo_borrar_todo' torneo.id fase.id %}">{% trans "Limpiar todos los equipos" %}</a>

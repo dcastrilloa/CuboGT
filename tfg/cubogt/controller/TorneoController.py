@@ -11,8 +11,12 @@ def comprobar_torneo(torneo):
 	return msg_error
 
 
-def terminar_torneo(torneo):
+def comprobar_terminar_torneo(torneo):
 	fases_no_terminadas = Fase.objects.filter(torneo=torneo).exclude(estado=TERMINADO)
 	if not fases_no_terminadas:
-		torneo.estado=TERMINADO
-		torneo.save()
+		torneo_terminar(torneo)
+
+
+def torneo_terminar(torneo):
+	torneo.estado = TERMINADO
+	torneo.save()

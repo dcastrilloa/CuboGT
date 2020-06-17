@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from cubogt.forms import *
+
 from cubogt.controller import GrupoController
+from cubogt.forms import GrupoForm, GrupoGenerarForm, GrupoEquipoForm
+from cubogt.models import Torneo, Fase, Grupo, Equipo
+from cubogt.static.constantes import CREACION
 
 
 def grupo_lista(request, torneo_id, fase_id):

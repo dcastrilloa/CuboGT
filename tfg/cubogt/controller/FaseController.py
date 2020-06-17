@@ -23,8 +23,9 @@ def fase_terminar(fase):
 	fase.save()
 	# comprobar si el torneo esta TERMINADO
 	torneo = fase.torneo
-	TorneoController.terminar_torneo(torneo)
-	# Todo llamar a ascenso
+	TorneoController.comprobar_terminar_torneo(torneo)
+	#llamar a ascenso
+	AscensoController.realizar_ascenso_fase(fase)
 
 
 def fase_iniciar_comprobaciones(fase):
@@ -64,3 +65,9 @@ def borrar_equipo_de_fase(fase, equipo):
 	grupo_list = Grupo.objects.filter(fase=fase, equipos=equipo)
 	if grupo_list:
 		GrupoController.borrar_equipo(grupo_list.first(), equipo)
+	fase.equipos.remove(equipo)
+
+
+def fase_equipo_nuevo(fase, equipo):
+	fase.equipos.add(equipo)
+	fase.save()

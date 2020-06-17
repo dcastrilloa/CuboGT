@@ -110,7 +110,7 @@ def get_posicion_clasificacion_ascenso_list(grupo):
 	for posicion in range(1, len(clasificacion_list) + 1):
 		ascenso_aux = None
 		for ascenso in ascenso_list:
-			if posicion in ascenso.posiciones_array():
+			if posicion in ascenso.get_posiciones_array():
 				ascenso_aux = ascenso
 				break
 			else:

@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 from cubogt.controller import FaseController, CampoController
-from cubogt.forms import *
+from cubogt.forms import CampoForm, CampoGenerarForm, FaseCampoForm
+from cubogt.models import Torneo, Campo, Fase
+from cubogt.static.constantes import CREACION, ACTIVO
 
 
 def campo_lista(request, torneo_id):
@@ -80,7 +82,7 @@ def campo_fase_lista(request, torneo_id, fase_id):
 	campos_list = Campo.objects.filter(fase=fase)
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
-	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list,'fase': fase,
+	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'fase': fase,
 			   'campos_list': campos_list}
 	return render(request, 'cubogt/fase_activa/campo/campo_fase_lista.html', context)
 
@@ -106,7 +108,7 @@ def campo_fase_editar(request, torneo_id, fase_id):
 
 def campo_fase_borrar(request, torneo_id, fase_id, campo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id,torneo=torneo, estado=ACTIVO)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=ACTIVO)
 	campo = get_object_or_404(Campo, pk=campo_id, torneo=torneo, fase=fase)
 
 	fase.campos.remove(campo)

@@ -22,8 +22,16 @@
         </ul>
     {% endif %}
     <h2>{% trans "Calendario: " %}{{ grupo_actual }}</h2>
+    {% if fase.estado == TERMINADO %}
+        <h4>
+            {% blocktrans %}
+                AVISO: La fase esta terminada, si realizas algun cambio de resultado y la clasificacion es
+                modificada deberes actulizar los equipos de las fases siguientes.
+            {% endblocktrans %}
+        </h4>
+    {% endif %}
     {% for n_jornada,jornada_list in partido_list %}
-        <h4>{% trans "Jornada: " %}{{ n_jornada }}</h4>
+        <h6>{% trans "Jornada: " %}{{ n_jornada }}</h6>
         <table class="table table-sm table-hover">
             <thead>
             <tr>
@@ -36,7 +44,7 @@
             <tbody>
             {% for partido in jornada_list %}
                 <tr>
-                    <td ><a id="partido{{ partido.id }}" class="partido" href="#">{{ partido }}</a></td>
+                    <td><a id="partido{{ partido.id }}" class="partido" href="#">{{ partido }}</a></td>
                     <td>{{ partido.grupo }}</td>
                     <td>{{ partido.get_estado_display }}</td>
                     <td>

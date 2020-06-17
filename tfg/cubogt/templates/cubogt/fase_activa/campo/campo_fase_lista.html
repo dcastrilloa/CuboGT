@@ -1,10 +1,10 @@
 {% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Campos" %}{% endblock %}
+{% block title %}{% trans "Campos de fase" %}{% endblock %}
 
 {% block content %}
-    <h2>{% trans "Campos" %}</h2>
+    <h2>{% trans "Campos de fase:" %}{{ fase }}</h2>
     {% if fase.estado == ACTIVO %}
         <a type="button" class="btn btn-primary" href="{% url 'campo_fase_editar' torneo.id fase.id %}">{% trans "Administrar campos" %}</a>
     {% endif %}

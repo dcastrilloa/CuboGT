@@ -13,7 +13,6 @@ ESTADO_CHOICES = (
 	(CREACION, _("Creación")),
 	(ACTIVO, _("Activo")),
 	(TERMINADO, _("Terminado"))
-
 )
 
 # Estado Partido
@@ -24,7 +23,16 @@ ESTADO_PARTIDO_CHOICES = (
 	(ESPERA, _("En espera")),
 	(JUGANDO, _("Jugándose")),
 	(TERMINADO, _("Terminado"))
+)
 
+# Estado Ascenso
+ERROR = 1
+REALIZADO = 2
+
+ESTADO_ASCENSO_CHOICES = (
+	(ESPERA, _("espera")),
+	(ERROR, _("Tiene error")),
+	(REALIZADO, _("Realizado"))
 )
 
 

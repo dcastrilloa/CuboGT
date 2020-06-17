@@ -139,7 +139,8 @@ class Clasificacion(models.Model):
 	NWD = models.DateTimeField(auto_now_add=True)
 
 	class Meta:
-		ordering = ["-partidos_ganados", "-sets_favor", "-puntos_favor", "puntos_contra"]
+		ordering = ["-partidos_ganados", "-partidos_empatados", "-sets_favor", "-sets_contra",
+					"-juegos_favor","-juegos_contra","-puntos_favor", "puntos_contra"]
 
 	def __str__(self):
 		return '(%s - %s)' % (self.equipo, self.get_puntuacion())
@@ -156,6 +157,8 @@ class Ascenso(models.Model):
 	desde_posicion = models.IntegerField()
 	proxima_fase = models.ForeignKey('Fase', on_delete=models.CASCADE)
 
+	estado = models.IntegerField(choices=ESTADO_ASCENSO_CHOICES, default=ESPERA)
+
 	UPD = models.DateTimeField(auto_now=True)
 	NWD = models.DateTimeField(auto_now_add=True)
 
@@ -168,7 +171,7 @@ class Ascenso(models.Model):
 			aux += str(x) + ","
 		return aux[:-1]
 
-	def posiciones_array(self):
+	def get_posiciones_array(self):
 		posiciones = []
 		for x in range(self.desde_posicion, self.desde_posicion + self.numero_equipos):
 			posiciones.append(x)

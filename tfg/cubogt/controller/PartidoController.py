@@ -1,10 +1,6 @@
-from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect
-from cubogt.forms import FaseForm, FasePuntoForm, FaseSetForm, FaseEquipoForm
 from . import CampoController, ClasificacionController, FaseController
-from ..controller import GrupoController
-from ..models import Torneo, Fase, Equipo, Partido, Campo, Grupo
-from ..static.constantes import LIGA, ELIMINATORIA, JUGANDO, ESPERA, TERMINADO
+from ..models import Partido, Grupo
+from ..static.constantes import LIGA, JUGANDO, ESPERA, TERMINADO
 
 
 def crear_calendario(fase):
@@ -188,5 +184,12 @@ def partido_terminar(partido):
 	ClasificacionController.actualizar_clasificacion(partido)
 	# Iniciar siguiente partido
 	arbitro = get_equipo_ganador(partido)
+	if not arbitro:
+		n_equipo_local_arbitro = Partido.objects.filter(arbitro=partido.equipo_local).count()
+		n_equipo_visitante_arbitro = Partido.objects.filter(arbitro=partido.equipo_visitante).count()
+		if n_equipo_local_arbitro <= n_equipo_visitante_arbitro:
+			arbitro = partido.equipo_local
+		else:
+			arbitro = n_equipo_visitante_arbitro
 	fase = partido.grupo.fase
 	FaseController.iniciar_siguiente_partido(fase, arbitro)

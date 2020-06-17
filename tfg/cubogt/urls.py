@@ -54,6 +54,7 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/borrar_todo', ascenso_views.ascenso_borrar_todo, name='ascenso_borrar_todo'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/<int:ascenso_id>/editar', ascenso_views.ascenso_editar, name='ascenso_editar'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/<int:ascenso_id>/borrar', ascenso_views.ascenso_borrar, name='ascenso_borrar'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ascenso/<int:ascenso_id>/comprobar', ascenso_views.ascenso_comprobar, name='ascenso_comprobar'),
 
 	#FASE INICIADA
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/partidos_enjuego', partido_views.partido_enjuego, name='partido_enjuego'),

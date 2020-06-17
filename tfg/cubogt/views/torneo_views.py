@@ -1,11 +1,9 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from cubogt.controller import FaseController
+from cubogt.forms import TorneoForm
 from cubogt.models import Torneo
-from cubogt.forms import *
-from cubogt.static.constantes import *
-from django.utils import timezone
+from cubogt.static.constantes import CREACION
 
 
 # TORNEO

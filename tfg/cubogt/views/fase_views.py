@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
+from django.shortcuts import render, get_object_or_404, redirect
+
 from cubogt.forms import FaseForm, FasePuntoForm, FaseSetForm, FaseEquipoForm
-from ..controller import GrupoController, FaseController
+from ..controller import FaseController
 from ..models import Torneo, Fase, Equipo
 from ..static.constantes import CREACION, TERMINADO
 
@@ -146,7 +147,6 @@ def fase_equipo_borrar(request, torneo_id, fase_id, equipo_id):
 	equipo = get_object_or_404(Equipo, pk=equipo_id, fase=fase)
 	#Borro primero el equipo del grupo si lo tuviera y luego lo borro de la fase
 	FaseController.borrar_equipo_de_fase(fase, equipo)
-	fase.equipos.remove(equipo)
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
 
 

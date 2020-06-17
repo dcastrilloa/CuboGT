@@ -27,8 +27,12 @@
                         <td><a href="{% url 'grupo_equipo_lista_especifico' torneo.id fase.id ascenso.grupo.id %}">{{ ascenso.grupo }}</a></td>
                         <td>{{ ascenso.proxima_fase }}</td>
                         <td>{{ ascenso.posiciones_label }}</td>
+                        <td>{{ ascenso.get_estado_display }}</td>
                         <td>
                             {% if ascenso.proxima_fase.estado == CREACION %}
+                                {% if ascenso.estado == 1 %}<!--ERROR-->
+                                    <a type="button" class="btn btn-warning" href="{% url 'ascenso_comprobar' torneo.id fase.id ascenso.id %}">{% trans "Comprobar" %}</a>
+                                {% endif %}
                                 <a type="button" class="btn btn-outline-primary" href="{% url 'ascenso_editar' torneo.id fase.id ascenso.id %}">{% trans "Editar" %}</a>
                                 <a type="button" class="btn btn-outline-danger" href="{% url 'ascenso_borrar' torneo.id fase.id ascenso.id %}">{% trans "Borrar" %}</a>
                             {% endif %}
