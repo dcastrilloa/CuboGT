@@ -1,0 +1,64 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Calendario: " %}{{ fase }}{% endblock %}
+
+{% block content %}
+    {% if grupo_list.count > 1 %}
+        <ul class="nav nav-tabs">
+            {% for grupo in grupo_list %}
+                {% if grupo_actual.id == grupo.id %}
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                           href="{% url 'partido_calendario_grupo' torneo.id fase.id grupo.id %}">{{ grupo }}</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{% url 'partido_calendario_grupo' torneo.id fase.id grupo.id %}">{{ grupo }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>{% trans "Calendario: " %}{{ grupo_actual }}</h2>
+    {% if fase.estado == TERMINADO %}
+        <div>
+            <h4><span class="badge badge-warning">{% trans "Adventencia: La fase esta terminada." %}</span></h4>
+            <p>
+                {% blocktrans %}
+                    Si realizas algún cambio de resultado y la clasificacion cambia,
+                    deberás actualizar los equipos de las siguientes fases.
+                {% endblocktrans %}
+            </p>
+        </div>
+    {% endif %}
+    {% for n_jornada,jornada_list in partido_list %}
+        <h6>{% trans "Jornada: " %}{{ n_jornada }}</h6>
+        <table class="table table-sm table-hover">
+            <thead>
+            <tr>
+                <th>{% trans "Nombre" %}</th>
+                <th>{% trans "Grupo" %}</th>
+                <th>{% trans "Estado" %}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for partido in jornada_list %}
+                <tr>
+                    <td><a id="partido{{ partido.id }}" class="partido" href="#">{{ partido }}</a></td>
+                    <td>{{ partido.grupo }}</td>
+                    <td>{{ partido.get_estado_display }}</td>
+                    <td>
+                        <a type="button" class="btn btn-outline-primary"
+                           href="{% url 'partido_ver' torneo.id fase.id grupo_actual.id partido.id %}">{% trans "Ver partido" %}</a>
+                    </td>
+                <tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+
+
+{% endblock content %}

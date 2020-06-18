@@ -1,0 +1,15 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_fase_creacion.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Editar grupo" %}
+{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Editar grupo" %}</h2>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class=" save btn btn-primary">{% trans "Guardar" %}</button>
+    </form>
+
+{% endblock content %}

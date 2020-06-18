@@ -1,0 +1,18 @@
+{% extends  "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Editar Torneo" %}
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Editar Torneo" %}</h1>
+
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class=" save btn btn-primary">{% trans "Guardar" %}</button>
+    </form>
+
+
+
+{% endblock %}

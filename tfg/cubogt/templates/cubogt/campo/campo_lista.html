@@ -1,0 +1,41 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Campos" %}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Campos" %}</h2>
+    <a type="button" class="btn btn-primary" href="{% url 'campo_nuevo' torneo.id %}">{% trans "Nuevo campo" %}</a>
+    {% if not campos_list %}
+        <a type="button" class="btn btn-info" href="{% url 'campo_generar' torneo.id %}">{% trans "Crear nuevos campos" %}</a>
+    {% else %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Nombre" %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for campo in campos_list %}
+                    <tr>
+                        <td>{{ campo.nombre }}</td>
+                        <td>
+                            <a type="button" class="btn btn-outline-primary" href="{% url 'campo_editar' torneo.id campo.id %}">{% trans "Editar" %}</a>
+                            {% if torneo.estado == CREACION%}
+                                <a type="button" class="btn btn-outline-danger" href="{% url 'campo_borrar' torneo.id campo.id %}">{% trans "Borrar" %}</a>
+                            {% endif %}
+                        </td>
+                    <tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    {% endif %}
+
+
+
+{% endblock content %}

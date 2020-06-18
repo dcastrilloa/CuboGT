@@ -1,0 +1,56 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Iniciar fase" %}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Iniciar fase" %}</h2>
+    <a type="button" class="btn btn-primary" href="{% url 'fase_nueva' torneo.id %}">{% trans "Nueva fase" %}</a>
+    {% if fases_list %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Nombre" %}</th>
+                    <th>{% trans "Equipos" %}</th>
+                    <th>{% trans "Tipo de Fase" %}</th>
+                    <th>{% trans "Doble partido" %}</th>
+                    {% if torneo.deporte.set %}
+                        <th>{% trans "Nº Set" %}</th>
+                    {% endif %}
+                    {% if torneo.deporte.punto %}
+                        <th>{% trans "Nº Puntos" %}</th>
+                        <th>{% trans "Puntos Max." %}</th>
+                    {% endif %}
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fase in fases_list %}
+                    <tr>
+                        <td><a href="{% url 'fase_ver' torneo.id fase.id %}">{{ fase.nombre }}</a></td>
+                        <td>{{ fase.equipos_apuntados_max_label }}</td>
+                        <td>{{ fase.get_tipo_fase_display }}</td>
+                        <td>{{ fase.doble_partido_label }}</td>
+                        {% if torneo.deporte.set %}
+                            <td>{{ fase.numero_sets }}</td>
+                        {% endif %}
+                        {% if torneo.deporte.punto %}
+                            <td>{{ fase.numero_puntos }}</td>
+                            <td>{{ fase.puntos_maximos }}</td>
+                        {% endif %}
+                        <td>
+                            <a type="button" class="btn btn-outline-success" href="{% url 'fase_iniciar' torneo.id fase.id %}">{% trans "Iniciar" %}</a>
+                        </td>
+                    <tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    {% endif %}
+
+
+
+{% endblock content %}

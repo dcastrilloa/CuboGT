@@ -1,0 +1,22 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_fase_creacion.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% if form.instance.id %}
+        {% trans "Editar grupo" %}
+    {% else %}
+        {% trans "Nuevo grupo" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if form.instance.id %}
+        <h2>{% trans "Editar grupo" %}</h2>
+    {% else %}
+        <h2>{% trans "Nuevo grupo" %}</h2>
+    {% endif %}
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class=" save btn btn-primary">{% trans "Guardar" %}</button>
+    </form>
+{% endblock content %}

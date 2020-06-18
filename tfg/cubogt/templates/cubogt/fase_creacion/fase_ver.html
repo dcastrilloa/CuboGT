@@ -1,0 +1,20 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_fase_creacion.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Fase" %}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Información de la fase" %}</h2>
+    <div>{% trans "Nombre: " %}{{ fase.nombre }}</div>
+    <div>{% trans "Nº equipos: " %}{{ fase.equipos_apuntados_max_label }}</div>
+    <div>{% trans "Tipo de Fase: " %}{{ fase.get_tipo_fase_display }}</div>
+    <div>{% trans "Doble partido: " %}{{ fase.doble_partido_label }}</div>
+    {% if torneo.deporte.set %}
+        <div>{% trans "Nº Set: " %}{{ fase.numero_sets }}</div>
+    {% endif %}
+    {% if torneo.deporte.punto %}
+        <div>{% trans "Nº Puntos: " %}{{ fase.numero_puntos }}</div>
+        <div>{% trans "Puntos Máximos :" %}{{ fase.puntos_maximos }}</div>
+    {% endif %}
+
+{% endblock content %}

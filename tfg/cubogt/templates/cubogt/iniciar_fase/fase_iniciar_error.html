@@ -1,0 +1,14 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_fase_creacion.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Iniciar fase" %}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Error al iniciar fase: " %}{{ fase.nombre }}</h2>
+    <div>
+        {% for msg_error in msg_error_list %}
+            <p>{{ msg_error }}</p>
+        {% endfor %}
+    </div>
+    <a type="button" class="btn btn-secondary" href="{% url 'fase_iniciar_lista' torneo.id %}">{% trans "Volver" %}</a>
+{% endblock content %}

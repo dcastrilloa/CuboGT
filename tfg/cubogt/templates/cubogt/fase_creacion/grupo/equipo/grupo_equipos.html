@@ -1,0 +1,46 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_fase_creacion.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Equipos grupo: " %}{{ grupo.nombre }}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Equipos grupo: " %}{{ grupo.nombre }}</h2>
+    {% if fase.estado == CREACION %}
+        <a type="button" class="btn btn-primary" href="{% url 'grupo_repartir_equipos' torneo.id fase.id %}">{% trans "Repartir equipos sin asignar" %}</a>
+        <a type="button" class="btn btn-danger" href="{% url 'grupo_equipo_borrar_todo' torneo.id fase.id %}">{% trans "Limpiar todos los grupos" %}</a>
+    {% endif %}
+    {% if grupo_list %}
+        {% for grupo in grupo_list %}
+            <h3 id="grupo{{ grupo.id }}">{% trans "Grupo " %} {{ grupo.nombre }}</h3>
+            {% if fase.estado == CREACION %}
+                <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_editar' torneo.id fase.id grupo.id %}">{% trans "Editar equipos" %}</a>
+            {% endif %}
+            {% if grupo.equipos.all %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Nombre" %}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% with equipo_list=grupo.equipos.all  %}
+                        {% for equipo in equipo_list %}
+                            <tr>
+                                <td>{{ equipo.nombre }}</td>
+                                <td>
+                                    {% if fase.estado == CREACION %}
+                                        <a type="button" class="btn btn-outline-danger" href="{% url 'grupo_equipo_borrar' torneo.id fase.id grupo.id equipo.id %}">{% trans "Quitar del grupo" %}</a>
+                                    {% endif %}
+                                </td>
+                            <tr>
+
+                        {% endfor %}
+                        {% endwith %}
+                    </tbody>
+                </table>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endblock content %}

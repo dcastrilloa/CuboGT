@@ -1,0 +1,21 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Generar campos" %}
+{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Generar campos" %}</h2>
+    {% if torneo.campo_set.count %}
+        <div>
+            {% trans "Si quiere generar campos debe borrar los que tiene creados. " %}
+            <a href="{% url 'campo_lista' torneo.id %}">{% trans "Volver" %}</a>
+        </div>
+    {% else %}
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class=" save btn btn-primary">{% trans "Guardar" %}</button>
+        </form>
+    {% endif %}
+{% endblock content %}

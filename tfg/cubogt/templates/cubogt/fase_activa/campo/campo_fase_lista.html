@@ -1,0 +1,41 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Campos de fase" %}{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Campos de fase:" %}{{ fase }}</h2>
+    {% if fase.estado == ACTIVO %}
+        <a type="button" class="btn btn-primary" href="{% url 'campo_fase_editar' torneo.id fase.id %}">{% trans "Administrar campos" %}</a>
+    {% endif %}
+    {% if campos_list %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Nombre" %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for campo in campos_list %}
+                    <tr>
+                        <td>{{ campo.nombre }}</td>
+                        <td>
+                            <a type="button" class="btn btn-outline-primary" href="{% url 'campo_editar' torneo.id campo.id %}">{% trans "Editar" %}</a>
+                            {% if fase.estado == ACTIVO %}
+                                <a type="button" class="btn btn-outline-danger" href="{% url 'campo_fase_borrar' torneo.id fase.id campo.id %}">{% trans "Borrar de la fase" %}</a>
+                            {% endif %}
+                        </td>
+                    <tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    {% endif %}
+
+
+
+{% endblock content %}

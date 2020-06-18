@@ -1,0 +1,46 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}{{ torneo.nombre }}{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Información del Torneo" %}</h1>
+    {% if torneo.estado == CREACION %}
+        <a type="button" class="btn btn-primary" href="{% url 'torneo_editar' torneo.id %}">{% trans "Editar torneo" %}</a>
+    {% endif %}
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#torneoBorrar">{% trans "Borrar torneo" %}</button>
+
+    <div>{% trans "Nombre: " %}{{ torneo.nombre }}</div>
+    <div>{% trans "Deporte: " %}{{ torneo.deporte.get_nombre_display }}</div>
+    <div>{% trans "Fecha: " %}{{ torneo.fecha }}</div>
+    <div>{% trans "Descripcion: " %}{{ torneo.descripcion }}</div>
+    <div>{% trans "Numero de Equipos: " %}{{ torneo.numero_equipos_max }}</div>
+
+    <!-- MODAL -->
+    <div class="modal fade" id="torneoBorrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {% trans "Eliminar torneo: " %}{{ torneo }}
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% trans "¿Está seguro que desea borrar este torneo y todo lo relacionado con el mismo?" %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancelar" %}</button>
+                    <a type="button" class="btn btn-danger"
+                       href="{% url 'torneo_borrar' torneo.id %}">{% trans "Borrar" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}

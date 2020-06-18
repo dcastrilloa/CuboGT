@@ -1,0 +1,16 @@
+{% extends "cubogt/base/body/navbar_lateral/navbar_torneo.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Administrar campos: " %}{{ fase.nombre }}
+{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Administrar campos: " %}{{ fase.nombre }}</h2>
+
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class=" save btn btn-primary">{% trans "Guardar" %}</button>
+    </form>
+
+{% endblock content %}
