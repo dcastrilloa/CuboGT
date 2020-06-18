@@ -1,5 +1,4 @@
-from django.utils.translation import gettext_lazy as _
-from cubogt.models import Torneo, Fase
+from cubogt.models import Fase
 from . import EquipoController, CampoController
 from ..static.constantes import TERMINADO
 

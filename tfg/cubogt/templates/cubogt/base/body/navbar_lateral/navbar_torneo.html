@@ -21,10 +21,10 @@
             </h6>
             {% for fase in fase_activa_terminada_list %}
                   <div class="btn-group dropright">
-                        {% if fase_aux.estado == ACTIVO %}
+                        {% if fase.estado == ACTIVO %}
                             <div class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% else %}<!--Estado TERMINADO-->
-                            <div class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% endif %}
                             {{ fase.nombre }} - {{ fase.get_estado_display }}
                             </div>

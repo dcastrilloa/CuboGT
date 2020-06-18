@@ -30,6 +30,7 @@ urlpatterns = [
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos', fase_views.fase_equipo_lista, name='fase_equipo_lista'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/editar_equipos', fase_views.fase_equipo_editar, name='fase_equipo_editar'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/añadir_todos', fase_views.fase_equipo_agregar_todo, name='fase_equipo_agregar_todo'),
+	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/añadir_ascensos', fase_views.fase_equipo_agregar_ascenso, name='fase_equipo_agregar_ascenso'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/borrar_todos', fase_views.fase_equipo_borrar_todo, name='fase_equipo_borrar_todo'),
 	path('torneo/<int:torneo_id>/fase/<int:fase_id>/ver_equipos/borrar/<int:equipo_id>', fase_views.fase_equipo_borrar, name='fase_equipo_borrar'),
 

@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from cubogt.models import Grupo, Equipo, Fase
-from cubogt.static.constantes import *
+from cubogt.static.constantes import ABECEDARIO
 from django.db.models import Count
 from string import ascii_uppercase
 

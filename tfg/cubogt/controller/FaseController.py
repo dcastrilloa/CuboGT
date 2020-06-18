@@ -1,9 +1,9 @@
-from cubogt.models import Grupo, Equipo, Fase, Ascenso, Partido, Campo
+from cubogt.models import Grupo, Fase
+from cubogt.static.constantes import CREACION, ACTIVO, TERMINADO
 from . import GrupoController, EquipoController, TorneoController, AscensoController, PartidoController, CampoController
-from cubogt.static.constantes import CREACION, ACTIVO, ESPERA, TERMINADO
 
 
-def fase_iniciar(fase):
+def fase_iniciar(fase):  # TODO if con eliminatoria
 	# crear calendario
 	PartidoController.crear_calendario(fase)
 	# cambiar el torneo a estado ACTIVO
@@ -68,6 +68,18 @@ def borrar_equipo_de_fase(fase, equipo):
 	fase.equipos.remove(equipo)
 
 
+def fase_equipo_borrar_todo(fase):
+	grupos_list = fase.grupo_set.all()
+	for grupo in grupos_list:
+		grupo.equipos.clear()
+	fase.equipos.clear()
+
+
 def fase_equipo_nuevo(fase, equipo):
 	fase.equipos.add(equipo)
 	fase.save()
+
+
+def fase_equipo_agregar_ascenso(fase):
+	fase_equipo_borrar_todo(fase)
+	AscensoController.recibir_ascenso(fase)

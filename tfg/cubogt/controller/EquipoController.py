@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy as _
-from cubogt.models import Grupo, Equipo, Fase, Ascenso
+
+from cubogt.models import Equipo, Fase
 from cubogt.static.constantes import ACTIVO
 
 

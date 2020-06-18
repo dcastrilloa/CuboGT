@@ -1,10 +1,7 @@
-from django.db.models import Q, Count, Sum
-from django.shortcuts import render, get_object_or_404, redirect
-from cubogt.forms import FaseForm, FasePuntoForm, FaseSetForm, FaseEquipoForm
-from . import CampoController
-from ..controller import GrupoController
-from ..models import Torneo, Fase, Equipo, Partido, Campo, Grupo, Clasificacion, Set, Juego, Ascenso
-from ..static.constantes import LIGA, ELIMINATORIA, JUGANDO, ESPERA, TERMINADO
+from django.db.models import Q, Sum
+
+from ..models import Partido, Clasificacion, Set, Ascenso
+from ..static.constantes import TERMINADO
 
 
 def actualizar_clasificacion(partido):

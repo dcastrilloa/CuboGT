@@ -1,8 +1,7 @@
-from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 
 from cubogt.controller import FaseController
-from cubogt.models import Grupo, Fase, Ascenso, Clasificacion
+from cubogt.models import Grupo, Ascenso, Clasificacion
 from cubogt.static.constantes import TERMINADO, CREACION, ERROR, ESPERA, REALIZADO
 
 
@@ -127,7 +126,6 @@ def realizar_ascenso(ascenso):
 
 
 def recibir_ascenso(fase):
-	# TODO boton de ascenso en fase/equipos
 	ascenso_list = Ascenso.objects.filter(proxima_fase=fase)
 	for ascenso in ascenso_list:
 		grupo = ascenso.grupo
