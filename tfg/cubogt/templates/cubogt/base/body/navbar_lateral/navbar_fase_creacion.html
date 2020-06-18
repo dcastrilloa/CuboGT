@@ -15,15 +15,21 @@
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'grupo_lista' torneo.id fase.id %}">
                 <span data-feather="home"></span>
-                {% trans "Grupos" %} <span class="sr-only">(current)</span>
+                {% if fase.tipo_fase == ELIMINATORIA %}
+                    {% trans "Cruces" %}
+                {% else %}
+                    {% trans "Grupos" %}
+                {% endif %} <span class="sr-only">(current)</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'ascenso_lista' torneo.id fase.id %}">
-                <span data-feather="file"></span>
-                {% trans "Ascensos" %}
-            </a>
-        </li>
+        {% if fase.estado == LIGA %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ascenso_lista' torneo.id fase.id %}">
+                    <span data-feather="file"></span>
+                    {% trans "Ascensos" %}
+                </a>
+            </li>
+        {% endif %}
         {% if fase.estado == CREACION %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'fase_iniciar' torneo.id fase.id %}">

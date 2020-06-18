@@ -50,7 +50,11 @@
             </p>
         </div>
     {% else %}
-        <div><p>{% trans "La fase ha terminado no hay mas partidos por jugar" %}</p></div>
+        <div>
+            <p>{% trans "La fase ha terminado no hay mas partidos por jugar. Puede activar " %}
+                <a href="{% url 'fase_iniciar_lista' torneo.id %}">{% trans "la siguiente fase." %}</a>
+            </p>
+        </div>
     {% endif %}
 
 

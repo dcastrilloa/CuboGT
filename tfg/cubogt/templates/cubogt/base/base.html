@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% with LIGA=1 ELIMINATORIA=2 %}{% block title %}{% endblock %}{% endwith %}</title>
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    {% with CREACION=0 ACTIVO=1 TERMINADO=2 %}
+    {% with CREACION=0 ACTIVO=1 TERMINADO=2 LIGA=1 ELIMINATORIA=2 %}
         {% block body %}{% endblock %}
     {% endwith %}
 </body>

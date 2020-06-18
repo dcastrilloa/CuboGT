@@ -35,6 +35,7 @@ def fase_nueva(request, torneo_id):
 					fase.puntos_maximos = fase_aux.puntos_maximos
 
 			fase.torneo = torneo
+			fase.prefijo_eliminatoria = fase.nombre
 			fase.save()
 			return redirect('fase_lista', torneo_id=torneo.id)
 	else:
@@ -66,7 +67,7 @@ def fase_editar(request, torneo_id, fase_id):
 					fase_aux = form_punto.save(commit=False)
 					fase.numero_puntos = fase_aux.numero_puntos
 					fase.puntos_maximos = fase_aux.puntos_maximos
-
+			fase.prefijo_eliminatoria = fase.nombre
 			fase.save()
 			return redirect('fase_lista', torneo_id=torneo.id)
 	else:
@@ -149,7 +150,7 @@ def fase_equipo_borrar(request, torneo_id, fase_id, equipo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
 	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	equipo = get_object_or_404(Equipo, pk=equipo_id, fase=fase)
-	#Borro primero el equipo del grupo si lo tuviera y luego lo borro de la fase
+	# Borro primero el equipo del grupo si lo tuviera y luego lo borro de la fase
 	FaseController.borrar_equipo_de_fase(fase, equipo)
 	return redirect('fase_equipo_lista', torneo_id=torneo.id, fase_id=fase_id)
 

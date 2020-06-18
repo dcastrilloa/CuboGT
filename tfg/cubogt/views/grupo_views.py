@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from cubogt.controller import GrupoController
 from cubogt.forms import GrupoForm, GrupoGenerarForm, GrupoEquipoForm
 from cubogt.models import Torneo, Fase, Grupo, Equipo
-from cubogt.static.constantes import CREACION
+from cubogt.static.constantes import CREACION, ELIMINATORIA, LIGA
 
 
 def grupo_lista(request, torneo_id, fase_id):
@@ -17,7 +17,7 @@ def grupo_lista(request, torneo_id, fase_id):
 
 def grupo_nuevo(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION, tipo_fase=LIGA)
 	if request.method == "POST":
 		form = GrupoForm(request.POST)
 		if form.is_valid():
@@ -34,7 +34,7 @@ def grupo_nuevo(request, torneo_id, fase_id):
 
 def grupo_generar(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION, tipo_fase=LIGA)
 	if request.method == "POST":
 		form = GrupoGenerarForm(request.POST)
 		if form.is_valid():
@@ -47,6 +47,14 @@ def grupo_generar(request, torneo_id, fase_id):
 
 	context = {'torneo': torneo, 'fase': fase, 'form': form}
 	return render(request, 'cubogt/fase_creacion/grupo/grupo_generar.html', context)
+
+
+def grupo_generar_eliminatoria(request, torneo_id, fase_id):
+	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION, tipo_fase=ELIMINATORIA)
+	GrupoController.grupo_generar_eliminatoria(fase)
+
+	return redirect('grupo_lista', torneo_id=torneo.id, fase_id=fase_id)
 
 
 def grupo_editar(request, torneo_id, fase_id, grupo_id):
@@ -68,9 +76,19 @@ def grupo_editar(request, torneo_id, fase_id, grupo_id):
 
 def grupo_borrar(request, torneo_id, fase_id, grupo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION, tipo_fase=LIGA)
 	grupo = get_object_or_404(Grupo, pk=grupo_id, fase=fase)
 	grupo.delete()
+
+	return redirect('grupo_lista', torneo_id=torneo.id, fase_id=fase_id)
+
+
+def grupo_borrar_todo(request, torneo_id, fase_id):
+	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION, tipo_fase=LIGA)
+	grupo_list = Grupo.objects.filter(fase=fase)
+	for grupo in grupo_list:
+		grupo.delete()
 
 	return redirect('grupo_lista', torneo_id=torneo.id, fase_id=fase_id)
 

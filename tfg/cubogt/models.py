@@ -45,6 +45,7 @@ class Fase(models.Model):
 	campos = models.ManyToManyField('Campo')
 	numero_activacion = models.IntegerField(null=True, default=None)
 	nombre = models.CharField(max_length=100)
+	prefijo_eliminatoria = models.CharField(max_length=100, default=nombre)
 	tipo_fase = models.IntegerField(choices=TIPO_FASE)
 	numero_equipos_max = models.IntegerField(null=True, blank=True)
 	doble_partido = models.BooleanField()

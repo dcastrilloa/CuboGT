@@ -1,31 +1,81 @@
-from cubogt.models import Grupo, Fase
-from cubogt.static.constantes import CREACION, ACTIVO, TERMINADO
+from cubogt.models import Grupo, Fase, Campo
+from cubogt.static.constantes import CREACION, ACTIVO, TERMINADO, ELIMINATORIA, NUMEROS, NOMBRE_ELIMINATORIA, \
+	TERCER_PUESTO
 from . import GrupoController, EquipoController, TorneoController, AscensoController, PartidoController, CampoController
 
 
-def fase_iniciar(fase):  # TODO if con eliminatoria
+def fase_iniciar(fase):
+	if fase.tipo_fase == ELIMINATORIA:
+		fase_eliminatoria(fase)
 	# crear calendario
 	PartidoController.crear_calendario(fase)
 	# cambiar el torneo a estado ACTIVO
 	torneo = fase.torneo
-	if torneo.estado == CREACION:
+	if torneo.estado != ACTIVO:
 		torneo.estado = ACTIVO
 		torneo.save()
 	# cambiar la fase a estado ACTIVO y asignar un numero de activacion
 	fase.estado = ACTIVO
 	fase.numero_activacion = Fase.objects.filter(torneo=torneo, numero_activacion__isnull=False).count()
 	fase.save()
+	iniciar_siguiente_partido(fase)
+
+
+def fase_eliminatoria(fase):
+	numero_grupos = GrupoController.get_numero_grupos(fase)
+
+	# Si no tengo grupos: crear grupos (nombre eliminatoria) y repartirlos
+	if not numero_grupos:
+		numero_grupos = GrupoController.get_numero_grupos_crear_eliminatoria(fase)
+		GrupoController.generar_grupos(fase, numero_grupos, NUMEROS, eliminatoria=True)
+		GrupoController.repartir_equipos(fase)
+
+	# Añado el nombre de la eliminatoria a fase.
+	fase.nombre = fase.prefijo_eliminatoria + NOMBRE_ELIMINATORIA[numero_grupos]
 
 
 def fase_terminar(fase):
+	if fase.tipo_fase == ELIMINATORIA:
+		fase_eliminatoria_terminar(fase)
 	# cambiar la fase a estado TERMINADO
 	fase.estado = TERMINADO
 	fase.save()
 	# comprobar si el torneo esta TERMINADO
 	torneo = fase.torneo
 	TorneoController.comprobar_terminar_torneo(torneo)
-	#llamar a ascenso
+	# llamar a ascenso
 	AscensoController.realizar_ascenso_fase(fase)
+
+
+def fase_eliminatoria_terminar(fase):
+	numero_grupos = GrupoController.get_numero_grupos(fase)
+	# Si tengo mas de dos equipos(1 grupo): crear FASE SIGUIENTE y el ascenso del primero de cada grupo
+	if numero_grupos > 1:
+		# Crear fase siguiente
+		nombre_fase_siguiente = fase.prefijo_eliminatoria + NOMBRE_ELIMINATORIA[numero_grupos//2]
+		fase_siguiente = Fase(torneo=fase.torneo, nombre=nombre_fase_siguiente,
+							  prefijo_eliminatoria=fase.prefijo_eliminatoria, tipo_fase=ELIMINATORIA,
+							  numero_equipos_max=numero_grupos , doble_partido=fase.doble_partido,
+							  numero_sets=fase.numero_sets, numero_puntos=fase.numero_puntos,
+							  puntos_maximos=fase.puntos_maximos)
+		fase_siguiente.save()
+		fase_siguiente.campos.add(*fase.campos.all())
+
+		# Ascenso
+		AscensoController.ascenso_general(fase, numero_equipos=1, desde_posicion=1, proxima_fase=fase_siguiente)
+
+		if numero_grupos == 2 and fase.equipos.count() == 4:  # Tercer y cuarto puesto
+			nombre_fase_siguiente = fase.prefijo_eliminatoria + NOMBRE_ELIMINATORIA[TERCER_PUESTO]
+			fase_siguiente_3 = Fase(torneo=fase.torneo, nombre=nombre_fase_siguiente,
+								  prefijo_eliminatoria=fase.prefijo_eliminatoria, tipo_fase=ELIMINATORIA,
+								  numero_equipos_max=numero_grupos, doble_partido=fase.doble_partido,
+								  numero_sets=fase.numero_sets, numero_puntos=fase.numero_puntos,
+								  puntos_maximos=fase.puntos_maximos)
+			fase_siguiente_3.save()
+			fase_siguiente_3.campos.add(*fase.campos.all())
+			# Ascenso
+			AscensoController.ascenso_general(fase, numero_equipos=1, desde_posicion=2, proxima_fase=fase_siguiente_3)
+
 
 
 def fase_iniciar_comprobaciones(fase):

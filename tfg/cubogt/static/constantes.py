@@ -61,7 +61,6 @@ TIPO_TORNEO = (
 	(3, _("Fase de grupos y eliminatorias"))
 )
 
-
 ABECEDARIO = '1'
 NUMEROS = '2'
 GENERAR_GRUPOS_CHOICES = (
@@ -70,3 +69,18 @@ GENERAR_GRUPOS_CHOICES = (
 )
 
 GENERAR_CAMPOS_CHOICES = GENERAR_GRUPOS_CHOICES
+
+# ELIMINATORIA
+TERCER_PUESTO = 3
+NOMBRE_ELIMINATORIA = {
+	1: _(" Final"),
+	3: _(" 3º y 4º puesto"),
+	2: _(" Semifinal"),
+	4: _(" Cuartos de final"),
+	8: _(" Octavos de final"),
+	16: _(" Dieciseisavos de final"),
+	32: _(" Treintaidosavos de final"),
+	64: _(" Sesentaicuatroavos de final"),
+	128: _(" 128avos de final"),
+	256: _(" 255avos de final"),
+}

@@ -1,21 +1,45 @@
 {% extends "cubogt/base/body/navbar_lateral/navbar_fase_creacion.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Grupos" %}{% endblock %}
+{% block title %}
+    {% if fase.tipo_fase == ELIMINATORIA %}
+        {% trans "Cruces" %}
+    {% else %}
+        {% trans "Grupos" %}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
-    <h2>{% trans "Grupos" %}</h2>
-    {% if fase.estado == CREACION %}
-        <a type="button" class="btn btn-primary" href="{% url 'grupo_nuevo' torneo.id fase.id %}">{% trans "Nuevo grupo" %}</a>
-        {% if not grupo_list %}
-            <a type="button" class="btn btn-info" href="{% url 'grupo_generar' torneo.id fase.id %}">{% trans "Generar grupos automaticamente" %}</a>
+    <h2>
+        {% if fase.tipo_fase == ELIMINATORIA %}
+            {% trans "Cruces" %}
         {% else %}
-            <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Administrar equipos" %}</a>
+            {% trans "Grupos" %}
+        {% endif %}
+    </h2>
+    <div>
+    {% if fase.estado == CREACION %}
+        {% if fase.tipo_fase == ELIMINATORIA %}
+            {% if not grupo_list %}
+                <a type="button" class="btn btn-primary" href="{% url 'grupo_generar_eliminatoria' torneo.id fase.id %}">{% trans "Crear cruces" %}</a>
+            {% else %}
+                <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Administrar equipos" %}</a>
+                <a type="button" class="btn btn-danger" href="{% url 'grupo_borrar_todo' torneo.id fase.id %}">{% trans "Borrar grupos" %}</a>
+            {% endif %}
+
+        {% else %}<!-- LIGA -->
+            <a type="button" class="btn btn-primary" href="{% url 'grupo_nuevo' torneo.id fase.id %}">{% trans "Nuevo grupo" %}</a>
+            {% if not grupo_list %}
+                <a type="button" class="btn btn-info" href="{% url 'grupo_generar' torneo.id fase.id %}">{% trans "Generar grupos automaticamente" %}</a>
+            {% else %}
+                <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Administrar equipos" %}</a>
+                <a type="button" class="btn btn-danger" href="{% url 'grupo_borrar_todo' torneo.id fase.id %}">{% trans "Borrar grupos" %}</a>
+            {% endif %}
         {% endif %}
     {% else %}
         <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_lista' torneo.id fase.id %}">{% trans "Ver equipos por grupo" %}</a>
     {% endif %}
-
+    </div>
 
     {% if grupo_list %}
         <table class="table table-hover">
@@ -42,8 +66,13 @@
                 {% endfor %}
             </tbody>
         </table>
-
-
+    {% else %}
+        {% if fase.tipo_fase == ELIMINATORIA %}
+            <p>
+                {% trans "Los cruces se generan aleatoriamente cuando inicias la fase. Puedes crearlos manualmente dando a " %}
+                <a href="{% url 'grupo_generar_eliminatoria' torneo.id fase.id %}">{% trans "crear cruces" %}</a>
+            </p>
+        {% endif %}
 
     {% endif %}
 

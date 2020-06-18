@@ -10,13 +10,11 @@
     {% endif %}
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#torneoBorrar">{% trans "Borrar torneo" %}</button>
 
-
     <div>{% trans "Nombre: " %}{{ torneo.nombre }}</div>
     <div>{% trans "Deporte: " %}{{ torneo.deporte.get_nombre_display }}</div>
     <div>{% trans "Fecha: " %}{{ torneo.fecha }}</div>
     <div>{% trans "Descripcion: " %}{{ torneo.descripcion }}</div>
     <div>{% trans "Numero de Equipos: " %}{{ torneo.numero_equipos_max }}</div>
-    <p><div>{% trans "****ID****: " %}{{ torneo.id }}</div></p>
 
     <!-- MODAL -->
     <div class="modal fade" id="torneoBorrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

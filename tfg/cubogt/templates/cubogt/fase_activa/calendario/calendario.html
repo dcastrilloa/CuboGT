@@ -23,12 +23,15 @@
     {% endif %}
     <h2>{% trans "Calendario: " %}{{ grupo_actual }}</h2>
     {% if fase.estado == TERMINADO %}
-        <h4>
-            {% blocktrans %}
-                AVISO: La fase esta terminada, si realizas algun cambio de resultado y la clasificacion es
-                modificada deberes actulizar los equipos de las fases siguientes.
-            {% endblocktrans %}
-        </h4>
+        <div>
+            <h4><span class="badge badge-warning">{% trans "Adventencia: La fase esta terminada." %}</span></h4>
+            <p>
+                {% blocktrans %}
+                    Si realizas algún cambio de resultado y la clasificacion cambia,
+                    deberás actualizar los equipos de las siguientes fases.
+                {% endblocktrans %}
+            </p>
+        </div>
     {% endif %}
     {% for n_jornada,jornada_list in partido_list %}
         <h6>{% trans "Jornada: " %}{{ n_jornada }}</h6>

@@ -78,11 +78,12 @@ def ascenso_guardar(ascenso):
 	return msg_error_list
 
 
-def ascenso_general(fase, form):
+def ascenso_general(fase, form=None, numero_equipos=0, desde_posicion=0, proxima_fase=None):
 	grupo_list = Grupo.objects.filter(fase=fase)
-	numero_equipos = form.cleaned_data['numero_equipos']
-	desde_posicion = form.cleaned_data['desde_posicion']
-	proxima_fase = form.cleaned_data['proxima_fase']
+	if form:
+		numero_equipos = form.cleaned_data['numero_equipos']
+		desde_posicion = form.cleaned_data['desde_posicion']
+		proxima_fase = form.cleaned_data['proxima_fase']
 	msg_error = []
 	for grupo in grupo_list:
 		ascenso = Ascenso(numero_equipos=numero_equipos, desde_posicion=desde_posicion, proxima_fase=proxima_fase,

@@ -1,17 +1,9 @@
 from . import CampoController, ClasificacionController, FaseController
 from ..models import Partido, Grupo
-from ..static.constantes import LIGA, JUGANDO, ESPERA, TERMINADO
+from ..static.constantes import JUGANDO, ESPERA, TERMINADO
 
 
 def crear_calendario(fase):
-	if fase.tipo_fase is LIGA:
-		crear_liga(fase)
-	else:
-		# TODO crear_eliminatoria(fase)
-		pass
-
-
-def crear_liga(fase):
 	grupo_list = Grupo.objects.filter(fase=fase)
 	for grupo in grupo_list:
 		rondas = calcular_rondas(fase, grupo)
@@ -32,7 +24,7 @@ def calcular_rondas(fase, grupo):
 
 
 def crear_lista_partidos(teams, rounds):
-	"""Devuelve una lista de listas de jornadas, dentro de esa lista de jornadas hay una tupla con los enfrentamientos
+	"""round robin: Devuelve una lista de listas de jornadas, dentro de esa lista de jornadas hay una tupla con los enfrentamientos
 	equipo_local vs equipo_visitante"""
 	if len(teams) % 2:
 		teams.append(None)
