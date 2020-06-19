@@ -8,7 +8,7 @@ from ..static.constantes import ERROR, LIGA
 
 def ascenso_lista(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo=LIGA)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo_fase=LIGA)
 	ascenso_list = Ascenso.objects.filter(grupo__fase=fase)
 
 	context = {'torneo': torneo, 'fase': fase, 'ascenso_list': ascenso_list}
@@ -17,7 +17,7 @@ def ascenso_lista(request, torneo_id, fase_id):
 
 def ascenso_nuevo(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo=LIGA)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo_fase=LIGA)
 	if request.method == "POST":
 		form = AscensoForm(request.POST, fase=fase)
 		if form.is_valid():
@@ -37,7 +37,7 @@ def ascenso_nuevo(request, torneo_id, fase_id):
 
 def ascenso_nuevo_general(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo=LIGA)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo_fase=LIGA)
 	if request.method == "POST":
 		form = AscensoGeneralForm(request.POST, fase=fase)
 		if form.is_valid():
@@ -56,7 +56,7 @@ def ascenso_nuevo_general(request, torneo_id, fase_id):
 
 def ascenso_editar(request, torneo_id, fase_id, ascenso_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo=LIGA)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo_fase=LIGA)
 	grupo_list = Grupo.objects.filter(fase=fase)
 	ascenso = get_object_or_404(Ascenso, pk=ascenso_id, grupo__in=grupo_list)
 	if request.method == "POST":
@@ -79,7 +79,7 @@ def ascenso_editar(request, torneo_id, fase_id, ascenso_id):
 
 def ascenso_borrar(request, torneo_id, fase_id, ascenso_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo=LIGA)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo_fase=LIGA)
 	grupo_list = Grupo.objects.filter(fase=fase)
 	ascenso = get_object_or_404(Ascenso, pk=ascenso_id, grupo__in=grupo_list)
 	AscensoController.ascenso_borrar(ascenso)
@@ -88,14 +88,14 @@ def ascenso_borrar(request, torneo_id, fase_id, ascenso_id):
 
 def ascenso_borrar_todo(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo=LIGA)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo_fase=LIGA)
 	AscensoController.ascenso_borrar_todo(fase)
 	return redirect('ascenso_lista', torneo_id=torneo_id, fase_id=fase_id)
 
 
 def ascenso_comprobar(request, torneo_id, fase_id, ascenso_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo=LIGA)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, tipo_fase=LIGA)
 	grupo_list = Grupo.objects.filter(fase=fase)
 	ascenso = get_object_or_404(Ascenso, pk=ascenso_id, grupo__in=grupo_list, estado=ERROR)
 

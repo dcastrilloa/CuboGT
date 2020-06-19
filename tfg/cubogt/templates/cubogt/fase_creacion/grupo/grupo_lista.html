@@ -57,7 +57,7 @@
                         <td>{{ grupo.equipos.count }}</td>
                         <td>
                             <a type="button" class="btn btn-outline-primary" href="{% url 'grupo_editar' torneo.id fase.id grupo.id %}">{% trans "Editar" %}</a>
-                            {% if fase.estado == CREACION %}
+                            {% if fase.estado == CREACION and fase.tipo_fase == LIGA %}
                                 <a type="button" class="btn btn-outline-danger" href="{% url 'grupo_borrar' torneo.id fase.id grupo.id %}">{% trans "Borrar" %}</a>
                             {% endif %}
                         </td>

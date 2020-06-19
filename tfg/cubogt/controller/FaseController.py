@@ -81,7 +81,7 @@ def fase_eliminatoria_terminar(fase):
 def fase_iniciar_comprobaciones(fase):
 	msg_error = []
 	# Comprobar Torneo
-	if fase.torneo.estado is CREACION:
+	if fase.torneo.estado == CREACION:
 		msg_error.extend(TorneoController.comprobar_torneo(fase.torneo))
 	# Comprobar los Equipos de la fase
 	msg_error.extend(EquipoController.comprobar_equipos_fase(fase))
