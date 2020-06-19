@@ -6,7 +6,7 @@ from string import ascii_uppercase
 
 
 def comprobar(fase):
-	if fase.estado is LIGA:
+	if fase.tipo_fase == LIGA:
 		msg_error = comprobar_grupos_liga(fase)
 		msg_error.extend(comprobar_equipos_sin_grupo(fase))
 	else:  # Eliminatoria

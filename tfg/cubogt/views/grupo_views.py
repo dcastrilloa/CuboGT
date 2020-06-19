@@ -85,7 +85,7 @@ def grupo_borrar(request, torneo_id, fase_id, grupo_id):
 
 def grupo_borrar_todo(request, torneo_id, fase_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id, usuario=request.user)
-	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION, tipo_fase=LIGA)
+	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo, estado=CREACION)
 	grupo_list = Grupo.objects.filter(fase=fase)
 	for grupo in grupo_list:
 		grupo.delete()
