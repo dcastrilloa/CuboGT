@@ -11,7 +11,7 @@
     {% endif %}
     {% if grupo_list %}
         {% for grupo in grupo_list %}
-            <h3 id="grupo{{ grupo.id }}">{% trans "Grupo " %} {{ grupo.nombre }}</h3>
+            <h3 id="grupo{{ grupo.id }}">{{ grupo.nombre }}</h3>
             {% if fase.estado == CREACION %}
                 <a type="button" class="btn btn-info" href="{% url 'grupo_equipo_editar' torneo.id fase.id grupo.id %}">{% trans "Editar equipos" %}</a>
             {% endif %}

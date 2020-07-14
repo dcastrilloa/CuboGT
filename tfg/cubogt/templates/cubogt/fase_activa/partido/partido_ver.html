@@ -9,7 +9,7 @@
         <div>{% trans "Grupo: " %}{{ partido.grupo }}</div>
         <div>{% trans "Arbitro: " %}{{ partido.get_arbitro_label }}</div>
         {% if torneo.deporte.set %}
-            {% if set_list.count < fase.numero_sets  %}
+            {% if set_nuevo %}
                 <a type="button" class="btn btn-primary" href="{% url 'partido_set_nuevo' torneo.id fase.id grupo.id partido.id %}">{% trans "Añadir set" %}</a>
             {% endif %}
         {% else %}
@@ -72,7 +72,13 @@
         <a type="button" class="btn btn-outline-secondary" href="{% url 'partido_enjuego' torneo.id fase.id %}">{% trans "Volver partidos" %}</a>
         <a type="button" class="btn btn-outline-secondary" href="{% url 'partido_calendario_grupo' torneo.id fase.id grupo.id partido.id %}">{% trans "Volver calendario" %}</a>
         {% if partido.estado != TERMINADO %}
-            <a type="button" class="btn btn-danger" href="{% url 'partido_terminar' torneo.id fase.id grupo.id partido.id %}">{% trans "Terminar partido" %}</a>
+            {% if torneo.deporte.set %}
+                {% if not set_nuevo %}
+                    <a type="button" class="btn btn-danger" href="{% url 'partido_terminar' torneo.id fase.id grupo.id partido.id %}">{% trans "Terminar partido" %}</a>
+                {% endif %}
+            {% else %}
+                <a type="button" class="btn btn-danger" href="{% url 'partido_terminar' torneo.id fase.id grupo.id partido.id %}">{% trans "Terminar partido" %}</a>
+            {% endif %}
         {% endif %}
     </div>
 

@@ -112,7 +112,7 @@ def ascenso_borrar_todo(fase):
 
 
 def realizar_ascenso_fase(fase):
-	#  AUTOMATICO fase tras el ultimo partido de una fase
+	#  AUTOMATICO fase tras el ultimo partido de una fase #TODO exclude estado=ERROR y luego realizar ascenso dierctamente
 	ascenso_list = Ascenso.objects.filter(grupo__fase=fase)
 	for ascenso in ascenso_list:
 		ascenso_guardar(ascenso)  # Comprueba el ascenso y luego guarda el estado
@@ -127,7 +127,7 @@ def realizar_ascenso(ascenso):
 
 
 def recibir_ascenso(fase):
-	ascenso_list = Ascenso.objects.filter(proxima_fase=fase)
+	ascenso_list = Ascenso.objects.filter(proxima_fase=fase).exclude(estado=ERROR)
 	for ascenso in ascenso_list:
 		grupo = ascenso.grupo
 		clasificacion = Clasificacion.objects.filter(grupo=grupo)

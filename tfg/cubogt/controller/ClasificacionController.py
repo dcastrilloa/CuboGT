@@ -35,7 +35,7 @@ def actualizar_clasificacion_equipo(equipo, grupo):
 		clasificacion.sets_favor = n_sets_favor
 		clasificacion.sets_contra = n_sets_totales - n_sets_favor
 
-		# Puntos de set: Voley, barminton, pinpong
+		# Puntos de set: Voley, badminton, pinpong
 		query_set_local = Set.objects.filter(partido__equipo_local=equipo, partido__grupo=grupo,
 											 partido__estado=TERMINADO)
 		query_set_visitante = Set.objects.filter(partido__equipo_visitante=equipo, partido__grupo=grupo,
@@ -74,7 +74,7 @@ def actualizar_clasificacion_equipo(equipo, grupo):
 			if not n_juegos_contra_visitante['sumatorio']:
 				n_juegos_contra_visitante['sumatorio'] = 0
 			clasificacion.puntos_contra = n_juegos_contr_local['sumatorio'] + n_juegos_contra_visitante['sumatorio']
-
+			# TODO Puntos de tenis
 	# Resultado
 	else:
 		query_partido_local = Partido.objects.filter(equipo_local=equipo, grupo=grupo, estado=TERMINADO)
@@ -95,7 +95,7 @@ def actualizar_clasificacion_equipo(equipo, grupo):
 		if not n_resultado_contra_visitante['sumatorio']:
 			n_resultado_contra_visitante['sumatorio'] = 0
 		clasificacion.puntos_contra = n_resultado_contr_local['sumatorio'] + n_resultado_contra_visitante['sumatorio']
-	# Puntos de Juegos
+
 	# Guardar
 	clasificacion.save()
 

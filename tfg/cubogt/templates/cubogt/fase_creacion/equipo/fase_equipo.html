@@ -36,6 +36,8 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% elif ascenso_list %}
+        <div>{% trans "Cuando se termine la fase anterior, ésta recibira automaticamente los equipos clasificados." %}</div>
     {% endif %}
 
 {% endblock content %}

@@ -167,6 +167,7 @@ def partido_forzar(fase, partido, campo):
 	arbitro = partido_reemplazar.arbitro
 	set_partido_espera(partido_reemplazar)
 	set_partido_jugar(partido, campo, arbitro)
+	FaseController.iniciar_siguiente_partido(fase)
 
 
 def partido_terminar(partido):
