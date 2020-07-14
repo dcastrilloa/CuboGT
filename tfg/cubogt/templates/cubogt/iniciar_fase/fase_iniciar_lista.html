@@ -36,7 +36,7 @@
                         {% endif %}
                         {% if torneo.deporte.punto %}
                             <td>{{ fase.numero_puntos }}</td>
-                            <td>{{ fase.puntos_maximos }}</td>
+                            <td>{{ fase.puntos_max_label }}</td>
                         {% endif %}
                         <td>
                             <a type="button" class="btn btn-outline-success" href="{% url 'fase_iniciar' torneo.id fase.id %}">{% trans "Iniciar" %}</a>

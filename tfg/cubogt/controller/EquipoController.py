@@ -26,12 +26,3 @@ def comprobar_equipos_fase(fase):
 				msg_error.append(_("El equipo: %(equipo)s ya esta jugando en otra fase activa: %(fase)s.\n") %
 								 {'equipo': equipo.nombre, 'fase': fase_equipo.nombre})
 	return msg_error
-
-
-def comprobar_equipo_nombre(torneo, equipo):
-	msg_error = []
-	equipo_repetido_list = Equipo.objects.filter(torneo=torneo, nombre__iexact=equipo.nombre)
-	if equipo_repetido_list:
-		msg_error.append(_("Ya existe un equipo con el nombre: %(equipo)s, escoja otro nombre.\n") %
-								 {'equipo': equipo.nombre})
-	return msg_error

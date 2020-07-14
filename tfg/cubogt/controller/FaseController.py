@@ -6,7 +6,7 @@ from . import GrupoController, EquipoController, TorneoController, AscensoContro
 
 def fase_iniciar(fase):
 	if fase.tipo_fase == ELIMINATORIA:
-		fase_eliminatoria(fase)
+		fase_iniciar_eliminatoria(fase)
 	# crear calendario
 	PartidoController.crear_calendario(fase)
 	# cambiar el torneo a estado ACTIVO
@@ -21,7 +21,7 @@ def fase_iniciar(fase):
 	iniciar_siguiente_partido(fase)
 
 
-def fase_eliminatoria(fase):
+def fase_iniciar_eliminatoria(fase):
 	numero_grupos = GrupoController.get_numero_grupos(fase)
 
 	# Si no tengo grupos: crear grupos (nombre eliminatoria) y repartirlos
@@ -64,7 +64,8 @@ def fase_eliminatoria_terminar(fase):
 		# Ascenso
 		AscensoController.ascenso_general(fase, numero_equipos=1, desde_posicion=1, proxima_fase=fase_siguiente)
 
-		if numero_grupos == 2 and fase.equipos.count() == 4:  # Tercer y cuarto puesto
+		# Tercer y cuarto puesto
+		if numero_grupos == 2 and fase.equipos.count() == 4:
 			nombre_fase_siguiente = fase.prefijo_eliminatoria + NOMBRE_ELIMINATORIA[TERCER_PUESTO]
 			fase_siguiente_3 = Fase(torneo=fase.torneo, nombre=nombre_fase_siguiente,
 								  prefijo_eliminatoria=fase.prefijo_eliminatoria, tipo_fase=ELIMINATORIA,

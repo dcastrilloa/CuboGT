@@ -48,7 +48,10 @@
                 <th>{% trans "Tantos C" %}</th>
             {% endif %}
             <th>{% trans "Puntuación" %}</th>
+        {% if n_ascenso %}
             <th>{% trans "Acenso" %}</th>
+        {% endif %}
+
         </tr>
         </thead>
         <tbody>
@@ -75,7 +78,9 @@
                     <td>{{ clasificacion.puntos_contra }}</td>
                 {% endif %}
                 <td>{{ clasificacion.get_puntuacion }}</td>
-                <td>{{ ascenso.proxima_fase }}</td>
+                {% if n_ascenso %}
+                    <td>{{ ascenso.proxima_fase }}</td>
+                {% endif %}
             <tr>
         {% endfor %}
         </tbody>

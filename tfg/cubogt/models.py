@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from cubogt.static.constantes import *
-from django.shortcuts import redirect
 
 
 class Deporte(models.Model):
@@ -37,6 +36,14 @@ class Torneo(models.Model):
 
 	def __str__(self):
 		return self.nombre
+
+	def equipos_apuntados_max_label(self):
+		label = str(self.equipos.count()) + "/"
+		if self.numero_equipos_max is not None and self.numero_equipos_max > 0:
+			label += str(self.numero_equipos_max)
+		else:
+			label = _("%(n_equipos)sIndefinido" % {'n_equipos': label})
+		return label
 
 
 class Fase(models.Model):
@@ -80,6 +87,12 @@ class Fase(models.Model):
 		else:
 			label = _("%(n_equipos)sIndefinido" % {'n_equipos': label})
 		return label
+
+	def puntos_max_label(self):
+		if self.puntos_maximos:
+			return self.puntos_maximos
+		else:
+			return "-"
 
 
 class Equipo(models.Model):
@@ -209,12 +222,17 @@ class Partido(models.Model):
 		return Set.objects.filter(partido=self, ganador=self.equipo_visitante).count()
 
 	def get_resultado_label(self):
-		if self.grupo.fase.torneo.deporte.set:
-			sets_local = self.get_numero_sets_local()
-			sets_visitante = self.get_numero_sets_visitante()
-			label = '%d - %d' % (sets_local, sets_visitante)
+		if self.estado != ESPERA:
+			if self.grupo.fase.torneo.deporte.set:
+				sets_local = self.get_numero_sets_local()
+				sets_visitante = self.get_numero_sets_visitante()
+				label = '%d - %d' % (sets_local, sets_visitante)
+			else:
+				label = '%d - %d' % (self.resultado_local, self.resultado_visitante)
+			if self.estado == JUGANDO:
+				label = _("%(resultado)s (Jugando)") % {'resultado': label}
 		else:
-			label = '%d - %d' % (self.resultado_local, self.resultado_visitante)
+			label = _("Pendiente")
 		return label
 
 	def get_arbitro_label(self):

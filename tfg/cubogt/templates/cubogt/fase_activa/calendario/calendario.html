@@ -40,7 +40,7 @@
             <tr>
                 <th>{% trans "Nombre" %}</th>
                 <th>{% trans "Grupo" %}</th>
-                <th>{% trans "Estado" %}</th>
+                <th>{% trans "Resultado" %}</th>
                 <th></th>
             </tr>
             </thead>
@@ -49,7 +49,7 @@
                 <tr>
                     <td><a id="partido{{ partido.id }}" class="partido" href="#">{{ partido }}</a></td>
                     <td>{{ partido.grupo }}</td>
-                    <td>{{ partido.get_estado_display }}</td>
+                    <td>{{ partido.get_resultado_label }}</td>
                     <td>
                         <a type="button" class="btn btn-outline-primary"
                            href="{% url 'partido_ver' torneo.id fase.id grupo_actual.id partido.id %}">{% trans "Ver partido" %}</a>
