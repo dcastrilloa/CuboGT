@@ -42,11 +42,17 @@ def partido_ver(request, torneo_id, fase_id, grupo_id, partido_id):
 	fase = get_object_or_404(Fase, pk=fase_id, torneo=torneo)
 	grupo = get_object_or_404(Grupo, pk=grupo_id, fase=fase)
 	partido = get_object_or_404(Partido, pk=partido_id, grupo=grupo)
-	set_list = Set.objects.filter(partido=partido)
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
 	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'fase': fase, 'grupo': grupo,
-			   'partido': partido, 'set_list': set_list}
+			   'partido': partido}
+
+	if torneo.deporte.set:
+		set_list = Set.objects.filter(partido=partido)
+		set_nuevo = SetController.set_comprobar_nuevo(partido)
+		context_set = {'set_list': set_list, 'set_nuevo': set_nuevo}
+		context.update(context_set)
+
 	return render(request, 'cubogt/fase_activa/partido/partido_ver.html', context)
 
 
@@ -83,9 +89,9 @@ def partido_set_nuevo(request, torneo_id, fase_id, grupo_id, partido_id):
 
 	if request.method == "POST":
 		if torneo.deporte.juego:
-			form = SetJuegosForm(request.POST)
+			form = SetJuegosForm(request.POST, partido=partido)
 		else:
-			form = SetPuntosForm(request.POST, fase=fase)
+			form = SetPuntosForm(request.POST, fase=fase, partido=partido)
 		if form.is_valid():
 			set_partido = form.save(commit=False)
 			set_partido.partido = partido
@@ -101,9 +107,9 @@ def partido_set_nuevo(request, torneo_id, fase_id, grupo_id, partido_id):
 							partido_id=partido_id)
 	else:
 		if torneo.deporte.juego:
-			form = SetJuegosForm()
+			form = SetJuegosForm(partido=partido)
 		else:
-			form = SetPuntosForm(fase=fase)
+			form = SetPuntosForm(fase=fase, partido=partido)
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
 	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form}
@@ -119,9 +125,9 @@ def partido_set_editar(request, torneo_id, fase_id, grupo_id, partido_id, set_id
 
 	if request.method == "POST":
 		if torneo.deporte.juego:
-			form = SetJuegosForm(request.POST, instance=set_partido)
+			form = SetJuegosForm(request.POST, instance=set_partido, partido=partido)
 		else:
-			form = SetPuntosForm(request.POST, instance=set_partido, fase=fase)
+			form = SetPuntosForm(request.POST, instance=set_partido, fase=fase, partido=partido)
 		if form.is_valid():
 			set_partido = form.save(commit=False)
 			set_partido.ganador = SetController.get_equipo_ganador(set_partido)
@@ -136,9 +142,9 @@ def partido_set_editar(request, torneo_id, fase_id, grupo_id, partido_id, set_id
 							partido_id=partido_id)
 	else:
 		if torneo.deporte.juego:
-			form = SetJuegosForm(instance=set_partido)
+			form = SetJuegosForm(instance=set_partido, partido=partido)
 		else:
-			form = SetPuntosForm(instance=set_partido, fase=fase)
+			form = SetPuntosForm(instance=set_partido, fase=fase, partido=partido)
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
 	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form}

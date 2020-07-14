@@ -22,22 +22,28 @@ def fase_nueva(request, torneo_id):
 		form = FaseForm(request.POST)
 		form_set = FaseSetForm(request.POST)
 		form_punto = FasePuntoForm(request.POST)
+		form_valido = True
+
 		if form.is_valid():
 			fase = form.save(commit=False)
 			if torneo.deporte.set:
 				if form_set.is_valid():
 					fase_aux = form_set.save(commit=False)
 					fase.numero_sets = fase_aux.numero_sets
+				else:
+					form_valido = False
 			if torneo.deporte.punto:
 				if form_punto.is_valid():
 					fase_aux = form_punto.save(commit=False)
 					fase.numero_puntos = fase_aux.numero_puntos
 					fase.puntos_maximos = fase_aux.puntos_maximos
-
-			fase.torneo = torneo
-			fase.prefijo_eliminatoria = fase.nombre
-			fase.save()
-			return redirect('fase_lista', torneo_id=torneo.id)
+				else:
+					form_valido = False
+			if form_valido:
+				fase.torneo = torneo
+				fase.prefijo_eliminatoria = fase.nombre
+				fase.save()
+				return redirect('fase_lista', torneo_id=torneo.id)
 	else:
 		form = FaseForm()
 		form_set = FaseSetForm()
@@ -56,20 +62,26 @@ def fase_editar(request, torneo_id, fase_id):
 		form = FaseForm(request.POST, instance=fase)
 		form_set = FaseSetForm(request.POST, instance=fase)
 		form_punto = FasePuntoForm(request.POST, instance=fase)
+		form_valido = True
 		if form.is_valid():
 			fase = form.save(commit=False)
 			if torneo.deporte.set:
 				if form_set.is_valid():
 					fase_aux = form_set.save(commit=False)
 					fase.numero_sets = fase_aux.numero_sets
+				else:
+					form_valido = False
 			if torneo.deporte.punto:
 				if form_punto.is_valid():
 					fase_aux = form_punto.save(commit=False)
 					fase.numero_puntos = fase_aux.numero_puntos
 					fase.puntos_maximos = fase_aux.puntos_maximos
-			fase.prefijo_eliminatoria = fase.nombre
-			fase.save()
-			return redirect('fase_lista', torneo_id=torneo.id)
+				else:
+					form_valido = False
+			if form_valido:
+				fase.prefijo_eliminatoria = fase.nombre
+				fase.save()
+				return redirect('fase_lista', torneo_id=torneo.id)
 	else:
 		form = FaseForm(instance=fase)
 		form_set = FaseSetForm(instance=fase)

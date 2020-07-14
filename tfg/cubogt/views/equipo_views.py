@@ -18,21 +18,15 @@ def equipo_lista(request, torneo_id):
 def equipo_nuevo(request, torneo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
 	if request.method == "POST":
-		form = EquipoForm(request.POST)
+		form = EquipoForm(request.POST, torneo=torneo, editar=False)
 		if form.is_valid():
 			equipo = form.save(commit=False)
-			msg_error_list = EquipoController.comprobar_equipo_nombre(torneo, equipo)
-			if msg_error_list:
-				fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
-				context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'msg_error_list': msg_error_list}
-				return render(request, 'cubogt/equipo/equipo_error.html', context)
-			else:
-				equipo.save()
-				torneo.equipos.add(equipo)
-				# TODO: Funcion para agregar el equipo a un usuario
-				return redirect('equipo_lista', torneo_id=torneo.id)
+			equipo.save()
+			torneo.equipos.add(equipo)
+			# TODO: Funcion para agregar el equipo a un usuario
+			return redirect('equipo_lista', torneo_id=torneo.id)
 	else:
-		form = EquipoForm()
+		form = EquipoForm(torneo=torneo, editar=False)
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
 	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form}
@@ -43,20 +37,14 @@ def equipo_editar(request, torneo_id, equipo_id):
 	torneo = get_object_or_404(Torneo, pk=torneo_id)
 	equipo = get_object_or_404(Equipo, pk=equipo_id, torneo=torneo)
 	if request.method == "POST":
-		form = EquipoForm(request.POST, instance=equipo)
+		form = EquipoForm(request.POST, instance=equipo, torneo=torneo, editar=True, equipo=equipo)
 		if form.is_valid():
 			equipo = form.save(commit=False)
-			msg_error_list = EquipoController.comprobar_equipo_nombre(torneo, equipo)
-			if msg_error_list:
-				fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
-				context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'msg_error_list': msg_error_list}
-				return render(request, 'cubogt/equipo/equipo_error.html', context)
-			else:
-				equipo.save()
-				# TODO: Funcion para agregar el equipo a un usuario
-				return redirect('equipo_lista', torneo_id=torneo.id)
+			equipo.save()
+			# TODO: Funcion para agregar el equipo a un usuario
+			return redirect('equipo_lista', torneo_id=torneo.id)
 	else:
-		form = EquipoForm(instance=equipo)
+		form = EquipoForm(instance=equipo, torneo=torneo, editar=True, equipo=equipo)
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
 	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'form': form}

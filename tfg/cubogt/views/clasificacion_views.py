@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 
 from cubogt.controller import FaseController, ClasificacionController
-from cubogt.models import Torneo, Fase, Grupo
+from cubogt.models import Torneo, Fase, Grupo, Ascenso
 
 
 def clasificacion_ver(request, torneo_id, fase_id, grupo_id=None):
@@ -14,9 +14,10 @@ def clasificacion_ver(request, torneo_id, fase_id, grupo_id=None):
 
 	grupo_list = fase.grupo_set.all()
 	posicion_clasificacion_ascenso_list = ClasificacionController.get_posicion_clasificacion_ascenso_list(grupo)
+	n_ascenso = Ascenso.objects.filter(grupo=grupo).count()
 
 	fase_activa_terminada_list = FaseController.get_fases_activas_terminadas(torneo)
 	context = {'torneo': torneo, 'fase_activa_terminada_list': fase_activa_terminada_list, 'fase': fase,
-			   'grupo_list': grupo_list, 'grupo': grupo,
+			   'grupo_list': grupo_list, 'grupo': grupo,'n_ascenso':n_ascenso,
 			   'posicion_clasificacion_ascenso_list':posicion_clasificacion_ascenso_list}
 	return render(request, 'cubogt/fase_activa/clasificacion/clasificacion_ver.html', context)

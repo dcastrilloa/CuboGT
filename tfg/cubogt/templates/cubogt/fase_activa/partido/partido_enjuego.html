@@ -13,7 +13,11 @@
                 <tr>
                     <th>{% trans "Nombre" %}</th>
                     <th>{% trans "Campo" %}</th>
-                    <th>{% trans "Grupo" %}</th>
+                    {% if fase.tipo_fase == ELIMINATORIA %}
+                        <th>{% trans "Cruces" %}</th>
+                    {% else %}
+                        <th>{% trans "Grupo" %}</th>
+                    {% endif %}
                     <th>{% trans "Jornada" %}</th>
                     {% if torneo.deporte.set %}
                         <th>{% trans "Sets" %}</th>
@@ -64,7 +68,11 @@
             <thead>
                 <tr>
                     <th>{% trans "Nombre" %}</th>
-                    <th>{% trans "Grupo" %}</th>
+                    {% if fase.tipo_fase == ELIMINATORIA %}
+                        <th>{% trans "Cruces" %}</th>
+                    {% else %}
+                        <th>{% trans "Grupo" %}</th>
+                    {% endif %}
                     <th>{% trans "Jornada" %}</th>
                     <th></th>
                 </tr>
